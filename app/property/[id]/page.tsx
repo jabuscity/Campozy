@@ -1,0 +1,216 @@
+import * as React from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { Metadata } from 'next'
+import { HousingService } from '@/services/housing-service'
+import { TrustService } from '@/services/trust-service'
+import { CampozyScore } from '@/components/ui/campozy-score'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { 
+  MapPin, Users, Wifi, Droplet, Zap, ShieldCheck, 
+  Trash2, MessageSquare, ArrowLeft, Share2, Heart 
+} from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { togglePropertySave } from '@/app/actions/housing-actions'
+import { IdentityService } from '@/services/identity-service'
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params
+  const property = await HousingService.getPropertyById(id)
+  return {
+    title: property?.name || 'Property Detail',
+    description: `Verified housing in ${property?.neighborhood?.name}. Campozy Score: ${property?.campozy_score}/100. ${property?.description?.slice(0, 100)}...`,
+  }
+}
+
+export default async function PropertyDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const property = await HousingService.getPropertyById(id)
+  const scoreDimensions = await TrustService.getScoreDimensionAverages(id)
+  const currentUser = await IdentityService.getCurrentUser()
+
+  if (!property) return <div>Property not found</div>
+
+  const primaryImage = property.media?.find(m => m.is_primary)?.url || property.media?.[0]?.url || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=1200'
+
+  return (
+    <div className="bg-white min-h-screen pb-20 text-neutral-900">
+      {/* Header Actions */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between font-medium">
+        <Link href="/discovery" className="flex items-center gap-2 text-neutral-500 hover:text-neutral-900 transition-colors">
+          <ArrowLeft className="h-4 w-4" /> Back to Discovery
+        </Link>
+        <div className="flex items-center gap-4">
+          <Button variant="ghost" size="icon" className="text-neutral-500"><Share2 className="h-5 w-5" /></Button>
+          <PropertySaveButton propertyId={property.id} userId={currentUser?.id} initialIsSaved={currentUser ? await HousingService.isPropertySaved(currentUser.id, property.id) : false} />
+        </div>
+      </div>
+
+      {/* Hero Gallery Section */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative h-[400px] lg:h-[600px] rounded-3xl overflow-hidden group">
+          <Image 
+            src={primaryImage}
+            alt={property.name}
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          <div className="absolute bottom-10 left-10 text-white">
+            <h1 className="text-4xl lg:text-6xl font-black mb-4 tracking-tight uppercase italic">{property.name}</h1>
+            <div className="flex items-center gap-4">
+               <div className="flex items-center gap-1.5 text-lg font-medium opacity-90">
+                 <MapPin className="h-5 w-5" />
+                 {property.neighborhood?.name}, {property.address}
+               </div>
+               <Badge variant="secondary" className="px-4 py-1 backdrop-blur-md bg-white/20 border-none text-white font-bold">
+                 {property.property_type?.name || 'Hostel'}
+               </Badge>
+            </div>
+          </div>
+          
+          <div className="absolute bottom-10 right-10 flex gap-2">
+            <Button className="bg-white text-neutral-900 hover:bg-neutral-100 rounded-xl px-6 font-bold shadow-lg">
+              View All Photos
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-12 grid lg:grid-cols-3 gap-16">
+        {/* Left Column: Details */}
+        <div className="lg:col-span-2 space-y-12">
+          {/* Overview */}
+          <section>
+            <h2 className="text-2xl font-black text-neutral-900 mb-6 uppercase tracking-tight italic">Hostel Overview</h2>
+            <p className="text-neutral-600 text-lg leading-relaxed">
+              {property.description || "No description provided for this verified property. However, it holds a Campozy official score based on student intelligence."}
+            </p>
+          </section>
+
+          {/* Detailed Trust Scores */}
+          <section className="bg-neutral-50 rounded-3xl p-8 border border-neutral-100">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-2xl font-black text-neutral-900 uppercase tracking-tight italic">The Intelligence Grid</h2>
+              <Badge variant="success" className="px-4 py-1 uppercase tracking-tighter">Verified by 50+ Students</Badge>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+               <ScoreItem label="Reliability (Water)" score={scoreDimensions?.water || 0} icon={<Droplet />} color="text-primary" />
+               <ScoreItem label="Uptime (Electricity)" score={scoreDimensions?.electricity || 0} icon={<Zap />} color="text-warning" />
+               <ScoreItem label="Connectivity (Wifi)" score={scoreDimensions?.internet || 0} icon={<Wifi />} color="text-blue-400" />
+               <ScoreItem label="Security & Safety" score={scoreDimensions?.safety || 0} icon={<ShieldCheck />} color="text-success" />
+               <ScoreItem label="Hygiene & Sanitation" score={scoreDimensions?.hygiene || 0} icon={<Trash2 />} color="text-red-400" />
+               <ScoreItem label="Management Responsiveness" score={scoreDimensions?.management || 0} icon={<MessageSquare />} color="text-purple-400" />
+            </div>
+          </section>
+
+          {/* Rooms Section */}
+          <section>
+            <h2 className="text-2xl font-black text-neutral-900 mb-8 uppercase tracking-tight italic">Available Units</h2>
+            <div className="space-y-4">
+               {property.rooms?.map(room => (
+                 <div key={room.id} className="flex items-center justify-between p-6 rounded-2xl border border-neutral-200 hover:border-primary transition-colors hover:shadow-lg bg-white">
+                    <div className="flex items-center gap-6">
+                       <div className="h-16 w-16 bg-neutral-100 rounded-xl flex items-center justify-center text-neutral-400">
+                          <Users className="h-8 w-8" />
+                       </div>
+                       <div>
+                          <h4 className="text-xl font-bold text-neutral-900">{room.room_type}</h4>
+                          <p className="text-neutral-500 font-medium">Capacity: {room.capacity} Student{room.capacity > 1 ? 's' : ''}</p>
+                       </div>
+                    </div>
+                    <div className="text-right">
+                       <div className="text-2xl font-black text-neutral-900">KES {room.price_per_month?.toLocaleString()}</div>
+                       <p className="text-neutral-400 text-sm font-medium">per month</p>
+                    </div>
+                 </div>
+               ))}
+            </div>
+          </section>
+        </div>
+
+        {/* Right Column: Score Summary & Action Card */}
+        <div className="space-y-8">
+           {/* Campozy Score Summary Card */}
+           <div className="sticky top-32 p-8 rounded-[2.5rem] bg-neutral-900 text-white shadow-2xl border border-white/10 relative overflow-hidden">
+              <div className="absolute top-0 right-0 h-40 w-40 bg-primary/10 blur-3xl -z-1" />
+              <div className="text-center">
+                 <CampozyScore score={property.campozy_score} size="lg" className="mb-6" />
+                 <h3 className="text-3xl font-black italic uppercase tracking-tighter mb-4">Official Score</h3>
+                 <p className="text-neutral-400 mb-8 font-medium">
+                    This score is calculated based on 10 dimensions of verified student data from this semester.
+                 </p>
+                 
+                 <div className="space-y-4">
+                    <Button size="lg" className="w-full text-xl font-bold h-16 shadow-lg shadow-primary/40">
+                       Book Inspection
+                    </Button>
+                    <Button variant="outline" size="lg" className="w-full border-white/20 text-white hover:bg-white/10 h-16 text-xl">
+                       Message Owner
+                    </Button>
+                 </div>
+              </div>
+
+              <div className="mt-8 pt-8 border-t border-white/10 flex items-center justify-center gap-3">
+                 <Badge variant="success" className="bg-success text-white">Trust Engine Active</Badge>
+                 <span className="text-[10px] uppercase font-bold tracking-widest text-neutral-500">Last updated today</span>
+              </div>
+           </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ScoreItem({ label, score, icon, color }: { label: string, score: number, icon: React.ReactNode, color: string }) {
+  const percentage = (score / 5) * 100
+  return (
+    <div className="space-y-3">
+       <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 font-bold text-neutral-800 uppercase tracking-tighter">
+             <div className={cn("p-1.5 rounded-lg bg-white shadow-sm border border-neutral-100", color)}>
+               {icon}
+             </div>
+             {label}
+          </div>
+          <span className="font-black text-neutral-900">{score.toFixed(1)}/5.0</span>
+       </div>
+       <div className="h-2 w-full bg-neutral-200 rounded-full overflow-hidden">
+          <div 
+             className={cn("h-full transition-all duration-1000", color.replace('text-', 'bg-'))} 
+             style={{ width: `${percentage}%` }} 
+          />
+       </div>
+    </div>
+  )
+}
+
+function PropertySaveButton({ propertyId, userId, initialIsSaved }: { propertyId: string; userId: string | undefined; initialIsSaved: boolean }) {
+  const [saved, setSaved] = React.useState(initialIsSaved)
+
+  const handleToggleSave = async () => {
+    if (!userId) {
+      console.warn("User not authenticated. Cannot save property.")
+      // TODO: Implement a more graceful login prompt (e.g., redirect to login)
+      return
+    }
+    // Optimistically update UI
+    setSaved(prev => !prev)
+    // Call server action
+    await togglePropertySave(userId, propertyId, saved)
+  }
+
+  return (
+    <Button 
+      variant="ghost" 
+      size="icon" 
+      onClick={handleToggleSave}
+      className={cn("transition-colors", saved ? "text-red-500 hover:text-red-600" : "text-neutral-500 hover:text-neutral-600")}
+    >
+      <Heart className={cn("h-5 w-5", saved && "fill-red-500")} />
+    </Button>
+  )
+}

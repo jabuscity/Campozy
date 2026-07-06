@@ -1,0 +1,29 @@
+# Campozy
+
+Campozy is a student confidence and intelligence platform built around housing trust, community knowledge, opportunity access, and lifecycle progression from student life into alumni and professional life.
+
+## Corpus
+
+1. 01_CONSTITUTION.md
+2. 02_PRODUCT.md
+3. 03_ARCHITECTURE.md
+4. 04_DATA_GRAPH.md
+5. 05_REPUTATION_SYSTEM.md
+6. 06_VERIFICATION_SYSTEM.md
+7. 07_RECOMMENDATION_ENGINE.md
+8. 08_OPPORTUNITY_ENGINE.md
+9. 09_DATABASE_SCHEMA.md
+10. 10_BACKEND_ARCHITECTURE.md
+11. 11_UI_UX_PHILOSOPHY.md
+12. 12_DESIGN_SYSTEM.md
+13. 13_INFORMATION_ARCHITECTURE.md
+14. 14_GROWTH_ENGINE.md
+15. 15_MONETIZATION_STRATEGY.md
+16. 16_LAUNCH_STRATEGY.md
+17. 17_TRUST_AND_SAFETY.md
+18. 18_OPERATIONS.md
+19. 19_ANALYTICS_AND_INTELLIGENCE.md
+20. 20_AI_STRATEGY.md
+21. 21_CONTENT_STRATEGY.md
+22. 22_BRAND_STRATEGY.md
+23. 23_FOUNDERS_PROGRAM.md
