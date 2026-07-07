@@ -7,29 +7,30 @@
 -- ============================================================================
 
 -- Extensions
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "pgvector";
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+CREATE EXTENSION IF NOT EXISTS "vector";
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
 -- ============================================================================
 -- REFERENCE TABLES
 -- ============================================================================
 
 CREATE TABLE roles (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT UNIQUE NOT NULL,  -- student, owner, scout, founder, ambassador, mentor, alumni, employer, parent, moderator, admin
     description TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE countries (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT UNIQUE NOT NULL,
     iso_code CHAR(2) UNIQUE NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE cities (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     country_id UUID NOT NULL REFERENCES countries(id),
     name TEXT NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -37,30 +38,30 @@ CREATE TABLE cities (
 );
 
 CREATE TABLE property_types (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT UNIQUE NOT NULL,  -- hostel, apartment, bedsitter, single_room, shared_room
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE amenity_types (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT UNIQUE NOT NULL,  -- wifi, parking, laundry, gym, study_room, kitchen, security_guard
     icon TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE utility_types (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT UNIQUE NOT NULL  -- Water, Electricity, Internet, Security, Accessibility
 );
 
 CREATE TABLE hygiene_categories (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT UNIQUE NOT NULL  -- bathrooms, kitchens, common_areas, waste_management, pest_control, sanitation
 );
 
 CREATE TABLE discussion_categories (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT UNIQUE NOT NULL,  -- housing, campus_life, safety, utilities, opportunities, general
     description TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW()
@@ -104,7 +105,7 @@ CREATE TABLE user_roles (
 );
 
 CREATE TABLE contact_methods (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     method_type TEXT NOT NULL,  -- email, phone, whatsapp
     value TEXT NOT NULL,
@@ -114,7 +115,7 @@ CREATE TABLE contact_methods (
 );
 
 CREATE TABLE identity_documents (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     document_type TEXT NOT NULL,  -- student_id, national_id, passport
     document_url TEXT NOT NULL,
@@ -129,7 +130,7 @@ CREATE TABLE identity_documents (
 -- ============================================================================
 
 CREATE TABLE universities (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     country_id UUID NOT NULL REFERENCES countries(id),
     name TEXT NOT NULL,
     short_name TEXT,  -- e.g. UON, JKUAT, KU
@@ -141,7 +142,7 @@ CREATE TABLE universities (
 );
 
 CREATE TABLE campuses (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     university_id UUID NOT NULL REFERENCES universities(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
     location_lat NUMERIC,
@@ -153,7 +154,7 @@ CREATE TABLE campuses (
 );
 
 CREATE TABLE academic_programs (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     university_id UUID NOT NULL REFERENCES universities(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
     degree_level TEXT,  -- certificate, diploma, bachelors, masters, phd
@@ -177,7 +178,7 @@ CREATE TABLE students (
 );
 
 CREATE TABLE student_preferences (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     student_id UUID NOT NULL REFERENCES students(id) ON DELETE CASCADE,
     max_budget NUMERIC,
     currency TEXT DEFAULT 'KES',
@@ -190,7 +191,7 @@ CREATE TABLE student_preferences (
 );
 
 CREATE TABLE student_lifecycle_history (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     student_id UUID NOT NULL REFERENCES students(id) ON DELETE CASCADE,
     from_stage TEXT NOT NULL,
     to_stage TEXT NOT NULL,  -- prospective, student, contributor, founder, ambassador, scout, graduate, alumni, mentor, employer
@@ -202,7 +203,7 @@ CREATE TABLE student_lifecycle_history (
 -- ============================================================================
 
 CREATE TABLE neighborhoods (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     city_id UUID NOT NULL REFERENCES cities(id),
     name TEXT NOT NULL,
     description TEXT,
@@ -213,7 +214,7 @@ CREATE TABLE neighborhoods (
 );
 
 CREATE TABLE neighborhood_landmarks (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     neighborhood_id UUID NOT NULL REFERENCES neighborhoods(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
     landmark_type TEXT,  -- market, hospital, police_station, transport_hub, bank
@@ -237,7 +238,7 @@ CREATE TABLE neighborhood_campus_distances (
 -- ============================================================================
 
 CREATE TABLE properties (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     neighborhood_id UUID REFERENCES neighborhoods(id),
     owner_id UUID REFERENCES profiles(id),
     name TEXT NOT NULL,
@@ -257,7 +258,7 @@ CREATE TABLE properties (
 );
 
 CREATE TABLE property_rooms (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     property_id UUID NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
     room_type TEXT NOT NULL,  -- single, double, shared, bedsitter
     price_per_semester NUMERIC,
@@ -272,7 +273,7 @@ CREATE TABLE property_rooms (
 );
 
 CREATE TABLE property_media (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     property_id UUID NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
     url TEXT NOT NULL,
     media_type TEXT NOT NULL,  -- image, video, virtual_tour
@@ -290,7 +291,7 @@ CREATE TABLE property_amenities (
 );
 
 CREATE TABLE property_claims (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     property_id UUID NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
     claimant_id UUID NOT NULL REFERENCES profiles(id),
     status TEXT DEFAULT 'pending',  -- pending, approved, rejected
@@ -305,7 +306,7 @@ CREATE TABLE property_claims (
 -- ============================================================================
 
 CREATE TABLE property_utilities (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     property_id UUID NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
     utility_type_id UUID NOT NULL REFERENCES utility_types(id),
     reliability_score NUMERIC DEFAULT 0,
@@ -317,7 +318,7 @@ CREATE TABLE property_utilities (
 );
 
 CREATE TABLE utility_reports (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     property_id UUID NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
     utility_type_id UUID NOT NULL REFERENCES utility_types(id),
     user_id UUID NOT NULL REFERENCES profiles(id),
@@ -328,7 +329,7 @@ CREATE TABLE utility_reports (
 );
 
 CREATE TABLE utility_incidents (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     property_id UUID NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
     utility_type_id UUID NOT NULL REFERENCES utility_types(id),
     reported_by UUID NOT NULL REFERENCES profiles(id),
@@ -343,7 +344,7 @@ CREATE TABLE utility_incidents (
 -- ============================================================================
 
 CREATE TABLE hygiene_reports (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     property_id UUID NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
     user_id UUID NOT NULL REFERENCES profiles(id),
     category_id UUID NOT NULL REFERENCES hygiene_categories(id),
@@ -353,7 +354,7 @@ CREATE TABLE hygiene_reports (
 );
 
 CREATE TABLE hygiene_media (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     report_id UUID NOT NULL REFERENCES hygiene_reports(id) ON DELETE CASCADE,
     url TEXT NOT NULL,
     media_type TEXT DEFAULT 'image',
@@ -365,7 +366,7 @@ CREATE TABLE hygiene_media (
 -- ============================================================================
 
 CREATE TABLE property_reviews (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     property_id UUID NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE SET NULL,
     overall_rating INTEGER CHECK (overall_rating >= 1 AND overall_rating <= 5),
@@ -387,7 +388,7 @@ CREATE TABLE property_reviews (
 );
 
 CREATE TABLE property_review_media (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     review_id UUID NOT NULL REFERENCES property_reviews(id) ON DELETE CASCADE,
     url TEXT NOT NULL,
     media_type TEXT DEFAULT 'image',
@@ -403,7 +404,7 @@ CREATE TABLE property_review_votes (
 );
 
 CREATE TABLE property_review_flags (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     review_id UUID NOT NULL REFERENCES property_reviews(id) ON DELETE CASCADE,
     flagged_by UUID NOT NULL REFERENCES profiles(id),
     reason TEXT NOT NULL,
@@ -413,7 +414,7 @@ CREATE TABLE property_review_flags (
 );
 
 CREATE TABLE neighborhood_reviews (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     neighborhood_id UUID NOT NULL REFERENCES neighborhoods(id) ON DELETE CASCADE,
     user_id UUID NOT NULL REFERENCES profiles(id),
     rating INTEGER CHECK (rating >= 1 AND rating <= 5),
@@ -429,7 +430,7 @@ CREATE TABLE neighborhood_reviews (
 -- ============================================================================
 
 CREATE TABLE reputation_events (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     event_type TEXT NOT NULL,  -- review_created, report_submitted, discussion_helpful, verification_accurate, spam_flagged, etc.
     points INTEGER NOT NULL,  -- positive or negative
@@ -438,7 +439,7 @@ CREATE TABLE reputation_events (
 );
 
 CREATE TABLE badges (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT UNIQUE NOT NULL,
     slug TEXT UNIQUE NOT NULL,
     description TEXT,
@@ -460,7 +461,7 @@ CREATE TABLE user_badges (
 -- ============================================================================
 
 CREATE TABLE verification_records (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     entity_id UUID NOT NULL,
     entity_type TEXT NOT NULL,  -- property, user, business, owner, scout
     verification_level verification_level DEFAULT 'claimed',
@@ -473,7 +474,7 @@ CREATE TABLE verification_records (
 );
 
 CREATE TABLE verification_evidence (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     verification_id UUID NOT NULL REFERENCES verification_records(id) ON DELETE CASCADE,
     evidence_type TEXT NOT NULL,  -- photo, document, video, geolocation
     url TEXT NOT NULL,
@@ -487,7 +488,7 @@ CREATE TABLE verification_evidence (
 -- ============================================================================
 
 CREATE TABLE discussions (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     campus_id UUID REFERENCES campuses(id),
     neighborhood_id UUID REFERENCES neighborhoods(id),
     category_id UUID REFERENCES discussion_categories(id),
@@ -503,7 +504,7 @@ CREATE TABLE discussions (
 );
 
 CREATE TABLE discussion_replies (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     discussion_id UUID NOT NULL REFERENCES discussions(id) ON DELETE CASCADE,
     user_id UUID NOT NULL REFERENCES profiles(id),
     parent_reply_id UUID REFERENCES discussion_replies(id),  -- threaded replies
@@ -522,7 +523,7 @@ CREATE TABLE discussion_votes (
 );
 
 CREATE TABLE tips (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     campus_id UUID REFERENCES campuses(id),
     neighborhood_id UUID REFERENCES neighborhoods(id),
     user_id UUID NOT NULL REFERENCES profiles(id),
@@ -533,7 +534,7 @@ CREATE TABLE tips (
 );
 
 CREATE TABLE warnings (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     campus_id UUID REFERENCES campuses(id),
     neighborhood_id UUID REFERENCES neighborhoods(id),
     property_id UUID REFERENCES properties(id),
@@ -545,7 +546,7 @@ CREATE TABLE warnings (
 );
 
 CREATE TABLE knowledge_articles (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     author_id UUID NOT NULL REFERENCES profiles(id),
     campus_id UUID REFERENCES campuses(id),
     title TEXT NOT NULL,
@@ -563,7 +564,7 @@ CREATE TABLE knowledge_articles (
 -- ============================================================================
 
 CREATE TABLE conversations (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     subject TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -579,7 +580,7 @@ CREATE TABLE conversation_members (
 );
 
 CREATE TABLE messages (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     conversation_id UUID NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,
     sender_id UUID NOT NULL REFERENCES profiles(id),
     content TEXT NOT NULL,
@@ -588,7 +589,7 @@ CREATE TABLE messages (
 );
 
 CREATE TABLE message_attachments (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     message_id UUID NOT NULL REFERENCES messages(id) ON DELETE CASCADE,
     url TEXT NOT NULL,
     file_type TEXT,
@@ -601,7 +602,7 @@ CREATE TABLE message_attachments (
 -- ============================================================================
 
 CREATE TABLE businesses (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     owner_id UUID NOT NULL REFERENCES profiles(id),
     neighborhood_id UUID REFERENCES neighborhoods(id),
     name TEXT NOT NULL,
@@ -620,7 +621,7 @@ CREATE TABLE businesses (
 );
 
 CREATE TABLE business_media (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     business_id UUID NOT NULL REFERENCES businesses(id) ON DELETE CASCADE,
     url TEXT NOT NULL,
     media_type TEXT DEFAULT 'image',
@@ -629,7 +630,7 @@ CREATE TABLE business_media (
 );
 
 CREATE TABLE business_reviews (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     business_id UUID NOT NULL REFERENCES businesses(id) ON DELETE CASCADE,
     user_id UUID NOT NULL REFERENCES profiles(id),
     rating INTEGER CHECK (rating >= 1 AND rating <= 5),
@@ -656,7 +657,7 @@ CREATE TABLE parent_student_links (
 );
 
 CREATE TABLE parent_alerts (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     parent_id UUID NOT NULL REFERENCES parent_profiles(id) ON DELETE CASCADE,
     alert_type TEXT NOT NULL,  -- safety, utility_outage, verification_update
     title TEXT NOT NULL,
@@ -670,7 +671,7 @@ CREATE TABLE parent_alerts (
 -- ============================================================================
 
 CREATE TABLE founder_cohorts (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,  -- e.g. "Founding 50 UON", "Founding 100 Kenya", "Global Pioneer 100"
     scope founder_scope NOT NULL,
     scope_entity_id UUID,  -- campus_id for campus, country_id for country, NULL for global
@@ -680,7 +681,7 @@ CREATE TABLE founder_cohorts (
 );
 
 CREATE TABLE founder_memberships (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     cohort_id UUID NOT NULL REFERENCES founder_cohorts(id) ON DELETE CASCADE,
     contribution_score NUMERIC DEFAULT 0,
@@ -690,7 +691,7 @@ CREATE TABLE founder_memberships (
 );
 
 CREATE TABLE founder_qualification_events (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     cohort_id UUID NOT NULL REFERENCES founder_cohorts(id),
     event_type TEXT NOT NULL,  -- review, report, discussion, verification, referral, mentorship
@@ -704,7 +705,7 @@ CREATE TABLE founder_qualification_events (
 -- ============================================================================
 
 CREATE TABLE ambassador_programs (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     campus_id UUID NOT NULL REFERENCES campuses(id),
     name TEXT NOT NULL,
     description TEXT,
@@ -713,7 +714,7 @@ CREATE TABLE ambassador_programs (
 );
 
 CREATE TABLE ambassadors (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     program_id UUID NOT NULL REFERENCES ambassador_programs(id) ON DELETE CASCADE,
     status TEXT DEFAULT 'active',  -- active, paused, completed
@@ -722,7 +723,7 @@ CREATE TABLE ambassadors (
 );
 
 CREATE TABLE ambassador_assignments (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     ambassador_id UUID NOT NULL REFERENCES ambassadors(id) ON DELETE CASCADE,
     task_type TEXT NOT NULL,  -- recruit_contributors, identify_founders, promote_discussions
     description TEXT,
@@ -736,7 +737,7 @@ CREATE TABLE ambassador_assignments (
 -- ============================================================================
 
 CREATE TABLE scouts (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     region_id UUID REFERENCES cities(id),
     certification_level TEXT DEFAULT 'trainee',  -- trainee, certified, senior, lead
@@ -749,7 +750,7 @@ CREATE TABLE scouts (
 );
 
 CREATE TABLE scout_assignments (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     scout_id UUID NOT NULL REFERENCES scouts(id) ON DELETE CASCADE,
     property_id UUID NOT NULL REFERENCES properties(id),
     assignment_type TEXT DEFAULT 'verification',  -- verification, audit, investigation
@@ -761,7 +762,7 @@ CREATE TABLE scout_assignments (
 );
 
 CREATE TABLE scout_reports (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     assignment_id UUID NOT NULL REFERENCES scout_assignments(id) ON DELETE CASCADE,
     scout_id UUID NOT NULL REFERENCES scouts(id),
     findings TEXT NOT NULL,
@@ -771,7 +772,7 @@ CREATE TABLE scout_reports (
 );
 
 CREATE TABLE scout_audits (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     scout_id UUID NOT NULL REFERENCES scouts(id),
     report_id UUID NOT NULL REFERENCES scout_reports(id),
     auditor_id UUID NOT NULL REFERENCES profiles(id),
@@ -785,7 +786,7 @@ CREATE TABLE scout_audits (
 -- ============================================================================
 
 CREATE TABLE employers (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
     description TEXT,
     website TEXT,
@@ -797,7 +798,7 @@ CREATE TABLE employers (
 );
 
 CREATE TABLE opportunities (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     employer_id UUID REFERENCES employers(id),
     creator_id UUID NOT NULL REFERENCES profiles(id),
     type opportunity_type NOT NULL,
@@ -815,7 +816,7 @@ CREATE TABLE opportunities (
 );
 
 CREATE TABLE opportunity_applications (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     opportunity_id UUID NOT NULL REFERENCES opportunities(id) ON DELETE CASCADE,
     student_id UUID NOT NULL REFERENCES students(id),
     status TEXT DEFAULT 'applied',  -- applied, reviewed, shortlisted, accepted, rejected
@@ -825,7 +826,7 @@ CREATE TABLE opportunity_applications (
 );
 
 CREATE TABLE mentorship_profiles (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     expertise TEXT[],
     bio TEXT,
@@ -836,7 +837,7 @@ CREATE TABLE mentorship_profiles (
 );
 
 CREATE TABLE mentorship_relationships (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     mentor_id UUID NOT NULL REFERENCES mentorship_profiles(id) ON DELETE CASCADE,
     mentee_id UUID NOT NULL REFERENCES students(id) ON DELETE CASCADE,
     status TEXT DEFAULT 'active',  -- active, paused, completed
@@ -854,7 +855,7 @@ CREATE TABLE alumni_profiles (
     university_id UUID NOT NULL REFERENCES universities(id),
     graduation_year INTEGER,
     degree TEXT,
-    current_role TEXT,
+    current_position TEXT,
     current_company TEXT,
     is_mentor BOOLEAN DEFAULT FALSE,
     is_employer BOOLEAN DEFAULT FALSE,
@@ -866,7 +867,7 @@ CREATE TABLE alumni_profiles (
 -- ============================================================================
 
 CREATE TABLE recommendation_profiles (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     preference_vector vector(64),
     behavior_vector vector(64),
@@ -875,7 +876,7 @@ CREATE TABLE recommendation_profiles (
 );
 
 CREATE TABLE recommendation_feedback (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES profiles(id),
     entity_id UUID NOT NULL,
     entity_type TEXT NOT NULL,  -- property, business, opportunity, neighborhood
@@ -929,7 +930,7 @@ CREATE TABLE transition_profiles (
 -- ============================================================================
 
 CREATE TABLE events (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     actor_id UUID REFERENCES profiles(id),
     event_type TEXT NOT NULL,
     target_id UUID,
@@ -949,7 +950,7 @@ CREATE INDEX idx_events_created ON events(created_at DESC);
 -- ============================================================================
 
 CREATE TABLE notifications (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     type notification_type NOT NULL,
     title TEXT NOT NULL,
@@ -974,7 +975,7 @@ CREATE TABLE notification_preferences (
 -- ============================================================================
 
 CREATE TABLE referrals (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     referrer_id UUID NOT NULL REFERENCES profiles(id),
     referred_email TEXT NOT NULL,
     referred_user_id UUID REFERENCES profiles(id),
@@ -983,7 +984,7 @@ CREATE TABLE referrals (
 );
 
 CREATE TABLE invitation_codes (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     code TEXT UNIQUE NOT NULL,
     creator_id UUID NOT NULL REFERENCES profiles(id),
     max_uses INTEGER DEFAULT 10,
@@ -993,7 +994,7 @@ CREATE TABLE invitation_codes (
 );
 
 CREATE TABLE waitlists (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email TEXT NOT NULL,
     campus_id UUID REFERENCES campuses(id),
     country_id UUID REFERENCES countries(id),
@@ -1006,7 +1007,7 @@ CREATE TABLE waitlists (
 -- ============================================================================
 
 CREATE TABLE audit_logs (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     actor_id UUID REFERENCES profiles(id),
     action TEXT NOT NULL,
     entity_type TEXT NOT NULL,
@@ -1018,7 +1019,7 @@ CREATE TABLE audit_logs (
 );
 
 CREATE TABLE moderation_cases (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     reported_by UUID REFERENCES profiles(id),
     target_user_id UUID REFERENCES profiles(id),
     target_entity_id UUID,
@@ -1033,7 +1034,7 @@ CREATE TABLE moderation_cases (
 );
 
 CREATE TABLE moderation_actions (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     case_id UUID NOT NULL REFERENCES moderation_cases(id) ON DELETE CASCADE,
     action_type moderation_action_type NOT NULL,
     moderator_id UUID NOT NULL REFERENCES profiles(id),
@@ -1043,7 +1044,7 @@ CREATE TABLE moderation_actions (
 );
 
 CREATE TABLE appeals (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     action_id UUID NOT NULL REFERENCES moderation_actions(id),
     appellant_id UUID NOT NULL REFERENCES profiles(id),
     reason TEXT NOT NULL,
@@ -1058,7 +1059,7 @@ CREATE TABLE appeals (
 -- ============================================================================
 
 CREATE TABLE property_analytics (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     property_id UUID NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
     period_start DATE NOT NULL,
     period_end DATE NOT NULL,
@@ -1072,7 +1073,7 @@ CREATE TABLE property_analytics (
 );
 
 CREATE TABLE campus_intelligence_reports (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     campus_id UUID NOT NULL REFERENCES campuses(id),
     period_start DATE NOT NULL,
     period_end DATE NOT NULL,
@@ -1371,4 +1372,4 @@ INSERT INTO badges (name, slug, description, category) VALUES
     ('Verified Contributor', 'verified-contributor', 'Identity-verified active contributor', 'trust');
 
 -- Trigram extension for text search
-CREATE EXTENSION IF NOT EXISTS pg_trgm;
+

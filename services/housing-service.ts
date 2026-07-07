@@ -11,58 +11,58 @@ export const HousingService = {
   // ── Universities & Campuses ──────────────────────────────────────────────
 
   async getPropertiesByCampus(campusId: string, options?: {
-  minScore?: number;
-  maxPrice?: number;
-  propertyType?: string;
-  verifiedOnly?: boolean;
-  limit?: number;
-  offset?: number;
-  sort?: 'highest_score' | 'price_asc' | 'latest';
-}) {
-  const supabase = await createClient()
+    minScore?: number;
+    maxPrice?: number;
+    propertyType?: string;
+    verifiedOnly?: boolean;
+    limit?: number;
+    offset?: number;
+    sort?: 'highest_score' | 'price_asc' | 'latest';
+  }) {
+    const supabase = await createClient()
 
-  // Get neighborhood IDs connected to this campus
-  const { data: distances, error: distError } = await supabase
-    .from('neighborhood_campus_distances')
-    .select('neighborhood_id')
-    .eq('campus_id', campusId)
+    // Get neighborhood IDs connected to this campus
+    const { data: distances, error: distError } = await supabase
+      .from('neighborhood_campus_distances')
+      .select('neighborhood_id')
+      .eq('campus_id', campusId)
 
-  if (distError) throw new Error(`Failed to fetch neighborhoods: ${distError.message}`)
-  const neighborhoodIds = distances.map(d => d.neighborhood_id)
+    if (distError) throw new Error(`Failed to fetch neighborhoods: ${distError.message}`)
+    const neighborhoodIds = distances.map(d => d.neighborhood_id)
 
-  if (neighborhoodIds.length === 0) return []
+    if (neighborhoodIds.length === 0) return []
 
-  let query = supabase
-    .from('properties')
-    .select(`
+    let query = supabase
+      .from('properties')
+      .select(`
       *,
       property_types(name),
       property_rooms(id, room_type, price_per_month, price_per_semester, is_available, capacity),
       property_media(id, url, media_type, is_primary),
       neighborhoods(id, name, reputation_score)
     `)
-    .in('neighborhood_id', neighborhoodIds)
-    .eq('is_active', true)
+      .in('neighborhood_id', neighborhoodIds)
+      .eq('is_active', true)
 
-  if (options?.sort === 'price_asc') {
-    query = query.order('price_per_month', { ascending: true })
-  } else if (options?.sort === 'latest') {
-    query = query.order('created_at', { ascending: false })
-  } else { // Default to highest reputation score
-    query = query.order('reputation_score', { ascending: false })
-  }
+    if (options?.sort === 'price_asc') {
+      query = query.order('price_per_month', { ascending: true })
+    } else if (options?.sort === 'latest') {
+      query = query.order('created_at', { ascending: false })
+    } else { // Default to highest reputation score
+      query = query.order('reputation_score', { ascending: false })
+    }
 
-  // Updated to use reputation_score instead of campozy_score
-  if (options?.minScore) query = query.gte('reputation_score', options.minScore)
-  
-  // Note: We are bypassing verifiedOnly filter for now until your verification status column names are cross-referenced
-  if (options?.limit) query = query.limit(options.limit)
-  if (options?.offset) query = query.range(options.offset, options.offset + (options.limit || 20) - 1)
+    // Updated to use reputation_score instead of campozy_score
+    if (options?.minScore) query = query.gte('reputation_score', options.minScore)
 
-  const { data, error } = await query
-  if (error) throw new Error(`Failed to fetch properties: ${error.message}`)
-  return data as Property[]
-}
+    // Note: We are bypassing verifiedOnly filter for now until your verification status column names are cross-referenced
+    if (options?.limit) query = query.limit(options.limit)
+    if (options?.offset) query = query.range(options.offset, options.offset + (options.limit || 20) - 1)
+
+    const { data, error } = await query
+    if (error) throw new Error(`Failed to fetch properties: ${error.message}`)
+    return data as Property[]
+  },
 
 
   async getUniversityById(universityId: string) {
@@ -108,7 +108,9 @@ export const HousingService = {
       .order('distance_km')
 
     if (error) throw new Error(`Failed to fetch neighborhoods: ${error.message}`)
-    return data as (NeighborhoodCampusDistance & { neighborhoods: Neighborhood })[]
+    return data as unknown as (NeighborhoodCampusDistance & {
+      neighborhoods: Neighborhood;
+    })[]
   },
 
   async getNeighborhoodById(neighborhoodId: string) {
@@ -129,58 +131,6 @@ export const HousingService = {
   },
 
   // ── Properties ───────────────────────────────────────────────────────────
-
-  async getPropertiesByCampus(campusId: string, options?: {
-    minScore?: number;
-    maxPrice?: number;
-    propertyType?: string;
-    verifiedOnly?: boolean;
-    limit?: number;
-    offset?: number;
-    sort?: 'highest_score' | 'price_asc' | 'latest';
-  }) {
-    const supabase = await createClient()
-
-    // Get neighborhood IDs connected to this campus
-    const { data: distances, error: distError } = await supabase
-      .from('neighborhood_campus_distances')
-      .select('neighborhood_id')
-      .eq('campus_id', campusId)
-
-    if (distError) throw new Error(`Failed to fetch neighborhoods: ${distError.message}`)
-    const neighborhoodIds = distances.map(d => d.neighborhood_id)
-
-    if (neighborhoodIds.length === 0) return []
-
-    let query = supabase
-      .from('properties')
-      .select(`
-        *,
-        property_types(name),
-        property_rooms(id, room_type, price_per_month, price_per_semester, is_available, capacity),
-        property_media(id, url, media_type, is_primary),
-        neighborhoods(id, name, safety_score)
-      `)
-      .in('neighborhood_id', neighborhoodIds)
-      .eq('is_active', true)
-
-    if (options?.sort === 'price_asc') {
-      query = query.order('price_per_month', { ascending: true })
-    } else if (options?.sort === 'latest') {
-      query = query.order('created_at', { ascending: false })
-    } else { // Default to highest score
-      query = query.order('campozy_score', { ascending: false })
-    }
-
-    if (options?.minScore) query = query.gte('campozy_score', options.minScore)
-    if (options?.verifiedOnly) query = query.neq('verification_level', 'unverified')
-    if (options?.limit) query = query.limit(options.limit)
-    if (options?.offset) query = query.range(options.offset, options.offset + (options.limit || 20) - 1)
-
-    const { data, error } = await query
-    if (error) throw new Error(`Failed to fetch properties: ${error.message}`)
-    return data as Property[]
-  },
 
   async getPropertiesByNeighborhood(neighborhoodId: string) {
     const supabase = await createClient()
@@ -367,7 +317,7 @@ export const HousingService = {
   async searchProperties(query: string, options?: { campusId?: string; limit?: number }) {
     const supabase = await createClient()
 
-    let dbQuery = supabase
+    const dbQuery = supabase
       .from('properties')
       .select(`
         *,

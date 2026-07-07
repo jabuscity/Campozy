@@ -3,8 +3,8 @@ import { HousingService } from '@/services/housing-service'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { 
-  MessageSquare, User, Clock, ThumbsUp, 
-  MessageCircle, Hash, Search, PenSquare, Filter, TrendingUp 
+  MessageSquare, User, Users, Clock, ThumbsUp, 
+  MessageCircle, Hash, PenSquare, TrendingUp 
 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'

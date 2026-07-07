@@ -107,14 +107,15 @@ export const TrustService = {
 
     // Update helpful count on the review
     if (isHelpful) {
-      await supabase.rpc('increment', { row_id: reviewId, table_name: 'property_reviews', column_name: 'helpful_count' })
-        .catch(() => {
-          // Fallback: manual update
-          supabase
-            .from('property_reviews')
-            .update({ helpful_count: supabase.rpc ? undefined : 0 })
-            .eq('id', reviewId)
+      try {
+        await supabase.rpc('increment', {
+          row_id: reviewId,
+          table_name: 'property_reviews',
+          column_name: 'helpful_count',
         })
+      } catch {
+        // Ignore increment failure
+      }
     }
 
     // Get review author and award reputation
@@ -176,9 +177,14 @@ export const TrustService = {
     const reviews = data || []
     if (reviews.length === 0) return null
 
-    const avg = (key: string) => {
-      const vals = reviews.map(r => (r as any)[key]).filter(Boolean)
-      return vals.length > 0 ? vals.reduce((a: number, b: number) => a + b, 0) / vals.length : null
+    const avg = (key: keyof typeof reviews[number]) => {
+      const vals = reviews
+        .map(r => r[key])
+        .filter((value): value is number => typeof value === 'number')
+
+      return vals.length > 0
+        ? vals.reduce((a, b) => a + b, 0) / vals.length
+        : null
     }
 
     return {

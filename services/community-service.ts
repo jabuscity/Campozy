@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import type { Discussion, DiscussionReply, KnowledgeArticle, Tip, Warning } from '@/types'
+import type { Discussion, DiscussionReply } from '@/types'
 
 // ============================================================================
 // COMMUNITY SERVICE
@@ -56,10 +56,18 @@ export const CommunityService = {
       .single()
 
     if (error) throw new Error(`Discussion not found: ${error.message}`)
-    
+
     // Increment view count asynchronously
-    supabase.rpc('increment', { row_id: discussionId, table_name: 'discussions', column_name: 'view_count' }).catch(() => {})
-    
+    try {
+      await supabase.rpc('increment', {
+        row_id: discussionId,
+        table_name: 'discussions',
+        column_name: 'view_count',
+      })
+    } catch {
+      // View count failure should not block loading the discussion
+    }
+
     return data as Discussion
   },
 
@@ -90,7 +98,7 @@ export const CommunityService = {
 
     return discussion as Discussion
   },
-  
+
   // ── Replies ────────────────────────────────────────────────────────────
 
   async getReplies(discussionId: string) {
