@@ -3359,7 +3359,7 @@ WHERE
 ----------------------------------------------------
 -- Final score (maximum 100)
 ----------------------------------------------------
-v_score := v_profile_score + LEAST(v_posts * 3, 20) + LEAST(v_replies * 2, 20) + LEAST(v_events * 5, 20) + LEAST(v_bookings * 5, 20);
+v_score := v_profile_score + LEAST(v_posts * 3, 30) + LEAST(v_replies * 2, 30);
 
 UPDATE
     public.students
@@ -3381,8 +3381,10 @@ SET
     search_path = public AS $ $ BEGIN PERFORM recalculate_campozy_score(
         COALESCE(
             NEW.student_id,
+            NEW.user_id,
             NEW.author_id,
             OLD.student_id,
+            OLD.user_id,
             OLD.author_id
         )
     );
@@ -3406,24 +3408,6 @@ CREATE TRIGGER trg_reply_score
 AFTER
 INSERT
     OR DELETE ON discussion_replies FOR EACH ROW EXECUTE FUNCTION trigger_recalculate_campozy_score();
-
-DROP TRIGGER IF EXISTS trg_event_score ON event_bookings;
-
-CREATE TRIGGER trg_event_score
-AFTER
-INSERT
-    OR
-UPDATE
-    ON event_bookings FOR EACH ROW EXECUTE FUNCTION trigger_recalculate_campozy_score();
-
-DROP TRIGGER IF EXISTS trg_booking_score ON hostel_bookings;
-
-CREATE TRIGGER trg_booking_score
-AFTER
-INSERT
-    OR
-UPDATE
-    ON hostel_bookings FOR EACH ROW EXECUTE FUNCTION trigger_recalculate_campozy_score();
 
 DROP TRIGGER IF EXISTS trg_profile_score ON students;
 
@@ -3508,31 +3492,18 @@ VALUES
 -- =====================================================
 CREATE INDEX IF NOT EXISTS idx_students_university_score ON students (university_id, campozy_score DESC);
 
-CREATE INDEX IF NOT EXISTS idx_students_course_year ON students (course, year_of_study);
-
-CREATE INDEX IF NOT EXISTS idx_students_last_seen ON students (last_seen_at DESC);
-
 CREATE INDEX IF NOT EXISTS idx_discussions_feed ON discussions (
     category_id,
     is_pinned DESC,
     created_at DESC
 );
 
-CREATE INDEX IF NOT EXISTS idx_discussions_author_created ON discussions (author_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_discussions_user_created ON discussions (user_id, created_at DESC);
 
-CREATE INDEX IF NOT EXISTS idx_discussions_popular ON discussions (like_count DESC, reply_count DESC);
+CREATE INDEX IF NOT EXISTS idx_discussion_replies_discussion_created 
+ON discussion_replies (discussion_id, created_at ASC);
 
-CREATE INDEX IF NOT EXISTS idx_discussion_replies_discussion_created ON discussion_replies (discussion_id, created_at ASC);
-
-CREATE INDEX IF NOT EXISTS idx_discussion_replies_author ON discussion_replies (author_id, created_at DESC);
-
-CREATE INDEX IF NOT EXISTS idx_events_upcoming ON events (start_datetime, is_cancelled);
-
-CREATE INDEX IF NOT EXISTS idx_events_creator ON events (created_by, created_at DESC);
-
-CREATE INDEX IF NOT EXISTS idx_event_bookings_student_status ON event_bookings (student_id, status);
-
-CREATE INDEX IF NOT EXISTS idx_event_bookings_event_status ON event_bookings (event_id, status);
+CREATE INDEX IF NOT EXISTS idx_discussion_replies_user ON discussion_replies (user_id, created_at DESC);
 
 CREATE INDEX IF NOT EXISTS idx_hostels_search ON hostels (
     university_id,
@@ -3541,10 +3512,6 @@ CREATE INDEX IF NOT EXISTS idx_hostels_search ON hostels (
 );
 
 CREATE INDEX IF NOT EXISTS idx_hostels_rating ON hostels (average_rating DESC);
-
-CREATE INDEX IF NOT EXISTS idx_hostel_bookings_student_status ON hostel_bookings (student_id, booking_status);
-
-CREATE INDEX IF NOT EXISTS idx_hostel_bookings_hostel_status ON hostel_bookings (hostel_id, booking_status);
 
 CREATE INDEX IF NOT EXISTS idx_notifications_unread ON notifications (
     recipient_id,
@@ -3574,12 +3541,6 @@ ANALYZE discussion_replies;
 
 ANALYZE hostels;
 
-ANALYZE hostel_bookings;
-
-ANALYZE events;
-
-ANALYZE event_bookings;
-
 ANALYZE notifications;
 
 -- =====================================================
@@ -3596,15 +3557,6 @@ ALTER TABLE
 
 ALTER TABLE
     hostels ENABLE ROW LEVEL SECURITY;
-
-ALTER TABLE
-    hostel_bookings ENABLE ROW LEVEL SECURITY;
-
-ALTER TABLE
-    events ENABLE ROW LEVEL SECURITY;
-
-ALTER TABLE
-    event_bookings ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE
     notifications ENABLE ROW LEVEL SECURITY;
