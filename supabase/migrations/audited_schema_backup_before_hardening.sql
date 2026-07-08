@@ -8,6 +8,8 @@ BEGIN;
 -- ============================================================================
 -- EXTENSIONS
 -- ============================================================================
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 CREATE EXTENSION IF NOT EXISTS "pg_trgm";
@@ -17,7 +19,7 @@ CREATE EXTENSION IF NOT EXISTS "vector";
 -- ============================================================================
 -- ENUM TYPES
 -- ============================================================================
-DO $$ BEGIN CREATE TYPE verification_level AS ENUM (
+DO $ $ BEGIN CREATE TYPE verification_level AS ENUM (
     'unverified',
     'claimed',
     'community_verified',
@@ -28,16 +30,16 @@ DO $$ BEGIN CREATE TYPE verification_level AS ENUM (
 EXCEPTION
 WHEN duplicate_object THEN NULL;
 
-END $$;
+END $ $;
 
-DO $$ BEGIN CREATE TYPE founder_scope AS ENUM ('campus', 'country', 'global');
+DO $ $ BEGIN CREATE TYPE founder_scope AS ENUM ('campus', 'country', 'global');
 
 EXCEPTION
 WHEN duplicate_object THEN NULL;
 
-END $$;
+END $ $;
 
-DO $$ BEGIN CREATE TYPE assignment_status AS ENUM (
+DO $ $ BEGIN CREATE TYPE assignment_status AS ENUM (
     'assigned',
     'in_progress',
     'completed',
@@ -47,9 +49,9 @@ DO $$ BEGIN CREATE TYPE assignment_status AS ENUM (
 EXCEPTION
 WHEN duplicate_object THEN NULL;
 
-END $$;
+END $ $;
 
-DO $$ BEGIN CREATE TYPE opportunity_type AS ENUM (
+DO $ $ BEGIN CREATE TYPE opportunity_type AS ENUM (
     'job',
     'internship',
     'scholarship',
@@ -60,9 +62,9 @@ DO $$ BEGIN CREATE TYPE opportunity_type AS ENUM (
 EXCEPTION
 WHEN duplicate_object THEN NULL;
 
-END $$;
+END $ $;
 
-DO $$ BEGIN CREATE TYPE application_status AS ENUM (
+DO $ $ BEGIN CREATE TYPE application_status AS ENUM (
     'applied',
     'reviewed',
     'shortlisted',
@@ -73,9 +75,9 @@ DO $$ BEGIN CREATE TYPE application_status AS ENUM (
 EXCEPTION
 WHEN duplicate_object THEN NULL;
 
-END $$;
+END $ $;
 
-DO $$ BEGIN CREATE TYPE mentorship_status AS ENUM (
+DO $ $ BEGIN CREATE TYPE mentorship_status AS ENUM (
     'active',
     'paused',
     'completed'
@@ -84,9 +86,9 @@ DO $$ BEGIN CREATE TYPE mentorship_status AS ENUM (
 EXCEPTION
 WHEN duplicate_object THEN NULL;
 
-END $$;
+END $ $;
 
-DO $$ BEGIN CREATE TYPE notification_type AS ENUM (
+DO $ $ BEGIN CREATE TYPE notification_type AS ENUM (
     'message',
     'review',
     'opportunity',
@@ -98,9 +100,9 @@ DO $$ BEGIN CREATE TYPE notification_type AS ENUM (
 EXCEPTION
 WHEN duplicate_object THEN NULL;
 
-END $$;
+END $ $;
 
-DO $$ BEGIN CREATE TYPE moderation_status AS ENUM (
+DO $ $ BEGIN CREATE TYPE moderation_status AS ENUM (
     'open',
     'investigating',
     'resolved',
@@ -110,9 +112,9 @@ DO $$ BEGIN CREATE TYPE moderation_status AS ENUM (
 EXCEPTION
 WHEN duplicate_object THEN NULL;
 
-END $$;
+END $ $;
 
-DO $$ BEGIN CREATE TYPE moderation_action_type AS ENUM (
+DO $ $ BEGIN CREATE TYPE moderation_action_type AS ENUM (
     'warning',
     'content_removed',
     'temporary_restriction',
@@ -122,9 +124,9 @@ DO $$ BEGIN CREATE TYPE moderation_action_type AS ENUM (
 EXCEPTION
 WHEN duplicate_object THEN NULL;
 
-END $$;
+END $ $;
 
-DO $$ BEGIN CREATE TYPE appeal_status AS ENUM (
+DO $ $ BEGIN CREATE TYPE appeal_status AS ENUM (
     'pending',
     'reviewing',
     'upheld',
@@ -134,7 +136,7 @@ DO $$ BEGIN CREATE TYPE appeal_status AS ENUM (
 EXCEPTION
 WHEN duplicate_object THEN NULL;
 
-END $$;
+END $ $;
 
 -- ============================================================================
 -- REFERENCE TABLES
@@ -784,7 +786,7 @@ CREATE INDEX IF NOT EXISTS idx_business_review_replies_review ON business_review
 -- ============================================================================
 -- BUSINESS DOMAIN
 -- ============================================================================
-CREATE TABLE  IF NOT EXISTS businesses (
+CREATE TABLE businesses (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     owner_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     neighborhood_id UUID REFERENCES neighborhoods(id) ON DELETE
@@ -830,7 +832,7 @@ CREATE INDEX idx_businesses_owner_id ON businesses(owner_id);
 
 CREATE INDEX idx_businesses_neighborhood_id ON businesses(neighborhood_id);
 
-CREATE TABLE IF NOT EXISTS business_media (
+CREATE TABLE business_media (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     business_id UUID NOT NULL REFERENCES businesses(id) ON DELETE CASCADE,
     url TEXT NOT NULL CHECK (length(trim(url)) > 0),
@@ -841,7 +843,7 @@ CREATE TABLE IF NOT EXISTS business_media (
 
 CREATE INDEX idx_business_media_business_id ON business_media(business_id);
 
-CREATE TABLE IF NOT EXISTS business_reviews (
+CREATE TABLE business_reviews (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     business_id UUID NOT NULL REFERENCES businesses(id) ON DELETE CASCADE,
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
@@ -864,13 +866,13 @@ CREATE INDEX idx_business_reviews_user_id ON business_reviews(user_id);
 -- ============================================================================
 -- PARENT DOMAIN
 -- ============================================================================
-CREATE TABLE IF NOT EXISTS parent_profiles (
+CREATE TABLE parent_profiles (
     id UUID PRIMARY KEY REFERENCES profiles(id) ON DELETE CASCADE,
     relationship TEXT NOT NULL DEFAULT 'parent' CHECK (length(trim(relationship)) > 0),
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS parent_student_links (
+CREATE TABLE parent_student_links (
     parent_id UUID NOT NULL REFERENCES parent_profiles(id) ON DELETE CASCADE,
     student_id UUID NOT NULL REFERENCES students(id) ON DELETE CASCADE,
     status TEXT NOT NULL DEFAULT 'pending' CHECK (length(trim(status)) > 0),
@@ -878,7 +880,7 @@ CREATE TABLE IF NOT EXISTS parent_student_links (
     PRIMARY KEY(parent_id, student_id)
 );
 
-CREATE TABLE IF NOT EXISTS parent_alerts (
+CREATE TABLE parent_alerts (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     parent_id UUID NOT NULL REFERENCES parent_profiles(id) ON DELETE CASCADE,
     alert_type TEXT NOT NULL CHECK(length(trim(alert_type)) > 0),
@@ -896,7 +898,7 @@ CREATE INDEX idx_parent_alerts_parent_id ON parent_alerts(parent_id);
 -- ============================================================================
 -- FOUNDER DOMAIN
 -- ============================================================================
-CREATE TABLE IF NOT EXISTS founder_cohorts (
+CREATE TABLE founder_cohorts (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL CHECK(length(trim(name)) > 0),
     scope founder_scope NOT NULL,
@@ -906,7 +908,7 @@ CREATE TABLE IF NOT EXISTS founder_cohorts (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS founder_memberships (
+CREATE TABLE founder_memberships (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     cohort_id UUID NOT NULL REFERENCES founder_cohorts(id) ON DELETE CASCADE,
@@ -940,7 +942,7 @@ CREATE INDEX idx_founder_events_cohort_id ON founder_qualification_events(cohort
 -- ============================================================================
 -- AMBASSADOR DOMAIN
 -- ============================================================================
-CREATE TABLE IF NOT EXISTS ambassador_programs (
+CREATE TABLE ambassador_programs (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     campus_id UUID NOT NULL REFERENCES campuses(id) ON DELETE CASCADE,
     name TEXT NOT NULL CHECK(length(trim(name)) > 0),
@@ -951,7 +953,7 @@ CREATE TABLE IF NOT EXISTS ambassador_programs (
 
 CREATE INDEX idx_ambassador_programs_campus_id ON ambassador_programs(campus_id);
 
-CREATE TABLE IF NOT EXISTS ambassadors (
+CREATE TABLE ambassadors (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     program_id UUID NOT NULL REFERENCES ambassador_programs(id) ON DELETE CASCADE,
@@ -964,7 +966,7 @@ CREATE INDEX idx_ambassadors_user_id ON ambassadors(user_id);
 
 CREATE INDEX idx_ambassadors_program_id ON ambassadors(program_id);
 
-CREATE TABLE IF NOT EXISTS ambassador_assignments (
+CREATE TABLE ambassador_assignments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     ambassador_id UUID NOT NULL REFERENCES ambassadors(id) ON DELETE CASCADE,
     task_type TEXT NOT NULL CHECK(length(trim(task_type)) > 0),
@@ -979,7 +981,7 @@ CREATE INDEX idx_ambassador_assignments_ambassador_id ON ambassador_assignments(
 -- ============================================================================
 -- SCOUT DOMAIN
 -- ============================================================================
-CREATE TABLE IF NOT EXISTS scouts (
+CREATE TABLE scouts (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     region_id UUID REFERENCES cities(id) ON DELETE
@@ -999,7 +1001,7 @@ CREATE TABLE IF NOT EXISTS scouts (
 
 CREATE INDEX idx_scouts_region_id ON scouts(region_id);
 
-CREATE TABLE IF NOT EXISTS scout_assignments (
+CREATE TABLE scout_assignments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     scout_id UUID NOT NULL REFERENCES scouts(id) ON DELETE CASCADE,
     property_id UUID NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
@@ -1015,7 +1017,7 @@ CREATE INDEX idx_scout_assignments_scout_id ON scout_assignments(scout_id);
 
 CREATE INDEX idx_scout_assignments_property_id ON scout_assignments(property_id);
 
-CREATE TABLE IF NOT EXISTS scout_reports (
+CREATE TABLE scout_reports (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     assignment_id UUID NOT NULL REFERENCES scout_assignments(id) ON DELETE CASCADE,
     scout_id UUID NOT NULL REFERENCES scouts(id) ON DELETE CASCADE,
@@ -1029,7 +1031,7 @@ CREATE INDEX idx_scout_reports_assignment_id ON scout_reports(assignment_id);
 
 CREATE INDEX idx_scout_reports_scout_id ON scout_reports(scout_id);
 
-CREATE TABLE IF NOT EXISTS scout_audits (
+CREATE TABLE scout_audits (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     scout_id UUID NOT NULL REFERENCES scouts(id) ON DELETE CASCADE,
     report_id UUID NOT NULL REFERENCES scout_reports(id) ON DELETE CASCADE,
@@ -1048,7 +1050,7 @@ CREATE INDEX idx_scout_audits_auditor_id ON scout_audits(auditor_id);
 -- ============================================================================
 -- OPPORTUNITY DOMAIN
 -- ============================================================================
-CREATE TABLE IF NOT EXISTS employers (
+CREATE TABLE employers (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL CHECK(length(trim(name)) > 0),
     description TEXT,
@@ -1064,7 +1066,7 @@ CREATE TABLE IF NOT EXISTS employers (
 
 CREATE INDEX idx_employers_contact_user_id ON employers(contact_user_id);
 
-CREATE TABLE IF NOT EXISTS opportunities (
+CREATE TABLE opportunities (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     employer_id UUID REFERENCES employers(id) ON DELETE
     SET
@@ -1088,7 +1090,7 @@ CREATE INDEX idx_opportunities_employer_id ON opportunities(employer_id);
 
 CREATE INDEX idx_opportunities_creator_id ON opportunities(creator_id);
 
-CREATE TABLE IF NOT EXISTS opportunity_applications (
+CREATE TABLE opportunity_applications (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     opportunity_id UUID NOT NULL REFERENCES opportunities(id) ON DELETE CASCADE,
     student_id UUID NOT NULL REFERENCES students(id) ON DELETE CASCADE,
@@ -1101,7 +1103,7 @@ CREATE TABLE IF NOT EXISTS opportunity_applications (
 -- ============================================================================
 -- MENTORSHIP DOMAIN
 -- ============================================================================
-CREATE TABLE IF NOT EXISTS mentorship_profiles (
+CREATE TABLE mentorship_profiles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     expertise TEXT [],
@@ -1112,7 +1114,7 @@ CREATE TABLE IF NOT EXISTS mentorship_profiles (
     UNIQUE(user_id)
 );
 
-CREATE TABLE IF NOT EXISTS mentorship_relationships (
+CREATE TABLE mentorship_relationships (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     mentor_id UUID NOT NULL REFERENCES mentorship_profiles(id) ON DELETE CASCADE,
     mentee_id UUID NOT NULL REFERENCES students(id) ON DELETE CASCADE,
@@ -1125,7 +1127,7 @@ CREATE TABLE IF NOT EXISTS mentorship_relationships (
 -- ============================================================================
 -- ALUMNI DOMAIN
 -- ============================================================================
-CREATE TABLE IF NOT EXISTS alumni_profiles (
+CREATE TABLE alumni_profiles (
     id UUID PRIMARY KEY REFERENCES profiles(id) ON DELETE CASCADE,
     university_id UUID NOT NULL REFERENCES universities(id) ON DELETE CASCADE,
     graduation_year INTEGER CHECK (
@@ -1155,7 +1157,7 @@ CREATE INDEX idx_alumni_profiles_university_id ON alumni_profiles(university_id)
 -- ============================================================================
 -- RECOMMENDATION DOMAIN
 -- ============================================================================
-CREATE TABLE IF NOT EXISTS recommendation_profiles (
+CREATE TABLE recommendation_profiles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     preference_vector vector(64),
@@ -1164,7 +1166,7 @@ CREATE TABLE IF NOT EXISTS recommendation_profiles (
     UNIQUE(user_id)
 );
 
-CREATE TABLE IF NOT EXISTS recommendation_feedback (
+CREATE TABLE recommendation_feedback (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     entity_id UUID NOT NULL,
@@ -1182,7 +1184,7 @@ CREATE INDEX idx_recommendation_feedback_action ON recommendation_feedback(actio
 -- ============================================================================
 -- SAVED ITEMS DOMAIN
 -- ============================================================================
-CREATE TABLE IF NOT EXISTS saved_properties (
+CREATE TABLE saved_properties (
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     property_id UUID NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
     notes TEXT,
@@ -1190,14 +1192,14 @@ CREATE TABLE IF NOT EXISTS saved_properties (
     PRIMARY KEY(user_id, property_id)
 );
 
-CREATE TABLE IF NOT EXISTS saved_businesses (
+CREATE TABLE saved_businesses (
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     business_id UUID NOT NULL REFERENCES businesses(id) ON DELETE CASCADE,
     saved_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     PRIMARY KEY(user_id, business_id)
 );
 
-CREATE TABLE IF NOT EXISTS saved_opportunities (
+CREATE TABLE saved_opportunities (
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     opportunity_id UUID NOT NULL REFERENCES opportunities(id) ON DELETE CASCADE,
     saved_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -1207,7 +1209,7 @@ CREATE TABLE IF NOT EXISTS saved_opportunities (
 -- ============================================================================
 -- AKWET TRANSITION DOMAIN
 -- ============================================================================
-CREATE TABLE IF NOT EXISTS transition_profiles (
+CREATE TABLE transition_profiles (
     id UUID PRIMARY KEY REFERENCES profiles(id) ON DELETE CASCADE,
     target_city_id UUID REFERENCES cities(id) ON DELETE
     SET
@@ -1236,7 +1238,7 @@ CREATE INDEX idx_transition_profiles_target_city_id ON transition_profiles(targe
 -- ============================================================================
 -- EVENT DOMAIN
 -- ============================================================================
-CREATE TABLE IF NOT EXISTS events (
+CREATE TABLE events (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     actor_id UUID REFERENCES profiles(id) ON DELETE
     SET
@@ -1259,7 +1261,7 @@ CREATE INDEX idx_events_created ON events(created_at DESC);
 -- ============================================================================
 -- NOTIFICATION DOMAIN
 -- ============================================================================
-CREATE TABLE IF NOT EXISTS notifications (
+CREATE TABLE notifications (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     type notification_type NOT NULL,
@@ -1276,7 +1278,7 @@ CREATE INDEX idx_notifications_user_unread ON notifications(user_id, is_read);
 
 CREATE INDEX idx_notifications_created_at ON notifications(created_at DESC);
 
-CREATE TABLE IF NOT EXISTS notification_preferences (
+CREATE TABLE notification_preferences (
     user_id UUID PRIMARY KEY REFERENCES profiles(id) ON DELETE CASCADE,
     email_reviews BOOLEAN NOT NULL DEFAULT TRUE,
     email_opportunities BOOLEAN NOT NULL DEFAULT TRUE,
@@ -1289,7 +1291,7 @@ CREATE TABLE IF NOT EXISTS notification_preferences (
 -- ============================================================================
 -- GROWTH / REFERRAL DOMAIN
 -- ============================================================================
-CREATE TABLE IF NOT EXISTS referrals (
+CREATE TABLE referrals (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     referrer_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     referred_email TEXT NOT NULL CHECK (length(trim(referred_email)) > 0),
@@ -1304,7 +1306,7 @@ CREATE INDEX idx_referrals_referrer ON referrals(referrer_id);
 
 CREATE INDEX idx_referrals_referred_user ON referrals(referred_user_id);
 
-CREATE TABLE IF NOT EXISTS invitation_codes (
+CREATE TABLE invitation_codes (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     code TEXT NOT NULL UNIQUE CHECK (length(trim(code)) > 0),
     creator_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
@@ -1319,7 +1321,7 @@ CREATE TABLE IF NOT EXISTS invitation_codes (
 
 CREATE INDEX idx_invitation_codes_creator ON invitation_codes(creator_id);
 
-CREATE TABLE IF NOT EXISTS waitlists (
+CREATE TABLE waitlists (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email CITEXT NOT NULL,
     campus_id UUID REFERENCES campuses(id) ON DELETE
@@ -1340,7 +1342,7 @@ CREATE INDEX idx_waitlists_country ON waitlists(country_id);
 -- ============================================================================
 -- AUDIT & GOVERNANCE
 -- ============================================================================
-CREATE TABLE IF NOT EXISTS audit_logs (
+CREATE TABLE audit_logs (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     actor_id UUID REFERENCES profiles(id) ON DELETE
     SET
@@ -1360,7 +1362,7 @@ CREATE INDEX idx_audit_logs_entity ON audit_logs(entity_type, entity_id);
 
 CREATE INDEX idx_audit_logs_created ON audit_logs(created_at DESC);
 
-CREATE TABLE IF NOT EXISTS moderation_cases (
+CREATE TABLE moderation_cases (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     reported_by UUID REFERENCES profiles(id) ON DELETE
     SET
@@ -1387,7 +1389,7 @@ CREATE INDEX idx_moderation_cases_target_user ON moderation_cases(target_user_id
 
 CREATE INDEX idx_moderation_cases_status ON moderation_cases(status);
 
-CREATE TABLE IF NOT EXISTS moderation_actions (
+CREATE TABLE moderation_actions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     case_id UUID NOT NULL REFERENCES moderation_cases(id) ON DELETE CASCADE,
     action_type moderation_action_type NOT NULL,
@@ -1401,7 +1403,7 @@ CREATE INDEX idx_moderation_actions_case ON moderation_actions(case_id);
 
 CREATE INDEX idx_moderation_actions_moderator ON moderation_actions(moderator_id);
 
-CREATE TABLE IF NOT EXISTS appeals (
+CREATE TABLE appeals (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     action_id UUID NOT NULL REFERENCES moderation_actions(id) ON DELETE CASCADE,
     appellant_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
@@ -1423,7 +1425,7 @@ CREATE INDEX idx_appeals_status ON appeals(status);
 -- ============================================================================
 -- ANALYTICS DOMAIN
 -- ============================================================================
-CREATE TABLE IF NOT EXISTS property_analytics (
+CREATE TABLE property_analytics (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     property_id UUID NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
     period_start DATE NOT NULL,
@@ -1444,7 +1446,7 @@ CREATE TABLE IF NOT EXISTS property_analytics (
 
 CREATE INDEX idx_property_analytics_property ON property_analytics(property_id);
 
-CREATE TABLE IF NOT EXISTS campus_intelligence_reports (
+CREATE TABLE campus_intelligence_reports (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     campus_id UUID NOT NULL REFERENCES campuses(id) ON DELETE CASCADE,
     period_start DATE NOT NULL,
@@ -2111,13 +2113,13 @@ SELECT
 
 CREATE POLICY property_reviews_insert ON property_reviews FOR
 INSERT
-    TO authenticated WITH CHECK (reviewer_id = auth.uid());
+    TO authenticated WITH CHECK (user_id = auth.uid());
 
 CREATE POLICY property_reviews_update ON property_reviews FOR
 UPDATE
-    TO authenticated USING (reviewer_id = auth.uid()) WITH CHECK (reviewer_id = auth.uid());
+    TO authenticated USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());
 
-CREATE POLICY property_reviews_delete ON property_reviews FOR DELETE TO authenticated USING (reviewer_id = auth.uid());
+CREATE POLICY property_reviews_delete ON property_reviews FOR DELETE TO authenticated USING (user_id = auth.uid());
 
 -- ============================================================================
 -- DISCUSSIONS
@@ -2529,6 +2531,46 @@ INSERT
     TO authenticated WITH CHECK (user_id = auth.uid());
 
 CREATE POLICY community_likes_delete ON community_likes FOR DELETE TO authenticated USING (user_id = auth.uid());
+
+-- ============================================================================
+-- DISCUSSIONS
+-- ============================================================================
+ALTER TABLE
+    discussions ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY discussions_read ON discussions FOR
+SELECT
+    TO authenticated USING (TRUE);
+
+CREATE POLICY discussions_insert ON discussions FOR
+INSERT
+    TO authenticated WITH CHECK (user_id = auth.uid());
+
+CREATE POLICY discussions_update ON discussions FOR
+UPDATE
+    TO authenticated USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());
+
+CREATE POLICY discussions_delete ON discussions FOR DELETE TO authenticated USING (user_id = auth.uid());
+
+-- ============================================================================
+-- DISCUSSION REPLIES
+-- ============================================================================
+ALTER TABLE
+    discussion_replies ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY discussion_replies_read ON discussion_replies FOR
+SELECT
+    TO authenticated USING (TRUE);
+
+CREATE POLICY discussion_replies_insert ON discussion_replies FOR
+INSERT
+    TO authenticated WITH CHECK (user_id = auth.uid());
+
+CREATE POLICY discussion_replies_update ON discussion_replies FOR
+UPDATE
+    TO authenticated USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());
+
+CREATE POLICY discussion_replies_delete ON discussion_replies FOR DELETE TO authenticated USING (user_id = auth.uid());
 
 -- ============================================================================
 -- REPUTATION SCORES
@@ -3115,13 +3157,13 @@ CREATE INDEX IF NOT EXISTS idx_audit_logs_entity ON audit_logs(entity_type, enti
 -- COMMON TRIGGER FUNCTIONS
 -- ============================================================================
 CREATE
-OR REPLACE FUNCTION update_updated_at() RETURNS TRIGGER LANGUAGE plpgsql AS $$; BEGIN NEW.updated_at := NOW();
+OR REPLACE FUNCTION update_updated_at() RETURNS TRIGGER LANGUAGE plpgsql AS $ $ BEGIN NEW.updated_at := NOW();
 
 RETURN NEW;
 
 END;
 
-$$;;
+$ $;
 
 -- ============================================================================
 -- AUTO CREATE PROFILE AFTER AUTH SIGNUP
@@ -3129,7 +3171,7 @@ $$;;
 CREATE
 OR REPLACE FUNCTION handle_new_user() RETURNS TRIGGER LANGUAGE plpgsql SECURITY DEFINER
 SET
-    search_path = public AS $$; BEGIN
+    search_path = public AS $ $ BEGIN
 INSERT INTO
     public.profiles (
         id,
@@ -3165,7 +3207,7 @@ RETURN NEW;
 
 END;
 
-$$;;
+$ $;
 
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 
@@ -3225,7 +3267,7 @@ UPDATE
 -- DISCUSSION REPLY COUNTER
 -- ============================================================================
 CREATE
-OR REPLACE FUNCTION increment_reply_count() RETURNS TRIGGER LANGUAGE plpgsql AS $$; BEGIN
+OR REPLACE FUNCTION increment_reply_count() RETURNS TRIGGER LANGUAGE plpgsql AS $ $ BEGIN
 UPDATE
     discussions
 SET
@@ -3237,7 +3279,7 @@ RETURN NEW;
 
 END;
 
-$$;;
+$ $;
 
 CREATE TRIGGER discussion_reply_created
 AFTER
@@ -3253,7 +3295,7 @@ INSERT
 CREATE
 OR REPLACE FUNCTION recalculate_campozy_score(p_student_id UUID) RETURNS VOID LANGUAGE plpgsql SECURITY DEFINER
 SET
-    search_path = public AS $$; DECLARE v_profile_score INTEGER := 0;
+    search_path = public AS $ $ DECLARE v_profile_score INTEGER := 0;
 
 v_posts INTEGER := 0;
 
@@ -3317,7 +3359,7 @@ WHERE
 ----------------------------------------------------
 -- Final score (maximum 100)
 ----------------------------------------------------
-v_score := v_profile_score + LEAST(v_posts * 3, 30) + LEAST(v_replies * 2, 30);
+v_score := v_profile_score + LEAST(v_posts * 3, 20) + LEAST(v_replies * 2, 20) + LEAST(v_events * 5, 20) + LEAST(v_bookings * 5, 20);
 
 UPDATE
     public.students
@@ -3328,7 +3370,7 @@ WHERE
 
 END;
 
-$$;;
+$ $;
 
 -- =====================================================
 -- CAMPOZY SCORE TRIGGER FUNCTION
@@ -3336,13 +3378,11 @@ $$;;
 CREATE
 OR REPLACE FUNCTION trigger_recalculate_campozy_score() RETURNS TRIGGER LANGUAGE plpgsql SECURITY DEFINER
 SET
-    search_path = public AS $$; BEGIN PERFORM recalculate_campozy_score(
+    search_path = public AS $ $ BEGIN PERFORM recalculate_campozy_score(
         COALESCE(
             NEW.student_id,
-            NEW.user_id,
             NEW.author_id,
             OLD.student_id,
-            OLD.user_id,
             OLD.author_id
         )
     );
@@ -3351,7 +3391,7 @@ RETURN COALESCE(NEW, OLD);
 
 END;
 
-$$;;
+$ $;
 
 DROP TRIGGER IF EXISTS trg_discussion_score ON discussions;
 
@@ -3366,6 +3406,24 @@ CREATE TRIGGER trg_reply_score
 AFTER
 INSERT
     OR DELETE ON discussion_replies FOR EACH ROW EXECUTE FUNCTION trigger_recalculate_campozy_score();
+
+DROP TRIGGER IF EXISTS trg_event_score ON event_bookings;
+
+CREATE TRIGGER trg_event_score
+AFTER
+INSERT
+    OR
+UPDATE
+    ON event_bookings FOR EACH ROW EXECUTE FUNCTION trigger_recalculate_campozy_score();
+
+DROP TRIGGER IF EXISTS trg_booking_score ON hostel_bookings;
+
+CREATE TRIGGER trg_booking_score
+AFTER
+INSERT
+    OR
+UPDATE
+    ON hostel_bookings FOR EACH ROW EXECUTE FUNCTION trigger_recalculate_campozy_score();
 
 DROP TRIGGER IF EXISTS trg_profile_score ON students;
 
@@ -3385,7 +3443,11 @@ ALTER FUNCTION update_updated_at()
 SET
     search_path = public;
 
-ALTER FUNCTION increment_reply_count()
+ALTER FUNCTION increment_discussion_reply_count()
+SET
+    search_path = public;
+
+ALTER FUNCTION decrement_discussion_reply_count()
 SET
     search_path = public;
 
@@ -3400,7 +3462,6 @@ SET
 -- =====================================================
 -- SEED DATA
 -- =====================================================
-
 -- =====================================================
 -- SEED DATA
 -- UNIVERSITIES
@@ -3447,17 +3508,31 @@ VALUES
 -- =====================================================
 CREATE INDEX IF NOT EXISTS idx_students_university_score ON students (university_id, campozy_score DESC);
 
+CREATE INDEX IF NOT EXISTS idx_students_course_year ON students (course, year_of_study);
+
+CREATE INDEX IF NOT EXISTS idx_students_last_seen ON students (last_seen_at DESC);
+
 CREATE INDEX IF NOT EXISTS idx_discussions_feed ON discussions (
     category_id,
     is_pinned DESC,
     created_at DESC
 );
 
-CREATE INDEX IF NOT EXISTS idx_discussions_user_created ON discussions (user_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_discussions_author_created ON discussions (author_id, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_discussions_popular ON discussions (like_count DESC, reply_count DESC);
 
 CREATE INDEX IF NOT EXISTS idx_discussion_replies_discussion_created ON discussion_replies (discussion_id, created_at ASC);
 
-CREATE INDEX IF NOT EXISTS idx_discussion_replies_user ON discussion_replies (user_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_discussion_replies_author ON discussion_replies (author_id, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_events_upcoming ON events (start_datetime, is_cancelled);
+
+CREATE INDEX IF NOT EXISTS idx_events_creator ON events (created_by, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_event_bookings_student_status ON event_bookings (student_id, status);
+
+CREATE INDEX IF NOT EXISTS idx_event_bookings_event_status ON event_bookings (event_id, status);
 
 CREATE INDEX IF NOT EXISTS idx_hostels_search ON hostels (
     university_id,
@@ -3466,6 +3541,10 @@ CREATE INDEX IF NOT EXISTS idx_hostels_search ON hostels (
 );
 
 CREATE INDEX IF NOT EXISTS idx_hostels_rating ON hostels (average_rating DESC);
+
+CREATE INDEX IF NOT EXISTS idx_hostel_bookings_student_status ON hostel_bookings (student_id, booking_status);
+
+CREATE INDEX IF NOT EXISTS idx_hostel_bookings_hostel_status ON hostel_bookings (hostel_id, booking_status);
 
 CREATE INDEX IF NOT EXISTS idx_notifications_unread ON notifications (
     recipient_id,
@@ -3495,6 +3574,12 @@ ANALYZE discussion_replies;
 
 ANALYZE hostels;
 
+ANALYZE hostel_bookings;
+
+ANALYZE events;
+
+ANALYZE event_bookings;
+
 ANALYZE notifications;
 
 -- =====================================================
@@ -3511,6 +3596,15 @@ ALTER TABLE
 
 ALTER TABLE
     hostels ENABLE ROW LEVEL SECURITY;
+
+ALTER TABLE
+    hostel_bookings ENABLE ROW LEVEL SECURITY;
+
+ALTER TABLE
+    events ENABLE ROW LEVEL SECURITY;
+
+ALTER TABLE
+    event_bookings ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE
     notifications ENABLE ROW LEVEL SECURITY;

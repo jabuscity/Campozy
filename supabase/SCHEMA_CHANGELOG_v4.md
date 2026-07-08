@@ -1,0 +1,3 @@
+| Step          | SQL Line | Error                                       | Cause                                                                 | Resolution                                                    |
+| ------------- | -------: | ------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------- |
+| Enum creation |       20 | `ERROR: 42601: syntax error at or near "$"` | `DO $$` delimiters were corrupted to `DO $ $` during previous editing | Global replacement of `$ $` → `$$`; migration reset and rerun |
