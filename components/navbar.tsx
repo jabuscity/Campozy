@@ -3,30 +3,34 @@ import { SearchTrigger } from './search-trigger'
 import { Button } from './ui/button'
 import { createClient } from '@/lib/supabase/server'
 import { MessageSquare, Bell, User, Menu } from 'lucide-react'
+import { NavDropdown } from './nav-dropdown'
 
 export async function Navbar() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  const navItems = [
-    { href: '/', label: 'Home' },
-    { href: '/discovery', label: 'Housing' },
-    { href: '/campuses', label: 'Campuses' },
-    { href: '/universities', label: 'Universities' },
-    { href: '/neighborhoods', label: 'Neighborhoods' },
-    { href: '/community', label: 'Community' },
-    { href: '/opportunities', label: 'Opportunities' },
-    { href: '/employers', label: 'Employers' },
-    { href: '/businesses', label: 'Businesses' },
-    { href: '/founders', label: 'Founders' },
-    { href: '/alumni', label: 'Alumni' },
-    { href: '/mentors', label: 'Mentors' },
-    { href: '/parents', label: 'Parents' },
-    { href: '/ambassadors', label: 'Ambassadors' },
-    { href: '/scouts', label: 'Scouts' },
-    { href: '/resources', label: 'Resources' },
-    { href: '/about', label: 'About' },
-    { href: '/profile', label: 'Profile' },
+  const navGroups = [
+    { label: 'Housing', items: [
+        { href: '/discovery', label: 'Hostels' },
+        { href: '/campuses', label: 'Campuses' },
+        { href: '/universities', label: 'Universities' },
+        { href: '/neighborhoods', label: 'Neighborhoods' },
+        { href: '/businesses', label: 'Businesses' },
+      ]},
+    { label: 'Community', items: [
+        { href: '/community', label: 'Discussions' },
+        { href: '/founders', label: 'Founders' },
+        { href: '/alumni', label: 'Alumni' },
+        { href: '/mentors', label: 'Mentors' },
+        { href: '/parents', label: 'Parents' },
+        { href: '/ambassadors', label: 'Ambassadors' },
+        { href: '/scouts', label: 'Scouts' },
+      ]},
+    { label: 'Opportunities', items: [
+        { href: '/opportunities', label: 'Opportunities' },
+        { href: '/employers', label: 'Employers' },
+        { href: '/resources', label: 'Resources' },
+      ]},
   ]
 
   return (
@@ -43,15 +47,26 @@ export async function Navbar() {
           </Link>
 
           <div className="hidden lg:flex items-center gap-1">
-            {navItems.map((item) => (
-              <NavLink key={item.href} href={item.href}>{item.label}</NavLink>
+            <NavLink href="/" active>Home</NavLink>
+            {navGroups.map((group) => (
+              <NavDropdown
+                key={group.label}
+                label={group.label}
+                items={group.items}
+              />
             ))}
+            <NavLink href="/about">About</NavLink>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
           <SearchTrigger />
-          <MobileNav items={navItems} />
+          <MobileNav items={[
+            { href: '/', label: 'Home' },
+            ...navGroups.flatMap(g => g.items),
+            { href: '/about', label: 'About' },
+            { href: '/profile', label: 'Profile' },
+          ]} />
           {user ? (
             <>
               <Button variant="ghost" size="icon" className="text-neutral-500 relative hidden sm:flex">
@@ -108,11 +123,15 @@ function MobileNav({ items }: { items: { href: string; label: string }[] }) {
   )
 }
 
-function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
+function NavLink({ href, children, active }: { href: string; children: React.ReactNode; active?: boolean }) {
   return (
     <Link
       href={href}
-      className="px-4 py-2 text-sm font-bold text-neutral-500 hover:text-primary transition-all uppercase tracking-tighter"
+      className={`px-4 py-2 text-sm font-bold uppercase tracking-tighter transition-all ${
+        active
+          ? 'text-primary border-b-2 border-primary'
+          : 'text-neutral-500 hover:text-primary'
+      }`}
     >
       {children}
     </Link>
