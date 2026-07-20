@@ -52,7 +52,7 @@ export default async function DiscoveryPage({
   return (
     <div className="bg-neutral-50 min-h-screen pb-20">
       {/* Header / Search Bar */}
-      <div className="bg-white border-b border-neutral-200 pt-8 pb-10">
+      <div className="bg-white border-b border-neutral-200 py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="max-w-xl">

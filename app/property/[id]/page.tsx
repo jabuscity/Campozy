@@ -39,7 +39,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   return (
     <div className="bg-white min-h-screen pb-20 text-neutral-900">
       {/* Header Actions */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between font-medium">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 flex items-center justify-between font-medium">
         <Link href="/discovery" className="flex items-center gap-2 text-neutral-500 hover:text-neutral-900 transition-colors">
           <ArrowLeft className="h-4 w-4" /> Back to Discovery
         </Link>
@@ -74,7 +74,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-12 grid lg:grid-cols-3 gap-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-12 grid lg:grid-cols-3 gap-8">
         {/* Left Column: Details */}
         <div className="lg:col-span-2 space-y-12">
           {/* Overview */}

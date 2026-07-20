@@ -67,7 +67,7 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
           </div>
 
           {/* Info Section */}
-          <div className="p-5">
+          <div className="p-6">
             <h3 className="text-lg font-bold text-neutral-900 line-clamp-1 mb-1 group-hover:text-primary transition-colors">
               {property.name}
             </h3>
