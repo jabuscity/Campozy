@@ -21,6 +21,7 @@ export async function Navbar() {
     { href: '/founders', label: 'Founders' },
     { href: '/alumni', label: 'Alumni' },
     { href: '/ambassadors', label: 'Ambassadors' },
+    { href: '/scouts', label: 'Scouts' },
     { href: '/resources', label: 'Resources' },
     { href: '/about', label: 'About' },
     { href: '/profile', label: 'Profile' },
