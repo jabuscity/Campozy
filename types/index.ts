@@ -59,6 +59,7 @@ export interface City {
   created_at: string;
   // Relations
   country?: Country;
+  countries?: Country;
 }
 
 export interface PropertyType {
@@ -156,6 +157,7 @@ export interface IdentityDocument {
 export interface University {
   id: string;
   country_id: string;
+  city_id: string;
   name: string;
   short_name: string | null;
   website: string | null;
@@ -255,6 +257,7 @@ export interface Neighborhood {
   updated_at: string;
   // Relations
   city?: City;
+  cities?: City;
   landmarks?: NeighborhoodLandmark[];
   campus_distances?: NeighborhoodCampusDistance[];
 }
