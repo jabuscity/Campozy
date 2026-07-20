@@ -406,51 +406,6 @@ export default function HomePage() {
               </div>
             </div>
           </section>
-
-          {/* Quick Actions - Elemental Style */}
-          <section className="mb-8 md:mb-12">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Link href="/discovery" className="group">
-                <div className="bg-white rounded-xl border border-neutral-200 p-5 hover:shadow-md transition-all h-full">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="h-10 w-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
-                      <Home className="h-5 w-5" />
-                    </div>
-                    <h3 className="font-bold text-neutral-900">Find Hostels</h3>
-                  </div>
-                  <p className="text-sm text-neutral-500">
-                    Browse verified student residences across Nairobi, Juja, and Eldoret.
-                  </p>
-                </div>
-              </Link>
-              <Link href="/community" className="group">
-                <div className="bg-white rounded-xl border border-neutral-200 p-5 hover:shadow-md transition-all h-full">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="h-10 w-10 bg-secondary/10 rounded-lg flex items-center justify-center text-secondary">
-                      <MessageSquare className="h-5 w-5" />
-                    </div>
-                    <h3 className="font-bold text-neutral-900">Join Discussions</h3>
-                  </div>
-                  <p className="text-sm text-neutral-500">
-                    Ask questions, share tips, and connect with other students.
-                  </p>
-                </div>
-              </Link>
-              <Link href="/opportunities" className="group">
-                <div className="bg-white rounded-xl border border-neutral-200 p-5 hover:shadow-md transition-all h-full">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="h-10 w-10 bg-success/10 rounded-lg flex items-center justify-center text-success">
-                      <Star className="h-5 w-5" />
-                    </div>
-                    <h3 className="font-bold text-neutral-900">Opportunities</h3>
-                  </div>
-                  <p className="text-sm text-neutral-500">
-                    Internships, scholarships, and jobs curated for students.
-                  </p>
-                </div>
-              </Link>
-            </div>
-          </section>
         </div>
       </main>
 
