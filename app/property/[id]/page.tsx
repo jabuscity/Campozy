@@ -54,6 +54,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
             src={primaryImage}
             alt={property.name}
             fill
+            sizes="(min-width: 1024px) 100vw, 100vw"
             className="object-cover"
             priority
           />

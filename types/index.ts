@@ -106,11 +106,18 @@ export interface Profile {
   trust_level: TrustLevel;
   reputation_score: number;
   contribution_score: number;
+  university_id: string | null;
+  campus_id: string | null;
+  former_school_id: string | null;
   created_at: string;
   updated_at: string;
   // Relations
   user_roles?: UserRole[];
   user_badges?: UserBadge[];
+  university?: University;
+  campus?: Campus;
+  former_school?: HighSchool;
+  owner?: Owner;
 }
 
 export interface UserRole {
@@ -182,6 +189,23 @@ export interface AcademicProgram {
   created_at: string;
 }
 
+export interface HighSchool {
+  id: string;
+  name: string;
+  city_id: string | null;
+  created_at: string;
+  // Relations
+  city?: City;
+}
+
+export interface Owner {
+  id: string;
+  address: string | null;
+  created_at: string;
+  // Relations
+  profile?: Profile;
+}
+
 // ---------------------------------------------------------------------------
 // Student Domain
 // ---------------------------------------------------------------------------
@@ -193,12 +217,14 @@ export interface Student {
   year_of_study: number | null;
   enrollment_year: number | null;
   expected_graduation_year: number | null;
+  former_school_id: string | null;
   created_at: string;
   updated_at: string;
   // Relations
   profile?: Profile;
   campus?: Campus;
   program?: AcademicProgram;
+  former_school?: HighSchool;
   preferences?: StudentPreferences;
 }
 
@@ -1145,4 +1171,242 @@ export function getCampozyScoreColor(score: number): 'green' | 'blue' | 'orange'
   if (score >= 75) return 'blue';
   if (score >= 60) return 'orange';
   return 'red';
+}
+
+// ---------------------------------------------------------------------------
+// Roommate Finder Domain
+// ---------------------------------------------------------------------------
+
+export type RoommateSleepSchedule = 'early_bird' | 'night_owl' | 'flexible';
+export type RoommateCleanlinessLevel = 'neat' | 'moderate' | 'relaxed';
+export type RoommateSocialLevel = 'introvert' | 'moderate' | 'extrovert';
+export type RoommateStudyHabits = 'silent' | 'light_noise' | 'flexible';
+export type RoommateGenderPreference = 'male_only' | 'female_only' | 'any';
+export type RoommateMatchStatus = 'pending' | 'viewed' | 'liked' | 'matched' | 'rejected';
+export type RoommateInteractionType = 'like' | 'pass' | 'super_like' | 'message';
+
+export interface RoommatePreference {
+  id: string;
+  student_id: string;
+  budget_min: number | null;
+  budget_max: number | null;
+  preferred_campus_id: string | null;
+  preferred_neighborhood_ids: string[];
+  sleep_schedule: RoommateSleepSchedule;
+  cleanliness_level: RoommateCleanlinessLevel;
+  social_level: RoommateSocialLevel;
+  study_habits: RoommateStudyHabits;
+  gender_preference: RoommateGenderPreference;
+  dietary_preferences: string[];
+  interests: string[];
+  smoking_ok: boolean;
+  pets_ok: boolean;
+  max_roommates: number;
+  move_in_date: string | null;
+  lease_duration_months: number | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RoommateProfile {
+  id: string;
+  student_id: string;
+  bio: string | null;
+  year_of_study: number | null;
+  age: number | null;
+  university_id: string | null;
+  campus_id: string | null;
+  neighborhood_id: string | null;
+  budget_range: number[] | null;
+  sleep_schedule: RoommateSleepSchedule;
+  cleanliness_level: RoommateCleanlinessLevel;
+  social_level: RoommateSocialLevel;
+  study_habits: RoommateStudyHabits;
+  gender_preference: RoommateGenderPreference;
+  dietary_preferences: string[];
+  interests: string[];
+  smoking_ok: boolean;
+  pets_ok: boolean;
+  max_roommates: number;
+  move_in_date: string | null;
+  lease_duration_months: number | null;
+  is_active: boolean;
+  campozy_score: number;
+  created_at: string;
+  updated_at: string;
+  // Relations
+  student?: Student;
+  university?: University;
+  campus?: Campus;
+  neighborhood?: Neighborhood;
+}
+
+export interface RoommateMatch {
+  id: string;
+  seeker_id: string;
+  match_id: string;
+  compatibility_score: number;
+  match_reasons: string[];
+  budget_score: number | null;
+  lifestyle_score: number | null;
+  location_score: number | null;
+  academic_score: number | null;
+  status: RoommateMatchStatus;
+  created_at: string;
+  updated_at: string;
+  // Relations
+  seeker?: Profile;
+  match?: Profile;
+}
+
+export interface RoommateInteraction {
+  id: string;
+  user_id: string;
+  target_id: string;
+  interaction_type: RoommateInteractionType;
+  notes: string | null;
+  created_at: string;
+}
+
+export interface RoommateConversation {
+  id: string;
+  participant_a: string;
+  participant_b: string;
+  last_message_at: string | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  // Relations
+  participant_a_profile?: Profile;
+  participant_b_profile?: Profile;
+  messages?: RoommateMessage[];
+}
+
+export interface RoommateMessage {
+  id: string;
+  conversation_id: string;
+  sender_id: string;
+  content: string;
+  is_read: boolean;
+  read_at: string | null;
+  created_at: string;
+  // Relations
+  sender?: Profile;
+}
+
+// ---------------------------------------------------------------------------
+// Friendfinder Domain
+// ---------------------------------------------------------------------------
+
+export type FriendPersonalityType = 'introvert' | 'extrovert' | 'ambivert';
+export type FriendStudyHabits = 'silent' | 'light_noise' | 'flexible';
+export type FriendMatchStatus = 'pending' | 'viewed' | 'suggested' | 'connected' | 'rejected';
+export type FriendInteractionType = 'viewed' | 'liked' | 'passed' | 'connected';
+export type FriendConnectionType = 'friend' | 'study_buddy' | 'event_buddy';
+
+export interface FriendPreference {
+  id: string;
+  student_id: string;
+  preferred_campus_id: string | null;
+  preferred_program_ids: string[];
+  preferred_interest_ids: string[];
+  preferred_personality_types: string[];
+  max_distance_km: number | null;
+  study_together_ok: boolean;
+  event_attendance_ok: boolean;
+  gaming_ok: boolean;
+  fitness_ok: boolean;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FriendProfile {
+  id: string;
+  student_id: string;
+  bio: string | null;
+  year_of_study: number | null;
+  university_id: string | null;
+  campus_id: string | null;
+  personality_type: FriendPersonalityType;
+  interests: string[];
+  hobbies: string[];
+  study_habits: FriendStudyHabits;
+  availability_windows: string[];
+  is_active: boolean;
+  campozy_score: number;
+  created_at: string;
+  updated_at: string;
+  // Relations
+  student?: Student;
+  university?: University;
+  campus?: Campus;
+}
+
+export interface FriendMatch {
+  id: string;
+  seeker_id: string;
+  match_id: string;
+  compatibility_score: number;
+  match_reasons: string[];
+  academic_score: number | null;
+  interest_score: number | null;
+  social_score: number | null;
+  proximity_score: number | null;
+  status: FriendMatchStatus;
+  created_at: string;
+  updated_at: string;
+  // Relations
+  seeker?: Profile;
+  match?: Profile;
+}
+
+export interface FriendConnection {
+  id: string;
+  user_a: string;
+  user_b: string;
+  connection_type: FriendConnectionType;
+  is_active: boolean;
+  created_at: string;
+  // Relations
+  user_a_profile?: Profile;
+  user_b_profile?: Profile;
+}
+
+export interface FriendInteraction {
+  id: string;
+  user_id: string;
+  target_id: string;
+  interaction_type: FriendInteractionType;
+  notes: string | null;
+  created_at: string;
+}
+
+// ---------------------------------------------------------------------------
+// Matching Algorithm Types
+// ---------------------------------------------------------------------------
+
+export interface MatchResult {
+  score: number;
+  reasons: string[];
+  subScores: {
+    budget?: number;
+    lifestyle?: number;
+    location?: number;
+    academic?: number;
+    interests?: number;
+    social?: number;
+    proximity?: number;
+  };
+}
+
+export interface RoommateCompatibilityInput {
+  seeker: RoommateProfile & RoommatePreference;
+  candidate: RoommateProfile & RoommatePreference;
+}
+
+export interface FriendCompatibilityInput {
+  seeker: FriendProfile & FriendPreference;
+  candidate: FriendProfile & FriendPreference;
 }

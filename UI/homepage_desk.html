@@ -1,0 +1,398 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Campozy | Decide with Confidence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#f3f2fe",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "surface-bright": "#faf8ff",
+                    "outline-variant": "#c4c5d7",
+                    "on-secondary-fixed": "#2a1700",
+                    "on-primary-fixed-variant": "#0039b5",
+                    "on-background": "#1a1b23",
+                    "on-primary-fixed": "#001551",
+                    "surface-container": "#ededf9",
+                    "inverse-on-surface": "#f0f0fb",
+                    "on-primary-container": "#cad3ff",
+                    "outline": "#747686",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb59c",
+                    "surface-variant": "#e2e1ed",
+                    "inverse-surface": "#2e3039",
+                    "on-tertiary-fixed": "#390c00",
+                    "surface-dim": "#d9d9e5",
+                    "on-error-container": "#93000a",
+                    "tertiary": "#7f2500",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-highest": "#e2e1ed",
+                    "primary-container": "#1d4ed8",
+                    "on-secondary-container": "#684000",
+                    "tertiary-container": "#a73400",
+                    "surface": "#faf8ff",
+                    "on-error": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "primary": "#0037b0",
+                    "primary-fixed-dim": "#b7c4ff",
+                    "on-surface": "#1a1b23",
+                    "error-container": "#ffdad6",
+                    "primary-fixed": "#dce1ff",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#ffddb8",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "surface-container-high": "#e8e7f3",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#434655",
+                    "on-tertiary-fixed-variant": "#832700",
+                    "on-tertiary-container": "#ffc9b7",
+                    "tertiary-fixed": "#ffdbcf",
+                    "secondary-container": "#fea619",
+                    "inverse-primary": "#b7c4ff",
+                    "surface-tint": "#2151da",
+                    "secondary": "#855300",
+                    "background": "#faf8ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin": "48px",
+                    "section-gap": "64px",
+                    "unit-xs": "4px",
+                    "unit-sm": "8px",
+                    "unit-md": "16px",
+                    "columns": "12",
+                    "unit-lg": "24px",
+                    "unit-xl": "32px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "label-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #faf8ff; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(196, 197, 215, 0.3); }
+        .hero-pattern { background-image: radial-gradient(#0037b010 1px, transparent 1px); background-size: 32px 32px; }
+        .transition-soft { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    </style>
+</head>
+<body class="text-on-background">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin h-16 bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex items-center gap-8">
+<div class="text-title-lg font-title-lg font-black text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="school" style="font-variation-settings: &quot;FILL&quot; 1;">school</span>
+            Campozy
+        </div>
+<nav class="hidden md:flex gap-5">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-md text-label-md" href="#">Home</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors font-label-md text-label-md" href="#">Hostels</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors font-label-md text-label-md" href="#">Universities</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors font-label-md text-label-md" href="#">M-Pesa Utility Pay</a>
+</nav>
+</div>
+<div class="flex items-center gap-unit-lg">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-soft p-2" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-soft p-2" data-icon="help">help</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Professional student portrait" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpUesh42WAq4yRDF__OZOOdkEwq5GRFEjmImExN6Ul51_aNj4RzN0Fn3lUqlrCbOCc4DMKLbQNtlu8aNIEafIcWSmU3g-wHjfJFzrp46jGW2Eh-DRpDPqWivTk6z6X112FtdtgrUQAw1WJBEqfZP7Q6YD5XD6oFuiD_YAqp4Zilt1s95W9zm14Km6rKzuDJW-6l2cKK8tp_49ig6iTaqmi9Kywl09PcPjErCFTKyBxFk7Y2sUAW7MwkQ">
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative min-h-[600px] flex flex-col items-center justify-center px-margin overflow-hidden hero-pattern">
+<!-- Background Decorative Elements -->
+<div class="absolute top-1/4 -left-20 w-64 h-56 bg-primary/5 rounded-full blur-3xl"></div>
+<div class="absolute bottom-1/4 -right-20 w-80 h-80 bg-secondary/5 rounded-full blur-3xl"></div>
+<div class="max-w-4xl w-full text-center relative z-10">
+<!-- Utility Alert Banner -->
+<div class="inline-flex items-center gap-unit-sm bg-[#e8f5e9] text-[#2e7d32] px-4 py-2 rounded-full mb-unit-xl border border-[#c8e6c9] animate-pulse">
+<span class="material-symbols-outlined text-[20px]" data-icon="check_circle" style="font-variation-settings: &quot;FILL&quot; 1;">check_circle</span>
+<p class="font-label-md text-label-md">Water reported <span class="font-bold">ON</span> at Madaraka Estate Residences (10 mins ago by Scout)</p>
+</div>
+<h1 class="text-display-lg font-display-lg text-on-background mb-unit-md tracking-tight">
+                Decide with <span class="text-primary">Confidence.</span>
+</h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant mb-unit-xl max-w-2xl mx-auto">
+                Verified student residences in Nairobi. Real utility updates. Zero guesswork. The trust network built for Strathmore, UoN, JKUAT, and beyond.
+            </p>
+<!-- Search Shell -->
+<div class="max-w-3xl mx-auto mb-unit-xl">
+<div class="relative group">
+<div class="absolute inset-0 bg-primary/5 rounded-full blur-lg opacity-0 group-focus-within:opacity-100 transition-soft"></div>
+<div class="relative flex items-center bg-white border border-outline-variant rounded-full p-2 pl-unit-xl shadow-sm hover:shadow-md transition-soft">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+<input class="flex-grow bg-transparent border-none focus:ring-0 text-body-md font-body-md px-unit-md text-on-background" placeholder="Search for Westlands hostels, Juja rentals, or campus insights..." type="text">
+<button class="bg-primary text-on-primary px-unit-xl py-3 rounded-full font-label-md text-label-md hover:opacity-90 active:scale-95 transition-soft">
+                            Search Kenya Network
+                        </button>
+</div>
+</div>
+</div>
+<!-- Category Pills -->
+<div class="flex flex-wrap justify-center gap-unit-md">
+<button class="flex items-center gap-unit-sm px-4 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md transition-soft">
+<span class="material-symbols-outlined text-[18px]" data-icon="home_work">home_work</span>
+                    Hostels
+                </button>
+<button class="flex items-center gap-unit-sm px-4 py-2 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-variant font-label-md text-label-md transition-soft">
+<span class="material-symbols-outlined text-[18px]" data-icon="school">school</span>
+                    Universities
+                </button>
+<button class="flex items-center gap-unit-sm px-4 py-2 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-variant font-label-md text-label-md transition-soft">
+<span class="material-symbols-outlined text-[18px]" data-icon="forum">forum</span>
+                    Student Forums
+                </button>
+<button class="flex items-center gap-unit-sm px-4 py-2 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-variant font-label-md text-label-md transition-soft">
+<span class="material-symbols-outlined text-[18px]" data-icon="payments">payments</span>
+                    M-Pesa Hub
+                </button>
+</div>
+</div>
+</section>
+<!-- Bento Featured Section -->
+<section class="max-w-7xl mx-auto px-margin py-12">
+<div class="grid grid-cols-12 gap-5">
+<!-- Large Card: Main Housing Insight -->
+<div class="col-span-12 lg:col-span-7 rounded-xl border border-outline-variant bg-white overflow-hidden flex flex-col md:flex-row group transition-soft hover:shadow-lg">
+<div class="md:w-1/2 relative h-56 md:h-full">
+<img alt="Modern student apartment in Westlands" class="w-full h-full object-cover group-hover:scale-105 transition-soft duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMG_ciA6sz9LT4wYSupBer4DLJm-FBT7f-qJ4pJyTMAITq9MOqxXpNTjozY4w1vqLkPQxKDfZGTRq9GgOdGzx2fzzYP5NiMngqH36zMy1rFif1GKoWEPoPkucrF35mI2AxMvP5QCB29b7d8CFJgtJGFQfBkgNv1osuEWi5z2DGjDH9ZC63JBbZhvIywb1uaDj5qMiTgIb9kUVADwAXmyU64bXGS6egBU-1oZ4ohFlHZ9Z26ziQPuN0gQ">
+<div class="absolute top-4 left-4 bg-primary px-3 py-1 rounded text-on-primary font-label-sm text-label-sm">Top Rated Hostel: Westlands</div>
+</div>
+<div class="md:w-1/2 p-5 flex flex-col justify-center">
+<div class="flex items-center gap-2 mb-unit-sm">
+<span class="text-secondary font-bold font-label-md text-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+                            4.9
+                        </span>
+<span class="text-outline-variant">•</span>
+<span class="text-on-surface-variant font-label-md text-label-md">1,240 Verified Reviews</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-on-background mb-unit-md">The Westlands Residency</h3>
+<p class="text-body-md font-body-md text-on-surface-variant mb-unit-lg">Premier living for university students. Secure parking, fast Wi-Fi, and 24/7 borehole water verified by 400+ residents this month. Starting from <span class="font-bold text-primary">KSh 35,000/month</span>.</p>
+<a class="text-primary font-bold font-label-md text-label-md inline-flex items-center gap-2 group-hover:gap-3 transition-soft" href="#">
+                        View Full Report <span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Secondary Card: Trust Metrics -->
+<div class="col-span-12 lg:col-span-5 grid grid-rows-2 gap-5">
+<div class="rounded-xl border border-outline-variant bg-surface-container-low p-5 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-unit-md">
+<span class="material-symbols-outlined text-primary p-3 bg-white rounded-lg shadow-sm" data-icon="security">security</span>
+<span class="text-[#2e7d32] font-label-sm text-label-sm px-2 py-1 bg-[#e8f5e9] rounded">99.9% Verified</span>
+</div>
+<h4 class="text-title-lg font-title-lg text-on-background mb-unit-xs">Verified by Kenyan Scouts</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Real-time utility monitoring by our trusted network of students in Nairobi, Juja, and Eldoret.</p>
+</div>
+<div class="flex -space-x-3 overflow-hidden">
+<img alt="Student scout" class="inline-block h-8 w-8 rounded-full ring-2 ring-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNZy_1TzPdKK-od4B52PQ0sUzyJfHXVicnu8HDLOu5r1Uzp-ixvKFRGySb4vwbGyXg_2USK7SOtufBl_M1egAcCDejkPdi9727TXtz3OaVR2XY55c7fqbLeyQNG6QemAjV5C30ATjogmVa4Ac1WYR0geOSvP9FkASD-wbLObSmj_FCvqsRR-rxM5_HmFc-AE5i_upbNGYkYTxhycQ_ublyB21gK1oF4jSCbTf9zlkG2HfTdbKy5X2qjw">
+<img alt="Student scout" class="inline-block h-8 w-8 rounded-full ring-2 ring-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALvZxohmX4mhmxMGDwCRwsaHqUJmSxysB915L4YPH5kevJLKEhMnm23TSNjowyiRKsBrnehAIuDvyBqQgUzyYn2lwgcXkCoXXRkxrefxZ7qbryDBFzy462agdo9OlbG4e9LWJatlqIv_lmA-eHpjTo7xkZxXBklcLKMALH8YsCEZid9wmlyITEuREWdO3LGgNaEl19LDy4hG2dBjwhjxEIU1x2eWRqFT0RwuAqDcXkB01H3oMnbHFT3w">
+<img alt="Student scout" class="inline-block h-8 w-8 rounded-full ring-2 ring-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtENLHl-A3KtXV2ppvaDjeQ8rU1_2D-27zsLVGprENXbNi7eU4qlalyv90Zbnpp6Kw8x-UUgdQ4hfHFkjkRADT1QMZY8B6wsOo-LwuYC2wH07NvxNAsBFiChoRyWwgARBCgZqwpLAyPVQ38OfetYEnGid8fOTGw2lFYSrpcH_rgp--_0x6wePiUVinSI1mPPcfyy-2yZnvJhFohqonPIcD6mc9eW95H9ouTVc4icOjetMBZPR8nGuwdw">
+<div class="flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-white bg-surface-variant text-[10px] font-bold">+2k</div>
+</div>
+</div>
+<div class="rounded-xl border border-outline-variant bg-white p-5 flex flex-col justify-between hover:bg-surface-bright transition-soft cursor-pointer">
+<div class="flex justify-between items-center mb-unit-md">
+<h4 class="text-title-lg font-title-lg text-on-background">Live Nairobi Feed</h4>
+<div class="flex gap-2">
+<span class="w-2 h-2 rounded-full bg-error animate-ping"></span>
+<span class="w-2 h-2 rounded-full bg-error absolute"></span>
+</div>
+</div>
+<div class="space-y-unit-md">
+<div class="flex items-center gap-unit-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="electric_bolt">electric_bolt</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between">
+<p class="font-label-md text-label-md text-on-background">KPLC Stable</p>
+<span class="text-label-sm text-outline">Just now</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Madaraka Near Strathmore</p>
+</div>
+</div>
+<div class="flex items-center gap-unit-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="water_drop">water_drop</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between">
+<p class="font-label-md text-label-md text-on-background">Water Supply Active</p>
+<span class="text-label-sm text-outline">2h ago</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Juja JKUAT Surroundings</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Informational Section -->
+<section class="bg-surface-container py-12">
+<div class="max-w-7xl mx-auto px-margin">
+<div class="text-center mb-unit-xl">
+<h2 class="text-headline-lg font-headline-lg text-on-background mb-unit-sm">Kenyan Institutional Trust, Built by Students</h2>
+<p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl mx-auto">We bridge the gap between "brochure promises" and the actual student experience in East African campuses.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+<div class="text-center">
+<span class="material-symbols-outlined text-primary text-[48px] mb-unit-md" data-icon="verified_user">verified_user</span>
+<h4 class="text-title-lg font-title-lg text-on-background mb-unit-sm">Kenya-Wide Standards</h4>
+<p class="text-body-md font-body-md text-on-surface-variant">Every report is cross-referenced with geolocation and student IDs to ensure relevance for the local market.</p>
+</div>
+<div class="text-center">
+<span class="material-symbols-outlined text-primary text-[48px] mb-unit-md" data-icon="diversity_3">diversity_3</span>
+<h4 class="text-title-lg font-title-lg text-on-background mb-unit-sm">Scout Insights</h4>
+<p class="text-body-md font-body-md text-on-surface-variant">Real students from Strathmore, JKUAT, and UoN provide the inside scoop on commute times and security.</p>
+</div>
+<div class="text-center">
+<span class="material-symbols-outlined text-primary text-[48px] mb-unit-md" data-icon="analytics">analytics</span>
+<h4 class="text-title-lg font-title-lg text-on-background mb-unit-sm">Utility Transparency</h4>
+<p class="text-body-md font-body-md text-on-surface-variant">Know the status of KPLC power, water tankers, and Wi-Fi providers before you pay your deposit.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Additional Local Content Section -->
+<section class="max-w-7xl mx-auto px-margin py-12 border-t border-outline-variant">
+<div class="flex flex-col md:flex-row gap-5 items-center">
+<div class="md:w-1/2">
+<h2 class="text-headline-lg font-headline-lg text-on-background mb-unit-md">Find Your Fit Near Your Campus</h2>
+<p class="text-body-lg font-body-lg text-on-surface-variant mb-unit-lg">Whether you're looking for a quiet bedsitter in Juja or a shared student residence in Westlands, our verified listings help you find safe, reliable housing.</p>
+<div class="grid grid-cols-2 gap-unit-md">
+<div class="p-unit-md rounded-lg bg-surface-container-low border border-outline-variant">
+<p class="text-title-lg font-bold text-primary">KSh 15k+</p>
+<p class="text-label-sm text-on-surface-variant">Juja / JKUAT Area</p>
+</div>
+<div class="p-unit-md rounded-lg bg-surface-container-low border border-outline-variant">
+<p class="text-title-lg font-bold text-primary">KSh 25k+</p>
+<p class="text-label-sm text-on-surface-variant">Madaraka / Strathmore</p>
+</div>
+<div class="p-unit-md rounded-lg bg-surface-container-low border border-outline-variant">
+<p class="text-title-lg font-bold text-primary">KSh 35k+</p>
+<p class="text-label-sm text-on-surface-variant">Westlands / Parklands</p>
+</div>
+<div class="p-unit-md rounded-lg bg-surface-container-low border border-outline-variant">
+<p class="text-title-lg font-bold text-primary">KSh 20k+</p>
+<p class="text-label-sm text-on-surface-variant">Roysambu / USIU</p>
+</div>
+</div>
+</div>
+<div class="md:w-1/2">
+<img alt="Students in Nairobi" class="rounded-2xl shadow-xl w-full object-cover aspect-video" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH8geGQqp1Zt6EUfRy2q1PxZo5LKKeH1WEghs2wlQHIdP58qCEmN2wf64eEIBuUcwHNszKS7C1mJL3KDAzrwVL75E5a7m6_1NmGUo6yoMr4rC89SjqEhc35bjRy5lbgoLC2DuzPYHH0YqHgsNvUTioceFcDgKgxAfAR4OksEqlaHUK-wMHNe-JXig8bcRAElFpOzKjqdxJeKRSkFxbkUzhn6oWAmrp9u5Ukdn8oFiBGu6eGxj8gdelEA">
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-surface-container-lowest border-t border-outline-variant py-12">
+<div class="max-w-7xl mx-auto px-margin flex flex-col md:flex-row justify-between items-start gap-5">
+<div class="max-w-xs">
+<div class="text-title-lg font-title-lg font-bold text-primary mb-unit-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="school" style="font-variation-settings: &quot;FILL&quot; 1;">school</span>
+                Campozy
+            </div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">The Student Trust Network for East Africa. Providing reliable data for students to thrive in their academic journey across Kenya.</p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-5 flex-grow">
+<div class="flex flex-col gap-unit-sm">
+<span class="font-label-md text-label-md text-on-background">Product</span>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Hostel Search</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Utility Reports</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Kenya Scout Program</a>
+</div>
+<div class="flex flex-col gap-unit-sm">
+<span class="font-label-md text-label-md text-on-background">Trust</span>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Trust &amp; Safety</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Verification Standards</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Institutional Partners</a>
+</div>
+<div class="flex flex-col gap-unit-sm">
+<span class="font-label-md text-label-md text-on-background">Legal</span>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+</div>
+<div class="flex flex-col gap-unit-sm">
+<span class="font-label-md text-label-md text-on-background">Social</span>
+<div class="flex gap-unit-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary" data-icon="public">public</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary" data-icon="alternate_email">alternate_email</button>
+</div>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-margin pt-unit-xl border-t border-outline-variant mt-unit-xl flex flex-col md:flex-row justify-between items-center gap-unit-md">
+<p class="text-label-sm font-label-sm text-on-surface-variant">© 2024 Campozy Student Trust Network. All rights reserved.</p>
+<div class="flex gap-unit-lg">
+<span class="material-symbols-outlined text-outline-variant" data-icon="verified">verified</span>
+<span class="material-symbols-outlined text-outline-variant" data-icon="security_update_good">security_update_good</span>
+</div>
+</div>
+</footer>
+<script>
+    // Micro-interactions and subtle scroll effects
+    window.addEventListener('scroll', () => {
+        const header = document.querySelector('header');
+        if (window.scrollY > 20) {
+            header.classList.add('shadow-md');
+            header.classList.add('bg-white');
+        } else {
+            header.classList.remove('shadow-md');
+        }
+    });
+
+    // Search bar focus effect
+    const searchInput = document.querySelector('input');
+    const searchShell = searchInput?.parentElement;
+    
+    searchInput?.addEventListener('focus', () => {
+        searchShell.classList.add('border-primary');
+    });
+
+    searchInput?.addEventListener('blur', () => {
+        searchShell.classList.remove('border-primary');
+    });
+</script>
+
+
+</body></html>

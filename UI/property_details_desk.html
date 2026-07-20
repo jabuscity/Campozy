@@ -1,0 +1,459 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Juja Modern Student Residence | Campozy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#f3f2fe",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "surface-bright": "#faf8ff",
+                    "outline-variant": "#c4c5d7",
+                    "on-secondary-fixed": "#2a1700",
+                    "on-primary-fixed-variant": "#0039b5",
+                    "on-background": "#1a1b23",
+                    "on-primary-fixed": "#001551",
+                    "surface-container": "#ededf9",
+                    "inverse-on-surface": "#f0f0fb",
+                    "on-primary-container": "#cad3ff",
+                    "outline": "#747686",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb59c",
+                    "surface-variant": "#e2e1ed",
+                    "inverse-surface": "#2e3039",
+                    "on-tertiary-fixed": "#390c00",
+                    "surface-dim": "#d9d9e5",
+                    "on-error-container": "#93000a",
+                    "tertiary": "#7f2500",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-highest": "#e2e1ed",
+                    "primary-container": "#1d4ed8",
+                    "on-secondary-container": "#684000",
+                    "tertiary-container": "#a73400",
+                    "surface": "#faf8ff",
+                    "on-error": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "primary": "#0037b0",
+                    "primary-fixed-dim": "#b7c4ff",
+                    "on-surface": "#1a1b23",
+                    "error-container": "#ffdad6",
+                    "primary-fixed": "#dce1ff",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#ffddb8",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "surface-container-high": "#e8e7f3",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#434655",
+                    "on-tertiary-fixed-variant": "#832700",
+                    "on-tertiary-container": "#ffc9b7",
+                    "tertiary-fixed": "#ffdbcf",
+                    "secondary-container": "#fea619",
+                    "inverse-primary": "#b7c4ff",
+                    "surface-tint": "#2151da",
+                    "secondary": "#855300",
+                    "background": "#faf8ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin": "48px",
+                    "section-gap": "64px",
+                    "unit-xs": "4px",
+                    "unit-sm": "8px",
+                    "unit-md": "16px",
+                    "columns": "12",
+                    "unit-lg": "24px",
+                    "unit-xl": "32px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "label-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      
+      .utility-matrix-card {
+        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .utility-matrix-card:hover {
+        transform: translateY(-4px);
+      }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased selection:bg-primary-fixed selection:text-on-primary-fixed min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin h-20 bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex items-center gap-unit-xl">
+<div class="text-title-lg font-title-lg font-black text-primary flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">school</span>
+                Campozy
+            </div>
+<nav class="hidden md:flex items-center gap-unit-lg">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors text-label-md font-label-md" href="#">Community</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 text-label-md font-label-md" href="#">Hostels</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors text-label-md font-label-md" href="#">Opportunities</a>
+</nav>
+</div>
+<div class="flex items-center gap-unit-md">
+<div class="relative hidden sm:block">
+<input class="bg-surface-container rounded-full pl-10 pr-4 py-2 text-body-sm font-body-sm border-none focus:ring-2 focus:ring-primary w-64" placeholder="Search Nairobi student residences..." type="text">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary p-2">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary p-2">help</button>
+<div class="w-10 h-10 rounded-full bg-primary-fixed overflow-hidden border border-outline-variant">
+<img alt="User profile with contributor status" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6GdgqJS1yT8ZK0evVjzxFrKc-JjFCE6EbybCkbVi9QG4irFSzsA5YP2KeV4k055RIAsbSyaQIKgOkM8qnqQA6RK4K1QV6U1VQadw4ZC3_TVEDWP-ZuIfQBGqjKej_vnXDGFjqHNX5znrZJc313rGOwho9IhlWC0M60UY0uyWofI-IyyYxHmO9h9E3u1hR-cmpQ1_cvq7svc3BdR5xPF4BIq5m1nQSIlCTHudE60tHu_cMXNjWeKUjuA">
+</div>
+</div>
+</header>
+<main class="pt-20 max-w-7xl mx-auto px-margin">
+<!-- Content Breadcrumbs -->
+<div class="flex items-center gap-unit-xs py-unit-lg text-on-surface-variant text-label-sm font-label-sm">
+<span class="">Hostels</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="">Nairobi</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary font-bold">Juja Modern Student Residence</span>
+</div>
+<!-- Hero Section & Image Carousel -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-section-gap">
+<div class="md:col-span-8 flex flex-col gap-unit-md">
+<div class="relative aspect-video rounded-xl overflow-hidden shadow-sm group">
+<img alt="A sophisticated, wide-angle interior photograph of a modern student residence studio in Juja." class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgYXekY4Wo9Hjzs5pI0Wot3kfTjbPYX5_S1N283Cv-A8isn6lBPLQnYjZtMwJM34wz93FPaEaeCbuz2M4LDjGsRd4a0BxquI-WlK9DUPMBqEkoeQg-9GmkdCFDX0-FcQ8Y0kRzZizyBWqZbZ_9PDCAmSxJC2tbOsfP1HkqPzNDbo93fvpUbLHaCss8BHaZdxbA_dtUCGvDCBKI78Ceh1Nerou7Z2iPHt63eKhfwS5ppp6YJqC_wxt7uQ">
+<div class="absolute bottom-4 right-4 flex gap-2">
+<button class="bg-surface-container-lowest/90 backdrop-blur px-4 py-2 rounded-full flex items-center gap-2 text-label-sm font-label-sm shadow-lg hover:bg-surface-container-lowest transition-all">
+<span class="material-symbols-outlined text-[18px]">photo_library</span>
+                            View All 12 Photos
+                        </button>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-unit-sm">
+<div class="aspect-square rounded-lg overflow-hidden border border-outline-variant">
+<img alt="Modern kitchenette" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDR5pbLmJCAbnMt7Mgfo4OeaPPGKFrschagaBqBwuxXwpIZcCfp7w3nBJevXVWToFrksOazvsoOBPARbp-uSnSrzERLKpoDElseqjf5uK_gNmLXzJQT0_kHQwqh7RGXptj4eDVzRS9kHkvB966q23sLeoH1bIdxTSGD0OMg9ZDoPn-fgkXNlbum64CzwZqYs5UlXdODgtIcTX_5Q4g4n7rbVX1RsvH6DAW91CNOHuFPoMrn4vrpgPIgJA">
+</div>
+<div class="aspect-square rounded-lg overflow-hidden border border-outline-variant">
+<img alt="Study desk setup" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQxvnx8kLF_NqK9hUZ-zaEBUG5nTquEZHIw5H9a9ZfNtVNdIC-mNDTchNdXGGh_4DDYPPk6SMPlnnsQ2l-cqmQJOQuXeqZdgndxskaUOyz9CzginqO23FllwuuDhpmU2m5EhZMmqDJSm6OmNB3eR8y4Ols-lbI3KZDBgqP15BPVR8lmqBv-d3EW4n1H3GVHgVqdaE5cua9EsLmtuD80Ra2HeD9f1XJUWFM-G6CNiUasTQWxKjxJXc8Pg">
+</div>
+<div class="aspect-square rounded-lg overflow-hidden border border-outline-variant">
+<img alt="Clean bathroom" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALbgJdoASQE6WCVTYxEujcFBF9j8zgzyzojzdTNzEuHmcujukxDiXFiLtFG4LDGr1OIei3RRj4o6j9V5SU19xR0cpm_wApnEAm_ppqwJEkROL_BAajOh_IlrWGxtXsU6E2nwxu7HG8vMc3fPTrVTyb1GsadRUMFzMzjfKDHrssMilPR6n7rxOHSRs4V9RjK7yea1kolo0AX1ceLuHqsggLTdI4Oxd69vuRr3CRp_KsTQaqVU3b4rhTTQ">
+</div>
+<div class="aspect-square rounded-lg overflow-hidden bg-surface-container-high flex items-center justify-center border border-outline-variant cursor-pointer group">
+<span class="text-primary font-bold group-hover:scale-110 transition-transform">+8 more</span>
+</div>
+</div>
+</div>
+<!-- Side Info Card -->
+<aside class="md:col-span-4 flex flex-col gap-unit-lg">
+<div class="bg-surface-container-lowest border border-outline-variant p-unit-xl rounded-xl shadow-sm">
+<div class="flex justify-between items-start mb-unit-md">
+<div>
+<h1 class="text-headline-md font-headline-md text-on-background">Juja Modern Student Residence</h1>
+<p class="text-on-surface-variant flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                                Juja, Nairobi, Kenya
+                            </p>
+</div>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-label-sm font-label-sm font-bold">TOP RATED</span>
+</div>
+<div class="flex gap-unit-md py-unit-md border-y border-outline-variant mb-unit-md">
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm text-on-surface-variant">Rating</span>
+<div class="flex items-center gap-1">
+<span class="font-bold">4.9</span>
+<span class="material-symbols-outlined text-secondary text-[16px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+</div>
+</div>
+<div class="w-px bg-outline-variant"></div>
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm text-on-surface-variant">Reviews</span>
+<span class="font-bold">128 Vetted</span>
+</div>
+<div class="w-px bg-outline-variant"></div>
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm text-on-surface-variant">Distance</span>
+<span class="font-bold">5 min walk</span>
+</div>
+</div>
+<!-- Landlord Profile -->
+<div class="flex items-center gap-unit-md mb-unit-lg">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Portrait of Mwangi K." class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCG0qvRtA_y9yivJg_B4JJ4fvmqAhuIUVAJqpAPTGG0nmRoEeibSBBGbkZilxWFLN7QgyXrA1GrOdlC2Z-UyClhopgwRpUm6-SFH4U1lEVun1SwN0nmMG0MH8APGdVI4bbtlJ-AgYTBtJJkJ8M7FW_lJ9M5pJmvaa6PYRMzuUsgp39WjCv1JI3yTQ9eT3vUqxNwzoC5pWVBPMn4oLQh_wCLsI_XQQdb_fC8VJVfiXTQYo_m6xQNc9HQIA">
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-1">
+<span class="font-title-lg text-title-lg">Mwangi K.</span>
+<span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;" title="Verified Owner">verified</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">98% Response rate</p>
+</div>
+<button class="bg-surface-container-high hover:bg-surface-container-highest p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined">mail</span>
+</button>
+</div>
+<div class="flex flex-col gap-unit-xs mb-unit-lg">
+    <div class="flex items-baseline gap-1">
+        <span class="text-headline-md font-headline-md text-on-background">KSh 12,000</span>
+        <span class="text-body-md font-body-md text-on-surface-variant">/month</span>
+    </div>
+    <div class="flex items-center gap-1 text-green-700 font-bold text-label-sm">
+        <span class="material-symbols-outlined text-[14px]">bolt</span>
+        <span class="">Utilities Included</span>
+    </div>
+</div>
+<button class="w-full bg-primary text-on-primary py-4 rounded-lg font-bold text-label-md font-label-md hover:bg-primary-container transition-all active:scale-[0.98] shadow-sm mb-unit-sm">
+    Contact Mwangi
+</button><button class="w-full border border-outline text-on-surface py-4 rounded-lg font-bold text-label-md font-label-md hover:bg-surface-container-low transition-all active:scale-[0.98]">
+    Schedule Site Visit
+</button>
+</div>
+<!-- Trust Badge Card -->
+<div class="bg-surface-container-low p-unit-md rounded-xl border border-primary-fixed-dim flex items-center gap-unit-md">
+<span class="material-symbols-outlined text-primary text-[40px]">shield_person</span>
+<div>
+<h4 class="font-bold text-label-md">Campozy Trust Shield</h4>
+<p class="text-body-sm text-on-surface-variant">Identity and Ownership verified for student safety.</p>
+</div>
+</div>
+</aside>
+</section>
+<!-- Utility Intelligence Matrix -->
+<section class="mb-section-gap">
+<div class="flex items-center justify-between mb-unit-lg">
+<h2 class="text-headline-md font-headline-md">Utility Intelligence Matrix</h2>
+<span class="text-label-sm font-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">history</span>
+                    Last updated 14 mins ago
+                </span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Electricity -->
+<div class="utility-matrix-card bg-surface-container-lowest border border-outline-variant p-unit-lg rounded-xl">
+<div class="flex justify-between items-start mb-unit-md">
+<div class="bg-green-100 p-2 rounded-lg">
+<span class="material-symbols-outlined text-green-700">bolt</span>
+</div>
+<span class="text-[10px] font-black uppercase tracking-wider text-green-700 bg-green-50 px-2 py-0.5 rounded border border-green-200">OPTIMAL</span>
+</div>
+<h3 class="font-bold text-on-surface">Electricity</h3>
+<p class="text-headline-md font-headline-md text-green-700">95% <span class="text-label-sm font-label-sm text-on-surface-variant">uptime</span></p>
+<div class="w-full bg-surface-container h-1.5 rounded-full mt-unit-md overflow-hidden">
+<div class="bg-green-600 h-full w-[95%]"></div>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-unit-sm">Token system with backup generator support.</p>
+</div>
+<!-- Water -->
+<div class="utility-matrix-card bg-surface-container-lowest border border-outline-variant p-unit-lg rounded-xl">
+<div class="flex justify-between items-start mb-unit-md">
+<div class="bg-blue-100 p-2 rounded-lg">
+<span class="material-symbols-outlined text-blue-700">water_drop</span>
+</div>
+<span class="text-[10px] font-black uppercase tracking-wider text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">RELIABLE</span>
+</div>
+<h3 class="font-bold text-on-surface">Water</h3>
+<p class="text-headline-md font-headline-md text-blue-700">24/7 Access</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-unit-md">Large overhead storage tanks for uninterrupted supply.</p>
+</div>
+<!-- WiFi -->
+<div class="utility-matrix-card bg-surface-container-lowest border border-outline-variant p-unit-lg rounded-xl">
+<div class="flex justify-between items-start mb-unit-md">
+<div class="bg-amber-100 p-2 rounded-lg">
+<span class="material-symbols-outlined text-amber-700">wifi</span>
+</div>
+<span class="text-[10px] font-black uppercase tracking-wider text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">AVERAGE</span>
+</div>
+<h3 class="font-bold text-on-surface">WiFi</h3>
+<p class="text-headline-md font-headline-md text-amber-700">45 Mbps</p>
+<div class="w-full bg-surface-container h-1.5 rounded-full mt-unit-md overflow-hidden">
+<div class="bg-amber-500 h-full w-[60%]"></div>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-unit-sm">Fiber connectivity available in all rooms.</p>
+</div>
+<!-- Security -->
+<div class="utility-matrix-card bg-surface-container-lowest border border-outline-variant p-unit-lg rounded-xl">
+<div class="flex justify-between items-start mb-unit-md">
+<div class="bg-primary-fixed p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary">security</span>
+</div>
+<span class="text-[10px] font-black uppercase tracking-wider text-primary bg-primary-fixed px-2 py-0.5 rounded border border-primary-fixed-dim">SECURE</span>
+</div>
+<h3 class="font-bold text-on-surface">Security</h3>
+<p class="text-title-lg font-title-lg text-primary">Biometric Entry</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-unit-md">CCTV &amp; Night Guard on premise.</p>
+</div>
+</div>
+</section>
+<!-- Hygiene Intelligence Card -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-gutter mb-section-gap">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col sm:flex-row">
+<div class="sm:w-1/3 h-48 sm:h-auto relative">
+<img alt="Clean fixtures" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0qk8hNdiS5nYhhIECCkT9s0e-ndfhQhdcouJB6ouP1vGFgkKcncwaUYFafs8bU7xviVnIvUNxw0gugmqRnyF8_JdarDDXQJureOHJ_CANysibSQfctAz7CY4h_kk0VyIPfUB08B2DpAzlMaShF7S571DFdzDW-ijIM_T1YiG0ir7HaBV2pV9LmDnvfY5SHK_fXi6iEuTL-zy_YoLIpRVjv-FKqUkzVLzHruHNPQesmwydPPDS6l-5vg">
+<div class="absolute inset-0 bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-[48px]">sanitizer</span>
+</div>
+</div>
+<div class="p-unit-xl flex-1">
+<div class="flex items-center gap-2 mb-unit-sm">
+<h2 class="text-title-lg font-title-lg text-on-background">Hygiene Intelligence</h2>
+<span class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded-full">CERTIFIED</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-unit-md">Professional maintenance ensuring a clean hostel environment for students.</p>
+<ul class="space-y-2">
+<li class="flex items-center gap-2 text-body-sm font-body-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+                            Frequent sanitization of common areas
+                        </li>
+<li class="flex items-center gap-2 text-body-sm font-body-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+                            Professional pest control every quarter
+                        </li>
+<li class="flex items-center gap-2 text-body-sm font-body-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+                            Weekly garbage collection &amp; management
+                        </li>
+</ul>
+</div>
+</div>
+<!-- Neighborhood context -->
+<div class="bg-surface-container border border-outline-variant rounded-xl p-unit-xl relative overflow-hidden flex flex-col justify-between">
+<div>
+<h2 class="text-title-lg font-title-lg mb-unit-sm">Location Trust Factor</h2>
+<p class="text-body-md font-body-md text-on-surface-variant">Located in a high-security precinct with well-lit access roads to Nairobi campuses.</p>
+</div>
+<div class="mt-unit-lg h-32 rounded-lg overflow-hidden border border-outline-variant bg-surface-container-high relative">
+<div class="absolute inset-0 flex items-center justify-center opacity-20">
+<span class="material-symbols-outlined text-[80px]">map</span>
+</div>
+<div class="absolute bottom-2 left-2 bg-surface-container-lowest px-3 py-1 rounded text-label-sm font-label-sm shadow-sm border border-outline-variant">
+                        Juja, Precinct 1
+                    </div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full border-2 border-on-primary shadow-lg animate-pulse"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- Fixed Price/CTA Footer -->
+
+<!-- Full-width Site Footer -->
+<footer class="w-full bg-surface-container-lowest border-t border-outline-variant mt-20 pt-section-gap pb-48">
+<div class="max-w-7xl mx-auto px-margin">
+<div class="flex flex-col md:flex-row justify-between items-start gap-unit-xl mb-unit-xl">
+<div class="max-w-xs">
+<div class="text-headline-md font-headline-md font-black text-primary flex items-center gap-2 mb-unit-md">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">school</span>
+                        Campozy
+                    </div>
+<p class="text-body-md text-on-surface-variant">
+                        Connecting Nairobi students through verified trust networks and institutional transparency. Finding the right hostel made easy.
+                    </p>
+<div class="flex gap-unit-md mt-unit-lg">
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">public</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">share</span>
+</a>
+</div>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-unit-xl flex-1 md:max-w-2xl">
+<div class="flex flex-col gap-unit-md">
+<span class="text-label-sm font-label-sm font-bold uppercase tracking-wider text-on-surface">Explore</span>
+<nav class="flex flex-col gap-unit-sm">
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="#">Browse Hostels</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="#">Student Residences</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="#">Campus Maps</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="#">Nairobi Neighborhoods</a>
+</nav>
+</div>
+<div class="flex flex-col gap-unit-md">
+<span class="text-label-sm font-label-sm font-bold uppercase tracking-wider text-on-surface">Trust &amp; Safety</span>
+<nav class="flex flex-col gap-unit-sm">
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="#">Trust Shield</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="#">Identity Verification</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="#">Safety Standards</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="#">Review Policy</a>
+</nav>
+</div>
+<div class="flex flex-col gap-unit-md">
+<span class="text-label-sm font-label-sm font-bold uppercase tracking-wider text-on-surface">Support</span>
+<nav class="flex flex-col gap-unit-sm">
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="#">Help Center</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="#">Contact Us</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="#">Terms of Trust</a>
+</nav>
+</div>
+</div>
+</div>
+<div class="pt-unit-xl border-t border-outline-variant flex flex-col sm:flex-row justify-between items-center gap-unit-md text-label-sm font-label-sm text-on-surface-variant">
+<div class="flex items-center gap-unit-md">
+<span class="">© 2024 Campozy Student Trust Network. All rights reserved.</span>
+<span class="hidden sm:inline">•</span>
+<span class="">Nairobi, Kenya</span>
+</div>
+<div class="flex gap-unit-lg items-center">
+<button class="flex items-center gap-2 hover:text-primary">
+<span class="material-symbols-outlined text-[18px]">language</span>
+                        English (KE)
+                    </button>
+<button class="flex items-center gap-2 hover:text-primary">
+<span class="">KSh</span>
+                        KES
+                    </button>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction: Update active state for the utility matrix cards on hover
+        document.querySelectorAll('.utility-matrix-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.classList.add('shadow-md');
+            });
+            card.addEventListener('mouseleave', () => {
+                card.classList.remove('shadow-md');
+            });
+        });
+    </script>
+
+
+</body></html>

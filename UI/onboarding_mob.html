@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Campozy Onboarding</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#dce1ff",
+                        "inverse-primary": "#b7c4ff",
+                        "surface-bright": "#faf8ff",
+                        "secondary-container": "#fea619",
+                        "outline-variant": "#c4c5d7",
+                        "background": "#faf8ff",
+                        "tertiary-fixed-dim": "#ffb59c",
+                        "surface-container": "#ededf9",
+                        "surface-dim": "#d9d9e5",
+                        "surface-tint": "#2151da",
+                        "on-background": "#1a1b23",
+                        "secondary": "#855300",
+                        "on-secondary-container": "#684000",
+                        "on-error": "#ffffff",
+                        "outline": "#747686",
+                        "on-surface": "#1a1b23",
+                        "surface-container-high": "#e8e7f3",
+                        "on-tertiary-container": "#ffc9b7",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#f3f2fe",
+                        "on-surface-variant": "#434655",
+                        "secondary-fixed-dim": "#ffb95f",
+                        "inverse-surface": "#2e3039",
+                        "on-secondary-fixed": "#2a1700",
+                        "tertiary": "#7f2500",
+                        "on-tertiary-fixed": "#390c00",
+                        "on-tertiary-fixed-variant": "#832700",
+                        "on-primary-fixed": "#001551",
+                        "surface-container-highest": "#e2e1ed",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#a73400",
+                        "secondary-fixed": "#ffddb8",
+                        "on-primary-fixed-variant": "#0039b5",
+                        "inverse-on-surface": "#f0f0fb",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#faf8ff",
+                        "tertiary-fixed": "#ffdbcf",
+                        "primary-container": "#1d4ed8",
+                        "primary": "#0037b0",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#b7c4ff",
+                        "surface-variant": "#e2e1ed",
+                        "on-primary-container": "#cad3ff",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "64px",
+                        "unit-md": "16px",
+                        "unit-xs": "4px",
+                        "unit-lg": "24px",
+                        "columns": "12",
+                        "gutter": "24px",
+                        "margin": "48px",
+                        "unit-xl": "32px",
+                        "unit-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .onboarding-gradient {
+            background: linear-gradient(to bottom, rgba(250, 248, 255, 0) 0%, rgba(250, 248, 255, 1) 100%);
+        }
+        .safe-area-bottom { padding-bottom: env(safe-area-inset-bottom, 24px); }
+    </style>
+</head>
+<body class="bg-background text-on-background selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Main Content Wrapper (Scrollable) -->
+<main class="min-h-screen flex flex-col relative">
+<!-- Header -->
+<header class="w-full flex items-center justify-between px-unit-lg py-unit-md fixed top-0 left-0 z-50 bg-background/80 backdrop-blur-md">
+<span class="text-headline-md font-headline-md font-extrabold text-primary">Campozy</span>
+<div class="flex items-center gap-unit-xs px-unit-sm py-1 bg-surface-container-high rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-secondary scale-75" style="font-variation-settings: 'FILL' 1;">location_on</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Nairobi</span>
+</div>
+</header>
+<!-- Content Area -->
+<div class="flex-grow pt-16">
+<!-- Hero Section -->
+<section class="relative w-full h-[50vh] flex-shrink-0">
+<div class="absolute inset-0 z-0">
+<img alt="Students in Nairobi campus" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLutKuApXXlw1z5GKzt_MUMp6fGoxNa2IumweZ7RT_0EubOFE4LZot3gSIKyzX0X5ejuwXrcOKKI1nhIdV2zQA_ZDVzpAxjFRYa4x0itHz_jqhwjK4NFZi55D7QL9x5t2znJPj6vWe6hqhoF19rxEqwKnrqQX_nw8Y2P3jEB1XO_jSvBZR65o8rLbggJNG9naFE-oyKraNU-UQKkRVd-5sgaZiy7WnzlEjU7F7kzibuiyCSF4vMJuQxYTEtU"/>
+<div class="absolute inset-0 onboarding-gradient"></div>
+</div>
+<div class="relative z-10 h-full flex flex-col justify-end px-unit-lg pb-unit-lg">
+<div class="inline-flex items-center gap-2 mb-unit-sm text-primary bg-primary-fixed/50 backdrop-blur-md px-3 py-1 rounded-full w-fit">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="font-label-sm text-label-sm">Student Trust Network</span>
+</div>
+<h1 class="font-display-lg text-headline-lg leading-tight tracking-tight text-on-surface mb-3">
+                        Decide with <span class="text-primary italic">Confidence.</span>
+</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-[300px]">
+                        Find reliable campus living and utility updates across Nairobi universities.
+                    </p>
+</div>
+</section>
+<!-- Feature Grid -->
+<section class="px-unit-lg py-unit-lg space-y-unit-md">
+<!-- Verified Hostels -->
+<div class="group bg-surface-container-lowest p-unit-md rounded-xl border border-outline-variant flex items-center gap-unit-md transition-all active:scale-[0.98] active:bg-surface-container-low shadow-sm">
+<div class="w-12 h-12 flex-shrink-0 bg-primary-fixed text-on-primary-fixed rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-[28px]" data-icon="apartment" style="font-variation-settings: 'FILL' 1;">apartment</span>
+</div>
+<div class="flex-grow">
+<h3 class="font-title-lg text-title-lg text-on-surface">Verified Hostels</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Vetted by students, for students.</p>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</div>
+<!-- Live Utility Alerts -->
+<div class="group bg-surface-container-lowest p-unit-md rounded-xl border border-outline-variant flex items-center gap-unit-md transition-all active:scale-[0.98] active:bg-surface-container-low shadow-sm">
+<div class="w-12 h-12 flex-shrink-0 bg-secondary-fixed text-on-secondary-fixed rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-[28px]" data-icon="report" style="font-variation-settings: 'FILL' 1;">report</span>
+</div>
+<div class="flex-grow">
+<h3 class="font-title-lg text-title-lg text-on-surface">Live Utility Alerts</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Real-time water and power status.</p>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</div>
+<!-- Student Reputation -->
+<div class="group bg-surface-container-lowest p-unit-md rounded-xl border border-outline-variant flex items-center gap-unit-md transition-all active:scale-[0.98] active:bg-surface-container-low shadow-sm">
+<div class="w-12 h-12 flex-shrink-0 bg-tertiary-fixed text-on-tertiary-fixed rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-[28px]" data-icon="school" style="font-variation-settings: 'FILL' 1;">school</span>
+</div>
+<div class="flex-grow">
+<h3 class="font-title-lg text-title-lg text-on-surface">Student Reputation</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Build credibility in the community.</p>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</div>
+</section>
+<!-- Primary Actions -->
+<section class="px-unit-lg py-unit-lg space-y-unit-md">
+<button class="w-full bg-primary text-on-primary py-4 rounded-xl font-label-md text-label-md shadow-lg shadow-primary/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group" onclick="handleGetStarted()">
+<span>Get Started</span>
+<span class="material-symbols-outlined text-[20px] transition-transform group-active:translate-x-1">arrow_forward</span>
+</button>
+<button class="w-full py-2 text-on-surface-variant font-label-md text-label-md active:opacity-70 transition-opacity">
+                    Already have an account? <span class="text-primary font-bold">Sign In</span>
+</button>
+<!-- Pagination Indicator (for context, even if static) -->
+<div class="flex justify-center items-center gap-2 pt-2">
+<div class="h-1.5 w-6 bg-primary rounded-full"></div>
+<div class="h-1.5 w-1.5 bg-outline-variant rounded-full"></div>
+<div class="h-1.5 w-1.5 bg-outline-variant rounded-full"></div>
+</div>
+</section>
+</div>
+<!-- Full Mobile Footer -->
+<footer class="bg-surface-container-low border-t border-outline-variant px-unit-lg pt-unit-xl pb-unit-xl safe-area-bottom">
+<div class="flex flex-col items-center gap-unit-md text-center">
+<span class="text-headline-md font-extrabold text-primary opacity-50">Campozy</span>
+<nav class="flex flex-wrap justify-center gap-x-unit-md gap-y-unit-sm text-label-sm font-label-sm text-on-surface-variant">
+<a class="hover:text-primary" href="#">About Us</a>
+<a class="hover:text-primary" href="#">Community Rules</a>
+<a class="hover:text-primary" href="#">Safety</a>
+<a class="hover:text-primary" href="#">Terms</a>
+<a class="hover:text-primary" href="#">Privacy</a>
+</nav>
+<div class="flex gap-unit-md pt-unit-sm">
+<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-primary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">chat_bubble</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-primary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">share</span>
+</a>
+</div>
+<p class="text-label-sm font-label-sm text-outline mt-unit-md">
+                    © 2024 Campozy. Built for Nairobi Students.
+                </p>
+</div>
+</footer>
+</main>
+<script>
+        // Micro-interactions and Haptics Simulation
+        function handleGetStarted(event) {
+            const btn = event ? event.currentTarget : document.querySelector('button.bg-primary');
+            
+            // Check for navigator.vibrate availability
+            if ('vibrate' in navigator) {
+                navigator.vibrate(15);
+            }
+            
+            const originalContent = btn.innerHTML;
+            
+            btn.innerHTML = `
+                <span class="material-symbols-outlined animate-spin text-[20px]">refresh</span>
+                <span>Connecting...</span>
+            `;
+            btn.disabled = true;
+            btn.classList.add('opacity-80');
+
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+                btn.classList.remove('opacity-80');
+            }, 1500);
+        }
+
+        // Entrance animations for cards on scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }, 100 * (index % 3));
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const animElements = document.querySelectorAll('section > div, section > button');
+            animElements.forEach((el) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+                observer.observe(el);
+            });
+        });
+
+        // Simple header scroll behavior
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-sm', 'bg-background/95');
+            } else {
+                header.classList.remove('shadow-sm', 'bg-background/95');
+            }
+        });
+    </script>
+</body></html>

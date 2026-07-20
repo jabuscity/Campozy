@@ -2,11 +2,25 @@ import Link from 'next/link'
 import { SearchTrigger } from './search-trigger'
 import { Button } from './ui/button'
 import { createClient } from '@/lib/supabase/server'
-import { MessageSquare, Bell, User } from 'lucide-react'
+import { MessageSquare, Bell, User, Menu } from 'lucide-react'
 
 export async function Navbar() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+
+  const navItems = [
+    { href: '/', label: 'Home' },
+    { href: '/discovery', label: 'Housing' },
+    { href: '/campuses', label: 'Campuses' },
+    { href: '/universities', label: 'Universities' },
+    { href: '/neighborhoods', label: 'Neighborhoods' },
+    { href: '/community', label: 'Community' },
+    { href: '/opportunities', label: 'Opportunities' },
+    { href: '/businesses', label: 'Businesses' },
+    { href: '/founders', label: 'Founders' },
+    { href: '/alumni', label: 'Alumni' },
+    { href: '/profile', label: 'Profile' },
+  ]
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-neutral-200 bg-white/80 backdrop-blur-md">
@@ -21,22 +35,23 @@ export async function Navbar() {
             </span>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-2">
-            <NavLink href="/discovery">Housing</NavLink>
-            <NavLink href="/community">Community</NavLink>
-            <NavLink href="/opportunities">Opportunities</NavLink>
+          <div className="hidden lg:flex items-center gap-1">
+            {navItems.map((item) => (
+              <NavLink key={item.href} href={item.href}>{item.label}</NavLink>
+            ))}
           </div>
         </div>
 
         <div className="flex items-center gap-3">
           <SearchTrigger />
+          <MobileNav items={navItems} />
           {user ? (
             <>
-              <Button variant="ghost" size="icon" className="text-neutral-500 relative">
+              <Button variant="ghost" size="icon" className="text-neutral-500 relative hidden sm:flex">
                 <MessageSquare className="h-5 w-5" />
                 <span className="absolute top-2 right-2 h-1.5 w-1.5 rounded-full bg-secondary ring-2 ring-white" />
               </Button>
-              <Button variant="ghost" size="icon" className="text-neutral-500">
+              <Button variant="ghost" size="icon" className="text-neutral-500 hidden sm:flex">
                 <Bell className="h-5 w-5" />
               </Button>
               <Link href="/profile">
@@ -48,7 +63,7 @@ export async function Navbar() {
           ) : (
             <>
               <Link href="/login">
-                <Button variant="ghost" size="sm" className="font-bold">Sign In</Button>
+                <Button variant="ghost" size="sm" className="font-bold hidden sm:flex">Sign In</Button>
               </Link>
               <Link href="/signup">
                 <Button variant="primary" size="sm" className="hidden sm:inline-flex font-bold px-6">Join Network</Button>
@@ -61,13 +76,39 @@ export async function Navbar() {
   )
 }
 
+function MobileNav({ items }: { items: { href: string; label: string }[] }) {
+  return (
+    <details className="lg:hidden">
+      <summary className="list-none p-2 cursor-pointer text-neutral-500 hover:text-primary">
+        <Menu className="h-6 w-6" />
+      </summary>
+      <div className="absolute left-0 right-0 top-full bg-white border-b border-neutral-200 shadow-lg">
+        <div className="mx-auto max-w-7xl px-4 py-4">
+          <div className="grid grid-cols-2 gap-2">
+            {items.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="px-4 py-3 text-sm font-bold text-neutral-500 hover:text-primary hover:bg-neutral-50 rounded-xl transition-all uppercase tracking-tighter"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </details>
+  )
+}
+
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <Link 
-      href={href} 
+    <Link
+      href={href}
       className="px-4 py-2 text-sm font-bold text-neutral-500 hover:text-primary transition-all uppercase tracking-tighter"
     >
       {children}
     </Link>
   )
 }
+

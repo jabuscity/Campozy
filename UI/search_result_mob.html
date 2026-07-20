@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Campozy - Find Your Hostel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#a73400",
+                    "surface-container-highest": "#e2e1ed",
+                    "inverse-on-surface": "#f0f0fb",
+                    "primary": "#0037b0",
+                    "on-tertiary-fixed": "#390c00",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#b7c4ff",
+                    "on-secondary-fixed": "#2a1700",
+                    "on-primary-fixed": "#001551",
+                    "surface-dim": "#d9d9e5",
+                    "tertiary-fixed-dim": "#ffb59c",
+                    "on-surface": "#1a1b23",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "outline": "#747686",
+                    "primary-fixed": "#dce1ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#e8e7f3",
+                    "on-tertiary-fixed-variant": "#832700",
+                    "surface-bright": "#faf8ff",
+                    "on-tertiary-container": "#ffc9b7",
+                    "surface": "#faf8ff",
+                    "on-background": "#1a1b23",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "inverse-surface": "#2e3039",
+                    "background": "#faf8ff",
+                    "surface-container-low": "#f3f2fe",
+                    "on-error": "#ffffff",
+                    "tertiary": "#7f2500",
+                    "primary-container": "#1d4ed8",
+                    "secondary": "#855300",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed-variant": "#0039b5",
+                    "surface-tint": "#2151da",
+                    "secondary-container": "#fea619",
+                    "on-surface-variant": "#434655",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-container": "#684000",
+                    "on-primary-container": "#cad3ff",
+                    "surface-container": "#ededf9",
+                    "primary-fixed-dim": "#b7c4ff",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#ffddb8",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#e2e1ed",
+                    "outline-variant": "#c4c5d7",
+                    "tertiary-fixed": "#ffdbcf"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "columns": "12",
+                    "gutter": "24px",
+                    "unit-xs": "4px",
+                    "unit-lg": "24px",
+                    "margin": "48px",
+                    "unit-sm": "8px",
+                    "unit-md": "16px",
+                    "unit-xl": "32px",
+                    "section-gap": "64px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "label-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full bg-surface z-50 border-b border-outline-variant flex justify-between items-center px-gutter h-16">
+<div class="flex items-center gap-unit-md">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a smiling female African student in Nairobi, wearing academic attire with a soft-focus campus background. The lighting is bright and editorial, reflecting high trust and institutional reliability, consistent with a premium educational platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBE20alITA4Nq72e9YL_lMTaGOHzmm5NStz8QCoOz1cGX6eI74-VTq-Ao4xhbDw-nASg77XahWOdcchfEfjroFDrjT8W7xhmSmUviVlYz4T829lRBm2aUGeSSwkLezjx-I8q_zM6bjfYKkBp0EeyAJ_OY6YtRkZNW-IHMtQ548I2WaG0m5XY7oJwivfvpEQnDquCSE2iDtM8MsUHdXaVvZ5QLKDVtjWAt2mM2vWDlls1ET7MomdGAQOVw"/>
+</div>
+<h1 class="font-display-lg text-title-lg font-bold text-primary">Campozy</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full active:scale-95 duration-100">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<main class="pt-20 pb-24 px-unit-md max-w-md mx-auto">
+<!-- Search & Filter Section -->
+<section class="space-y-unit-md">
+<!-- Search Bar -->
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-4 text-outline">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none font-body-md" placeholder="Search hostels in Nairobi..." type="text" value="Nairobi"/>
+<button class="absolute right-4 text-primary font-label-md">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+<!-- Chips / Filters -->
+<div class="flex gap-unit-sm overflow-x-auto hide-scrollbar pb-unit-xs">
+<button class="flex items-center gap-1 px-4 py-2 bg-primary text-on-primary rounded-full font-label-md whitespace-nowrap shadow-sm">
+                    Price <span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+<button class="flex items-center gap-1 px-4 py-2 bg-surface-container-high text-on-surface-variant border border-outline-variant rounded-full font-label-md whitespace-nowrap transition-colors active:bg-primary-container active:text-on-primary-container">
+                    Verified Only <span class="material-symbols-outlined text-[18px]">verified</span>
+</button>
+<button class="flex items-center gap-1 px-4 py-2 bg-surface-container-high text-on-surface-variant border border-outline-variant rounded-full font-label-md whitespace-nowrap transition-colors">
+                    Near Campus
+                </button>
+</div>
+<!-- View Toggle & Results Count -->
+<div class="flex justify-between items-center py-unit-sm">
+<span class="font-label-md text-on-surface-variant">14 hostels found</span>
+<button class="flex items-center gap-unit-sm bg-secondary-container text-on-secondary-container px-4 py-2 rounded-lg font-label-md shadow-sm active:scale-95 transition-transform" id="mapToggle">
+<span class="material-symbols-outlined">map</span>
+                    Map View
+                </button>
+</div>
+</section>
+<!-- Hostel List -->
+<section class="mt-unit-md space-y-unit-lg">
+<!-- Card 1: Qwetu Aberdare -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm transition-all hover:shadow-md active:scale-[0.98]">
+<div class="relative h-48">
+<img class="w-full h-full object-cover" data-alt="A modern, architectural exterior view of Qwetu Aberdare hostel in Nairobi. The building features sleek glass panels, wood accents, and lush landscaping. The scene is shot during the golden hour, providing a warm, luxurious glow that emphasizes corporate quality and student reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFl3weDJLijvR5nWvb9M6xqSOhsklsd8UTymdk-LyZeVvhdLm4mz2KsZnzRb2gZp3WXkgawpoQ95OQPwYnhIW6lvzbHlpePDGIqe_XqDUpfeW1ZbUHwtJdDK4HsE6F1cge8_S30YJW3xw7JIp6FbYQgexhL2zxmYvhSQY8cR4WTV7cPGFkZ6KPcbhyd9FPBcXj_FXauRijUzNnS4_Kk8ao9aBlqnF53Qov7IGTDlQsKs34jnmEeiMR6Q"/>
+<div class="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2 py-1 rounded-lg flex items-center gap-1 border border-outline-variant">
+<span class="text-primary font-bold text-label-md">9.8</span>
+<span class="text-on-surface-variant text-[10px] uppercase font-bold">Campozy Score</span>
+</div>
+</div>
+<div class="p-unit-md space-y-unit-sm">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-title-lg text-on-surface flex items-center gap-1">
+                                Qwetu Aberdare
+                                <span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</h3>
+<p class="font-body-sm text-on-surface-variant">Thika Road, near KCA University</p>
+</div>
+<div class="text-right">
+<span class="block font-headline-md text-primary">KSh 18,500</span>
+<span class="text-label-sm text-outline">per month</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-unit-sm">
+<span class="flex items-center gap-1 text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded border border-outline-variant">
+<span class="material-symbols-outlined text-[16px]">wifi</span> High-speed WiFi
+                        </span>
+<span class="flex items-center gap-1 text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded border border-outline-variant">
+<span class="material-symbols-outlined text-[16px]">fitness_center</span> Gym
+                        </span>
+</div>
+</div>
+</div>
+<!-- Card 2: Acacia Residences -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm transition-all hover:shadow-md active:scale-[0.98]">
+<div class="relative h-48">
+<img class="w-full h-full object-cover" data-alt="An interior shot of a contemporary student residence at Acacia Residences in Nairobi. The room is bright with large windows, featuring minimalist furniture, organized study desks, and premium finishes. The editorial photography style uses high-key lighting to suggest cleanliness and professional management." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkxMBCTQBRLT5V5AD2CawQfccHvBE5PEFbj_MvykWmOdPltmqn3YUVlj1231EdR8sTNICHWGzHFIbSqE7DrabSPIFZaUn0oMFn972Lqzq_UUfRkGfULuYK44LovGzp0clE9eqw5xx44fbDkn52nIEA8KafkXAdT7WO3khe7lpeFM1Y9BZ48PVECyQSgPyDgmvvm1FWq6o1Jc7A3QJR0wM7JL4nBR3xqK_RW5ExokEuB6LxdXXh2i31fQ"/>
+<div class="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2 py-1 rounded-lg flex items-center gap-1 border border-outline-variant">
+<span class="text-primary font-bold text-label-md">9.4</span>
+<span class="text-on-surface-variant text-[10px] uppercase font-bold">Campozy Score</span>
+</div>
+</div>
+<div class="p-unit-md space-y-unit-sm">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-title-lg text-on-surface flex items-center gap-1">
+                                Acacia Residences
+                                <span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</h3>
+<p class="font-body-sm text-on-surface-variant">Madaraka, near Strathmore University</p>
+</div>
+<div class="text-right">
+<span class="block font-headline-md text-primary">KSh 15,000</span>
+<span class="text-label-sm text-outline">per month</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-unit-sm">
+<span class="flex items-center gap-1 text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded border border-outline-variant">
+<span class="material-symbols-outlined text-[16px]">security</span> 24/7 Security
+                        </span>
+<span class="flex items-center gap-1 text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded border border-outline-variant">
+<span class="material-symbols-outlined text-[16px]">local_cafe</span> Study Lounge
+                        </span>
+</div>
+</div>
+</div>
+<!-- Card 3: Westside Heights -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm transition-all hover:shadow-md active:scale-[0.98]">
+<div class="relative h-48">
+<img class="w-full h-full object-cover" data-alt="A vibrant student community area at Westside Heights, showing students interacting in a clean, modern common room with colorful seating and professional wall art. The atmosphere is social yet orderly, captured with professional architectural photography techniques and balanced natural light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCt6RzQNkuOf0e1e5Kcy7ujxdKICFLbd9J5LgRIkTl3wBbu3QLArJoWIQkW6iZKq7IG6fCU472YGNIGzwEJz2jVXGReMAL1jMsvztuLuYsTUouWfshgJ-A7EPj-hNzfJ6Bvi-kjX6v7hidt0WdKRHxD_ygrCvFwVSeEv999SVuZFFytgZP0jB-zTJecwbIuEw44WMSkFdEpC_6AgPZJhNGrBoHO1OdlyZK0xBYZ4p9RgVZZEXo3eIdtoA"/>
+<div class="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2 py-1 rounded-lg flex items-center gap-1 border border-outline-variant">
+<span class="text-primary font-bold text-label-md">8.9</span>
+<span class="text-on-surface-variant text-[10px] uppercase font-bold">Campozy Score</span>
+</div>
+</div>
+<div class="p-unit-md space-y-unit-sm">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-title-lg text-on-surface flex items-center gap-1">
+                                Westside Heights
+                                <span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</h3>
+<p class="font-body-sm text-on-surface-variant">Parklands, near UoN Chiromo</p>
+</div>
+<div class="text-right">
+<span class="block font-headline-md text-primary">KSh 12,000</span>
+<span class="text-label-sm text-outline">per month</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-unit-sm">
+<span class="flex items-center gap-1 text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded border border-outline-variant">
+<span class="material-symbols-outlined text-[16px]">shuffle_on</span> Shuttle Service
+                        </span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-unit-sm pb-4 pt-2 bg-surface-container shadow-md rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-150 px-3 py-1" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">apartment</span>
+<span class="font-label-sm text-label-sm">Hostels</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-150 px-3 py-1" href="#">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-label-sm text-label-sm">Report</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-150 px-3 py-1" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-sm text-label-sm">Community</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-150 px-3 py-1" href="#">
+<span class="material-symbols-outlined">work</span>
+<span class="font-label-sm text-label-sm">Opportunities</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for the map toggle
+        const mapToggle = document.getElementById('mapToggle');
+        mapToggle.addEventListener('click', () => {
+            const icon = mapToggle.querySelector('.material-symbols-outlined');
+            if (icon.textContent === 'map') {
+                icon.textContent = 'list';
+                mapToggle.innerHTML = `<span class="material-symbols-outlined">list</span> List View`;
+            } else {
+                icon.textContent = 'map';
+                mapToggle.innerHTML = `<span class="material-symbols-outlined">map</span> Map View`;
+            }
+        });
+
+        // Add subtle parallax-ish effect to cards on scroll
+        window.addEventListener('scroll', () => {
+            const cards = document.querySelectorAll('main > section:last-of-type > div');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const visible = rect.top < window.innerHeight && rect.bottom > 0;
+                if (visible) {
+                    const speed = 0.05;
+                    const yPos = -(rect.top * speed);
+                    const img = card.querySelector('img');
+                    if(img) img.style.transform = `translateY(${yPos}px)`;
+                }
+            });
+        });
+    </script>
+</body></html>

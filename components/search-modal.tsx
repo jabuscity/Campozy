@@ -2,7 +2,6 @@
 
 import * as React from 'react'
 import { Search, X, MapPin, Building, GraduationCap, ArrowRight, ShieldCheck } from 'lucide-react'
-import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'

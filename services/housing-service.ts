@@ -32,7 +32,7 @@ export const HousingService = {
 
     if (neighborhoodIds.length === 0) return []
 
-    let query = supabase
+    let dbQuery = supabase
       .from('properties')
       .select(`
       *,
@@ -45,21 +45,21 @@ export const HousingService = {
       .eq('is_active', true)
 
     if (options?.sort === 'price_asc') {
-      query = query.order('price_per_month', { ascending: true })
+      dbQuery = dbQuery.order('price_per_month', { ascending: true })
     } else if (options?.sort === 'latest') {
-      query = query.order('created_at', { ascending: false })
-    } else { // Default to highest reputation score
-      query = query.order('reputation_score', { ascending: false })
+      dbQuery = dbQuery.order('created_at', { ascending: false })
+    } else {
+      dbQuery = dbQuery.order('reputation_score', { ascending: false })
     }
 
     // Updated to use reputation_score instead of campozy_score
-    if (options?.minScore) query = query.gte('reputation_score', options.minScore)
+    if (options?.minScore) dbQuery = dbQuery.gte('reputation_score', options.minScore)
 
     // Note: We are bypassing verifiedOnly filter for now until your verification status column names are cross-referenced
-    if (options?.limit) query = query.limit(options.limit)
-    if (options?.offset) query = query.range(options.offset, options.offset + (options.limit || 20) - 1)
+    if (options?.limit) dbQuery = dbQuery.limit(options.limit)
+    if (options?.offset) dbQuery = dbQuery.range(options.offset, options.offset + (options.limit || 20) - 1)
 
-    const { data, error } = await query
+    const { data, error } = await dbQuery
     if (error) throw new Error(`Failed to fetch properties: ${error.message}`)
     return data as Property[]
   },
@@ -89,6 +89,29 @@ export const HousingService = {
     const { data, error } = await query
     if (error) throw new Error(`Failed to fetch campuses: ${error.message}`)
     return data as Campus[]
+  },
+
+  async getUniversities() {
+    const supabase = await createClient()
+    const query = supabase
+      .from('universities')
+      .select('*, countries(name)')
+      .order('name')
+
+    const { data, error } = await query
+    if (error) throw new Error(`Failed to fetch universities: ${error.message}`)
+    return data as unknown as University[]
+  },
+
+  async getNeighborhoods() {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from('neighborhoods')
+      .select('*, cities(name, countries(name))')
+      .order('name')
+
+    if (error) throw new Error(`Failed to fetch neighborhoods: ${error.message}`)
+    return data as unknown as import('@/types').Neighborhood[]
   },
 
   // ── Neighborhoods ────────────────────────────────────────────────────────

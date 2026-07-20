@@ -1,0 +1,376 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Campozy | Student Hostel Search Nairobi</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#f3f2fe",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "surface-bright": "#faf8ff",
+                    "outline-variant": "#c4c5d7",
+                    "on-secondary-fixed": "#2a1700",
+                    "on-primary-fixed-variant": "#0039b5",
+                    "on-background": "#1a1b23",
+                    "on-primary-fixed": "#001551",
+                    "surface-container": "#ededf9",
+                    "inverse-on-surface": "#f0f0fb",
+                    "on-primary-container": "#cad3ff",
+                    "outline": "#747686",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb59c",
+                    "surface-variant": "#e2e1ed",
+                    "inverse-surface": "#2e3039",
+                    "on-tertiary-fixed": "#390c00",
+                    "surface-dim": "#d9d9e5",
+                    "on-error-container": "#93000a",
+                    "tertiary": "#7f2500",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-highest": "#e2e1ed",
+                    "primary-container": "#1d4ed8",
+                    "on-secondary-container": "#684000",
+                    "tertiary-container": "#a73400",
+                    "surface": "#faf8ff",
+                    "on-error": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "primary": "#0037b0",
+                    "primary-fixed-dim": "#b7c4ff",
+                    "on-surface": "#1a1b23",
+                    "error-container": "#ffdad6",
+                    "primary-fixed": "#dce1ff",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#ffddb8",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "surface-container-high": "#e8e7f3",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#434655",
+                    "on-tertiary-fixed-variant": "#832700",
+                    "on-tertiary-container": "#ffc9b7",
+                    "tertiary-fixed": "#ffdbcf",
+                    "secondary-container": "#fea619",
+                    "inverse-primary": "#b7c4ff",
+                    "surface-tint": "#2151da",
+                    "secondary": "#855300",
+                    "background": "#faf8ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin": "48px",
+                    "section-gap": "64px",
+                    "unit-xs": "4px",
+                    "unit-sm": "8px",
+                    "unit-md": "16px",
+                    "columns": "12",
+                    "unit-lg": "24px",
+                    "unit-xl": "32px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "label-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #faf8ff;
+            color: #1a1b23;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f3f2fe;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c4c5d7;
+            border-radius: 10px;
+        }
+        .matrix-transition {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+        }
+    </style>
+</head>
+<body class="bg-background">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin h-20 bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex items-center gap-8">
+<div class="text-title-lg font-title-lg font-black text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">auto_awesome</span>
+<span class="">Campozy</span>
+</div>
+<nav class="hidden md:flex gap-unit-lg">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors text-label-md font-label-md" href="#">Community</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 text-label-md font-label-md" href="#">Hostels</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors text-label-md font-label-md" href="#">Opportunities</a>
+</nav>
+</div>
+<div class="flex items-center gap-unit-lg">
+<div class="relative hidden lg:block">
+<input class="w-80 bg-surface-container-low border border-outline-variant rounded-lg px-unit-md py-unit-sm text-body-md font-body-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Search by University or Area..." type="text" value="Westlands, Nairobi">
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-outline">search</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-10 h-10 rounded-full border border-primary-container p-0.5">
+<img alt="Student Profile" class="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChaHx6cyxW__IQDlXB-7OwvaO4vL7GM_OkP6sMgFR0WhqUH7OQrAl8idY-TCTDvHPQyjrq-ySm5J3BG3fPOkC86UgyuqEDz4NQ3hqWY_Fa-Y0AJBNS1ROj6DrpbAd1E-mnuIAaPd3Vs5Lydnag13_FcJiPxkrK5pZy2JI7zLadK6TH3KySCodSWHPe3-jN5GIdpoGVREyqT_7QlboEPRiAZl5jZ-aIni8XWjrhW-7-fACk7w1TFlubCQ">
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content: Dual-Pane Layout -->
+<main class="pt-20 flex min-h-screen">
+<!-- Left Pane: Interactive Map (45%) -->
+<section class="hidden lg:block w-[45%] sticky top-20 h-[calc(100vh-80px)] border-r border-outline-variant bg-surface-dim overflow-hidden">
+<div class="absolute inset-0 bg-surface-container-highest flex items-center justify-center">
+<!-- Simulated Map -->
+<div class="relative w-full h-full bg-[#e5e7eb] overflow-hidden">
+<img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPb1zNUY8i_T-5ztF3v64nEL41bNw4xF4WuBDiJBBkL8RFJo9KjLwiWOZG9CMTfpu7sEKFUR6x7pzL-QDwWVm-70LIdwGgPxTsv-5lcOr9ssuTLOIWbUy4bhOGB5eB3Vy2lobNGlU6CG-17s8A6r9WEdbxD9QkD1aNt6w_lYgjUdG5PTGZLpMb6bvbYqOX2cP3PVAC5-7nvGDMiZIdRkd2HYtlsi2gZKRl3zxSHsGRI-_DFYZPIgfDqg" alt="Nairobi Student Housing Map" class="absolute inset-0 w-full h-full object-cover">
+<!-- Area Pins -->
+<div class="absolute top-[30%] left-[40%] bg-primary text-white px-3 py-1 rounded-full text-label-sm shadow-lg flex items-center gap-1 cursor-pointer hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[14px]">location_on</span> Westlands
+                </div>
+<div class="absolute top-[60%] left-[55%] bg-primary text-white px-3 py-1 rounded-full text-label-sm shadow-lg flex items-center gap-1 cursor-pointer hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[14px]">location_on</span> Madaraka
+                </div>
+<div class="absolute top-[20%] left-[75%] bg-primary text-white px-3 py-1 rounded-full text-label-sm shadow-lg flex items-center gap-1 cursor-pointer hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[14px]">location_on</span> Juja
+                </div>
+<!-- Map Marker Tooltip Example -->
+<div class="absolute top-[35%] left-[25%] bg-white p-2 rounded-lg shadow-xl border border-primary/20 w-48 pointer-events-none">
+<img alt="Hostel preview" class="w-full h-20 object-cover rounded-md mb-unit-xs" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4HEzFKMSYk4rph1hzUduJs477Wbj4AWDWN14IwGypNn8r_hUmhGHX9GVjiKdwKu1gfMo7Ttdxp0oRkhsOnVAytBRd07ScjdRp1qAoMN019r0Bh6xmEDo4iojFHrb_vPGO-CBYGrBOzNX405rP5Wof7u2P37SS4cSt0RmjC0KyfWQyH69DUavFW5OjcEXPDD2O-FIvJoA3Q1aBEb-JMA9FdHxAOLPDsYr6AwwUBLRMbrrEtf6w-KWWoA">
+<p class="text-label-sm font-bold truncate">Qwetu Hostels</p>
+<p class="text-[10px] text-outline">KSh 18,500/mo</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Pane: Hostel Listings (55%) -->
+<section class="flex-1 overflow-y-auto custom-scrollbar bg-surface px-unit-lg py-unit-xl">
+<div class="max-w-4xl mx-auto">
+<!-- Filter Pills -->
+<div class="flex items-center gap-unit-md mb-unit-xl overflow-x-auto pb-2 scrollbar-hide">
+<button class="bg-primary text-white px-unit-md py-unit-sm rounded-full text-label-md font-medium whitespace-nowrap">All Hostels</button>
+<button class="bg-surface-container border border-outline-variant px-unit-md py-unit-sm rounded-full text-label-md font-medium hover:bg-surface-container-high transition-colors whitespace-nowrap">Price Range</button>
+<button class="bg-surface-container border border-outline-variant px-unit-md py-unit-sm rounded-full text-label-md font-medium hover:bg-surface-container-high transition-colors whitespace-nowrap">Distance to Campus</button>
+<button class="bg-surface-container border border-outline-variant px-unit-md py-unit-sm rounded-full text-label-md font-medium hover:bg-surface-container-high transition-colors whitespace-nowrap">Amenities</button>
+</div>
+<!-- Verified Hostels Section -->
+<div class="mb-unit-xl">
+<div class="flex items-center justify-between mb-unit-lg">
+<h2 class="text-headline-md font-headline-md">Verified Hostels</h2>
+<a class="text-primary text-label-md font-bold hover:underline" href="#">View All</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-unit-lg">
+<!-- Hostel Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:shadow-lg transition-shadow group">
+<div class="relative h-48">
+<img alt="Qwetu Student Residences" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiCxm1Wv76qfPvzdDztuiPFhkQaC9jAgAlIT5yvHPf6vkghG2M8hDYCWi_WJEbwnRzDYtSDWUeYbX52GBE-6n373caDkvEWji6Kv_MnirQ2he_7sq5sd9E4R7gwE6jyoS2lc3zjIodEv3kOdK4xqQOWcVZGxuPxlnVEeSSU-F0aBpxBzuf4m9FjoqSMUdtbdGnCHwiiCAY7fSIulpmft2poN_NuZce_DI_CBHisXG21yG6CQ1_NBV7Pg">
+<div class="absolute top-3 right-3 bg-white/90 backdrop-blur px-2 py-1 rounded text-[10px] font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-green-600 text-[14px]" style="font-variation-settings: &quot;FILL&quot; 1;">verified</span>
+                                VERIFIED
+                            </div>
+<div class="absolute bottom-3 left-3 bg-primary text-white px-3 py-1 rounded-full text-label-sm">
+                                KSh 18,500/mo
+                            </div>
+</div>
+<div class="p-unit-md">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-title-lg font-bold">Qwetu Aberdare</h3>
+<div class="bg-secondary-container/20 text-secondary px-2 py-0.5 rounded text-[10px] font-bold">
+                                    Score: 4.8/5
+                                </div>
+</div>
+<p class="text-body-sm text-outline mb-unit-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span> Westlands, Nairobi
+                            </p>
+<div class="flex gap-2 mb-unit-md">
+<span class="bg-surface-container-low text-[10px] px-2 py-1 rounded text-on-surface-variant font-medium">Free WiFi</span>
+<span class="bg-surface-container-low text-[10px] px-2 py-1 rounded text-on-surface-variant font-medium">Gym</span>
+<span class="bg-surface-container-low text-[10px] px-2 py-1 rounded text-on-surface-variant font-medium">Backup Generator</span>
+</div>
+<button class="w-full py-2 bg-primary text-white rounded-lg text-label-md font-bold hover:bg-primary/90 transition-colors">Book Now</button>
+</div>
+</div>
+<!-- Hostel Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:shadow-lg transition-shadow group">
+<div class="relative h-48">
+<img alt="Acacia Grove Residences" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_njMfmvYfS_PvCN15kBS1CKoCAE-wgFRaFAC0GOPqUpldnSpH107vQVv6UyvZFp0Q0sRGOC0AHUpQ9MJeseb90pCS9O5m_m3f0_QLy9O2-h1RuapUw6ezH9bfMmWZy7A-y8ef2uxKZdlb9JACsfl41mmCVf1_hFiWWlnsyCblVRDcajl_5wCkCmL0iOHt_goqN9bqJBTVuVIHJunrgjh5ieyJY8mvnUFELS17Tdbk2LRLwFKNEX9wDw">
+<div class="absolute top-3 right-3 bg-white/90 backdrop-blur px-2 py-1 rounded text-[10px] font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-green-600 text-[14px]" style="font-variation-settings: &quot;FILL&quot; 1;">verified</span>
+                                VERIFIED
+                            </div>
+<div class="absolute bottom-3 left-3 bg-primary text-white px-3 py-1 rounded-full text-label-sm">
+                                KSh 12,000/mo
+                            </div>
+</div>
+<div class="p-unit-md">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-title-lg font-bold">Acacia Residences</h3>
+<div class="bg-secondary-container/20 text-secondary px-2 py-0.5 rounded text-[10px] font-bold">
+                                    Score: 4.5/5
+                                </div>
+</div>
+<p class="text-body-sm text-outline mb-unit-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span> Madaraka, near Strathmore
+                            </p>
+<div class="flex gap-2 mb-unit-md">
+<span class="bg-surface-container-low text-[10px] px-2 py-1 rounded text-on-surface-variant font-medium">Quiet Study Area</span>
+<span class="bg-surface-container-low text-[10px] px-2 py-1 rounded text-on-surface-variant font-medium">Laundry</span>
+</div>
+<button class="w-full py-2 bg-primary text-white rounded-lg text-label-md font-bold hover:bg-primary/90 transition-colors">Book Now</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Student Residences Section -->
+<div class="mb-unit-xl">
+<div class="flex items-center justify-between mb-unit-lg">
+<h2 class="text-headline-md font-headline-md">Student Residences</h2>
+<a class="text-primary text-label-md font-bold hover:underline" href="#">View All</a>
+</div>
+<div class="space-y-unit-md">
+<!-- List Item 1 -->
+<div class="flex flex-col sm:flex-row bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden hover:bg-surface-container transition-colors p-unit-sm gap-unit-md">
+<img alt="JKUAT Area Hostel" class="w-full sm:w-40 h-32 object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCml45jHApjlLrwQrmlO9D-v41UlhmRnb-pewe-CbF-x23p8R4dbzVDv6Pb3T1zbT2hVknXFcAtlzphD2QibHvQP_8Px59StRNtmwML0JnOcBOuLoRiAnN8sypjzXXcjpjeD3ZHRTb-zOlDRZsQTMAXXnnpuRaBmASeg74iRPdEduDsLCMJBDePot8HrAh8XVB22pipEbGIB-1hvmaanQSRahuSlvgKvTFTE_AdzSwq0jsIM-wqs2wIig">
+<div class="flex-1 flex flex-col justify-between py-1">
+<div>
+<div class="flex justify-between items-center mb-1">
+<h4 class="text-body-lg font-bold">Juja Premier Hostels</h4>
+<span class="text-primary font-bold text-label-md">KSh 9,500/mo</span>
+</div>
+<p class="text-body-sm text-on-surface-variant mb-2">3 min walk from JKUAT Gate B. All ensuite rooms with kitchenette.</p>
+<div class="flex items-center gap-3">
+<span class="text-[12px] font-bold text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span> 4.2 Score
+                                    </span>
+<span class="text-[12px] text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">bolt</span> Water &amp; Electricity incl.
+                                    </span>
+</div>
+</div>
+<div class="flex justify-end gap-2 mt-2">
+<button class="px-4 py-1.5 border border-primary text-primary rounded-lg text-label-sm font-bold hover:bg-primary/5 transition-colors">Details</button>
+<button class="px-4 py-1.5 bg-primary text-white rounded-lg text-label-sm font-bold hover:bg-primary/90 transition-colors">Contact</button>
+</div>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="flex flex-col sm:flex-row bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden hover:bg-surface-container transition-colors p-unit-sm gap-unit-md">
+<img alt="UoN Area Hostel" class="w-full sm:w-40 h-32 object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlz5IqzvQy4dPfgq4veKlNjtEgrxVym9kCv1SeAssuYZ_WDm1Vbs7cyLK6iCFcmbaoACnZ_MsGIJSPON76ImpUvQtw6W6KI9RZ8dFeBo_bftxCXa2y9gtIeliFgjVbCD9qaW4RQD6Oc079CNxB3-dqhm8jN693OtXpN7lcqUfRCiSMBIWYhK2KeNxD0XQ-a2molJ7-en0OU04UupQrZpGnuz1vCls-hUaVAzfxOO7PV-w8EHVCN4BtAw">
+<div class="flex-1 flex flex-col justify-between py-1">
+<div>
+<div class="flex justify-between items-center mb-1">
+<h4 class="text-body-lg font-bold">CBD Executive Suites</h4>
+<span class="text-primary font-bold text-label-md">KSh 15,000/mo</span>
+</div>
+<p class="text-body-sm text-on-surface-variant mb-2">Prime location for University of Nairobi students. 24/7 Security.</p>
+<div class="flex items-center gap-3">
+<span class="text-[12px] font-bold text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span> 4.6 Score
+                                    </span>
+<span class="text-[12px] text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified_user</span> 24/7 Guard
+                                    </span>
+</div>
+</div>
+<div class="flex justify-end gap-2 mt-2">
+<button class="px-4 py-1.5 border border-primary text-primary rounded-lg text-label-sm font-bold hover:bg-primary/5 transition-colors">Details</button>
+<button class="px-4 py-1.5 bg-primary text-white rounded-lg text-label-sm font-bold hover:bg-primary/90 transition-colors">Contact</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Design System Footer -->
+
+</section>
+</main>
+
+
+<footer class="border-t border-outline-variant pt-unit-xl pb-unit-lg bg-surface-container-lowest">
+<div class="px-margin">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-unit-xl mb-unit-xl">
+<div class="col-span-1 md:col-span-1">
+<div class="text-title-lg font-black text-primary flex items-center gap-2 mb-unit-md">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">auto_awesome</span>
+<span class="">Campozy</span>
+</div>
+<p class="text-body-sm text-on-surface-variant">Elevating student living through community, verified housing, and career opportunities.</p>
+</div>
+<div>
+<h5 class="font-bold text-on-surface mb-unit-md">Housing</h5>
+<ul class="space-y-2 text-body-sm text-on-surface-variant">
+<li class=""><a class="hover:text-primary" href="#">Search Hostels</a></li>
+<li class=""><a class="hover:text-primary" href="#">Verified Properties</a></li>
+<li class=""><a class="hover:text-primary" href="#">Hostel Reviews</a></li>
+<li class=""><a class="hover:text-primary" href="#">Roommate Finder</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-on-surface mb-unit-md">Company</h5>
+<ul class="space-y-2 text-body-sm text-on-surface-variant">
+<li class=""><a class="hover:text-primary" href="#">About Us</a></li>
+<li class=""><a class="hover:text-primary" href="#">Partnerships</a></li>
+<li class=""><a class="hover:text-primary" href="#">Careers</a></li>
+<li class=""><a class="hover:text-primary" href="#">Privacy Policy</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-on-surface mb-unit-md">Support</h5>
+<ul class="space-y-2 text-body-sm text-on-surface-variant">
+<li class=""><a class="hover:text-primary" href="#">Help Center</a></li>
+<li class=""><a class="hover:text-primary" href="#">Safety Guidelines</a></li>
+<li class=""><a class="hover:text-primary" href="#">Contact Support</a></li>
+<li class="flex gap-4 mt-unit-md">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">facebook</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">alternate_email</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">share</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="text-center text-label-sm text-outline border-t border-outline-variant/30 pt-unit-md">
+                © 2024 Campozy. All rights reserved. Built for Nairobi students.
+            </div>
+</div>
+</footer></body></html>

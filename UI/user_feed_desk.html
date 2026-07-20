@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Campozy | Nairobi Student Hostels &amp; Reputation Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #faf8ff;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c4c5d7;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #747686;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-low": "#f3f2fe",
+                      "on-secondary-fixed-variant": "#653e00",
+                      "surface-bright": "#faf8ff",
+                      "outline-variant": "#c4c5d7",
+                      "on-secondary-fixed": "#2a1700",
+                      "on-primary-fixed-variant": "#0039b5",
+                      "on-background": "#1a1b23",
+                      "on-primary-fixed": "#001551",
+                      "surface-container": "#ededf9",
+                      "inverse-on-surface": "#f0f0fb",
+                      "on-primary-container": "#cad3ff",
+                      "outline": "#747686",
+                      "on-primary": "#ffffff",
+                      "tertiary-fixed-dim": "#ffb59c",
+                      "surface-variant": "#e2e1ed",
+                      "inverse-surface": "#2e3039",
+                      "on-tertiary-fixed": "#390c00",
+                      "surface-dim": "#d9d9e5",
+                      "on-error-container": "#93000a",
+                      "tertiary": "#7f2500",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-highest": "#e2e1ed",
+                      "primary-container": "#1d4ed8",
+                      "on-secondary-container": "#684000",
+                      "tertiary-container": "#a73400",
+                      "surface": "#faf8ff",
+                      "on-error": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "primary": "#0037b0",
+                      "primary-fixed-dim": "#b7c4ff",
+                      "on-surface": "#1a1b23",
+                      "error-container": "#ffdad6",
+                      "primary-fixed": "#dce1ff",
+                      "error": "#ba1a1a",
+                      "secondary-fixed": "#ffddb8",
+                      "secondary-fixed-dim": "#ffb95f",
+                      "surface-container-high": "#e8e7f3",
+                      "surface-container-lowest": "#ffffff",
+                      "on-surface-variant": "#434655",
+                      "on-tertiary-fixed-variant": "#832700",
+                      "on-tertiary-container": "#ffc9b7",
+                      "tertiary-fixed": "#ffdbcf",
+                      "secondary-container": "#fea619",
+                      "inverse-primary": "#b7c4ff",
+                      "surface-tint": "#2151da",
+                      "secondary": "#855300",
+                      "background": "#faf8ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin": "48px",
+                      "section-gap": "64px",
+                      "unit-xs": "4px",
+                      "unit-sm": "8px",
+                      "unit-md": "16px",
+                      "columns": "12",
+                      "unit-lg": "24px",
+                      "unit-xl": "32px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "label-md": ["Inter"],
+                      "body-md": ["Inter"],
+                      "title-lg": ["Inter"],
+                      "label-sm": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background overflow-x-hidden min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin h-20 bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex items-center gap-unit-md">
+<span class="text-title-lg font-black text-primary flex items-center gap-2">
+<span class="material-symbols-outlined fill-icon" style="font-variation-settings: 'FILL' 1;">shield</span>
+            Campozy
+        </span>
+</div>
+<div class="hidden md:flex flex-1 max-w-md mx-unit-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-unit-sm top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container rounded-full border-none focus:ring-2 focus:ring-primary text-body-md" placeholder="Search Nairobi communities..." type="text"/>
+</div>
+</div>
+<nav class="hidden md:flex items-center gap-unit-lg">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 text-label-md" href="#">Community</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors text-label-md" href="#">Student Hostels</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors text-label-md" href="#">Opportunities</a>
+</nav>
+<div class="flex items-center gap-unit-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">help</button>
+<div class="h-10 w-10 rounded-full bg-primary-fixed overflow-hidden border border-outline-variant">
+<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO3nrTRqvAvXltS9g-GcQiVlPhCEXP-5mpRpK6dgzbKBLgMdE6JYZ0sQOhm52f0EvVb3sbpgHehNal-AfEVXuBNKegOsmddKQLDlkwk_dXBfE1Pr6O8Dzu9MgsQOREVr-K0ogrS3QdkHVGGWnlzuBzyzkY6d9NiJDypeox5WTqgcmnKrhYgoMrPYBu-E2LRc1jXRMbYU1jVHKn6BNzBNQv9djYkdVh-sO_rjlFDpbAWwbFGtb011TMgg"/>
+</div>
+</div>
+</header>
+<!-- Sidebar (Desktop Only) -->
+<aside class="fixed left-0 top-20 h-[calc(100vh-80px)] w-64 bg-surface-bright border-r border-outline-variant hidden lg:flex flex-col py-unit-xl px-unit-md gap-unit-md">
+<div class="flex flex-col gap-unit-sm mb-unit-lg">
+<div class="flex items-center gap-unit-sm p-unit-sm">
+<div class="h-12 w-12 rounded-xl bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined fill-icon" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<div>
+<h3 class="font-title-lg text-on-surface">Reputation</h3>
+<p class="text-label-sm text-primary font-bold">Lvl 4 Campus Expert</p>
+</div>
+</div>
+</div>
+<nav class="flex flex-col gap-unit-xs">
+<a class="flex items-center gap-unit-sm p-unit-sm bg-primary-container text-on-primary-container font-semibold rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-label-md">Community</span>
+</a>
+<a class="flex items-center gap-unit-sm p-unit-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">home_work</span>
+<span class="text-label-md">Student Hostels</span>
+</a>
+<a class="flex items-center gap-unit-sm p-unit-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="text-label-md">Opportunities</span>
+</a>
+</nav>
+<div class="mt-auto flex flex-col gap-unit-xs">
+<button class="w-full bg-primary text-on-primary py-3 rounded-lg text-label-md font-bold mb-unit-md hover:opacity-90 transition-opacity">Post Update</button>
+<a class="flex items-center gap-unit-sm p-unit-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-label-md">Settings</span>
+</a>
+<a class="flex items-center gap-unit-sm p-unit-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="text-label-md">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="lg:pl-64 pt-20 flex-grow">
+<div class="max-w-7xl mx-auto px-margin py-unit-xl grid grid-cols-12 gap-gutter">
+<!-- Left Column: Feed -->
+<div class="col-span-12 md:col-span-8 flex flex-col gap-unit-xl">
+<!-- Welcome Section -->
+<section>
+<h1 class="text-headline-lg text-on-surface mb-unit-xs">Reputation Feed</h1>
+<p class="text-body-md text-on-surface-variant">Stay updated with trusted campus insights and professional opportunities in Nairobi.</p>
+</section>
+<!-- Discussion Feed -->
+<div class="flex flex-col gap-unit-lg">
+<!-- Muthoni's Post -->
+<article class="bg-surface-container-lowest rounded-xl border border-outline-variant p-unit-lg shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-unit-md">
+<div class="flex items-center gap-unit-sm">
+<div class="h-10 w-10 rounded-full bg-secondary-fixed overflow-hidden">
+<img alt="Muthoni W." class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMS09bb6zy1NMEYfoSZfek4vyHepEU9sg0RUTus8UwWfLdlIMFmjjihh5HtCwI9ajwS6gK2x43KgpU6m_dEXRbTCWayptbQcBkv_zRS5KMKjearfnIhBBHHUbyySEhSs6Qw59VcQenGtbfd5wc1rMvfpdE-4zrUTpJYej_YFWnvJ1VcxNuV3DuqIkiQ9jz2FeLdvZFRQUSOk2s-lzbeD0Abfjme-zLjvTajg_1mzpo9XHNYk4bO90Anw"/>
+</div>
+<div>
+<h4 class="text-label-md font-bold text-on-surface">Muthoni W.</h4>
+<p class="text-label-sm text-on-surface-variant">Hostel Resident • 45m ago</p>
+</div>
+</div>
+<div class="bg-secondary-container text-on-secondary-container px-unit-sm py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+<span class="text-label-sm font-bold uppercase tracking-wider">Alert</span>
+</div>
+</div>
+<h3 class="text-title-lg text-on-surface mb-unit-sm">Matatu strike impact on campus commute</h3>
+<p class="text-body-md text-on-surface-variant mb-unit-md">
+                        Heads up guys, the matatus heading to the main gate are currently on strike. If you have a 9 AM class, you might want to start trekking now or find an alternative route. Stay safe!
+                    </p>
+<div class="flex items-center gap-unit-lg border-t border-outline-variant pt-unit-md">
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">thumb_up</span>
+<span class="text-label-md">42</span>
+</button>
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">comment</span>
+<span class="text-label-md">15 Comments</span>
+</button>
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors ml-auto">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+</article>
+<!-- Otieno's Post -->
+<article class="bg-surface-container-lowest rounded-xl border border-outline-variant p-unit-lg shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-unit-md">
+<div class="flex items-center gap-unit-sm">
+<div class="h-10 w-10 rounded-full bg-primary-fixed overflow-hidden">
+<img alt="Otieno J." class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC91bIRl1nDhNROL1nEUEGgWeLp8jvN21uR4hnIYgOuyx2ARS6RY9QsQlTClbllDgBg5xnyIiAip5i5DP32dzW7HE8koUlflLpULsMKOd6_-e6mZB3lQ6GN2gouiYFclNo51SI9OXP5CvAZl5ESQuY4liQIsZnW0oGvK2PBcGHNX46Flv45OV8dYkqpzn5jTgk8ZDKuQXs5FClW2rqHvZptpD18yArHW7IVzLCV7ziRlf76-jZUE6B1yw"/>
+</div>
+<div>
+<h4 class="text-label-md font-bold text-on-surface">Otieno J.</h4>
+<p class="text-label-sm text-on-surface-variant">Engineering Student • 2h ago</p>
+</div>
+</div>
+<div class="bg-error-container text-on-error-container px-unit-sm py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">account_balance_wallet</span>
+<span class="text-label-sm font-bold uppercase tracking-wider">Payment Issue</span>
+</div>
+</div>
+<h3 class="text-title-lg text-on-surface mb-unit-sm">M-Pesa payment issues at the cafeteria</h3>
+<p class="text-body-md text-on-surface-variant mb-unit-md">
+                        Anyone else having trouble with M-Pesa at the student mess? My transaction went through on my phone but their system isn't picking it up. Better carry some cash for lunch today to avoid the long lines and drama.
+                    </p>
+<div class="flex items-center gap-unit-lg border-t border-outline-variant pt-unit-md">
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">thumb_up</span>
+<span class="text-label-md">89</span>
+</button>
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">comment</span>
+<span class="text-label-md">34 Comments</span>
+</button>
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors ml-auto">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+</article>
+<!-- Reputation Event -->
+<article class="bg-surface-container-lowest rounded-xl border border-outline-variant p-unit-lg shadow-sm">
+<div class="flex items-center gap-unit-md">
+<div class="h-12 w-12 rounded-full bg-primary-fixed-dim flex items-center justify-center text-primary">
+<span class="material-symbols-outlined fill-icon" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<div>
+<h4 class="text-label-md font-bold text-on-surface">Reputation Milestone</h4>
+<p class="text-body-md text-on-surface-variant">Your contribution to "Residences Reviews" helped 100+ students. <span class="text-primary font-bold">+50 Trust Points</span></p>
+</div>
+</div>
+</article>
+</div>
+</div>
+<!-- Right Column: Profile & Opportunities -->
+<div class="col-span-12 md:col-span-4 flex flex-col gap-unit-xl">
+<!-- Profile Card -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant p-unit-lg shadow-sm overflow-hidden relative">
+<div class="absolute top-0 right-0 p-unit-md opacity-10">
+<span class="material-symbols-outlined text-[80px]">shield</span>
+</div>
+<div class="flex flex-col items-center text-center mb-unit-lg">
+<div class="h-24 w-24 rounded-full border-4 border-primary-fixed p-1 mb-unit-md">
+<div class="h-full w-full rounded-full bg-primary-fixed overflow-hidden">
+<img alt="Alex Mercer" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC91bIRl1nDhNROL1nEUEGgWeLp8jvN21uR4hnIYgOuyx2ARS6RY9QsQlTClbllDgBg5xnyIiAip5i5DP32dzW7HE8koUlflLpULsMKOd6_-e6mZB3lQ6GN2gouiYFclNo51SI9OXP5CvAZl5ESQuY4liQIsZnW0oGvK2PBcGHNX46Flv45OV8dYkqpzn5jTgk8ZDKuQXs5FClW2rqHvZptpD18yArHW7IVzLCV7ziRlf76-jZUE6B1yw"/>
+</div>
+</div>
+<h2 class="text-headline-md text-on-surface">Alex Mercer</h2>
+<span class="bg-primary text-on-primary px-unit-md py-1 rounded-full text-label-sm font-bold mt-unit-sm">Campus Expert Lvl 4</span>
+</div>
+<div class="space-y-unit-md">
+<div class="flex justify-between text-label-md">
+<span class="text-on-surface-variant">Verification Level</span>
+<span class="text-primary font-bold">Gold Tier</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[85%] rounded-full"></div>
+</div>
+<p class="text-label-sm text-on-surface-variant text-center">340 points until Level 5</p>
+</div>
+</section>
+<!-- Opportunities List -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant p-unit-lg shadow-sm">
+<div class="flex justify-between items-center mb-unit-lg">
+<h3 class="text-title-lg text-on-surface">Opportunities</h3>
+<a class="text-primary text-label-sm font-bold hover:underline" href="#">View All</a>
+</div>
+<div class="flex flex-col gap-unit-md">
+<!-- Opportunity 1 -->
+<div class="group p-unit-md rounded-lg border border-outline-variant hover:border-primary hover:bg-surface-container-low transition-all cursor-pointer">
+<div class="flex justify-between items-start mb-unit-xs">
+<span class="bg-tertiary-container text-on-tertiary-container px-2 py-0.5 rounded text-[10px] font-bold uppercase">Match Factor: Tech Expert</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary">bookmark</span>
+</div>
+<h4 class="text-label-md font-bold text-on-surface group-hover:text-primary">Safaricom App Challenge</h4>
+<div class="flex items-center gap-1 text-on-surface-variant mb-unit-sm">
+<span class="text-label-sm">Safaricom PLC</span>
+<span class="material-symbols-outlined text-[14px] text-primary fill-icon" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="text-[10px] text-primary font-bold uppercase">Verified Employer</span>
+</div>
+<button class="w-full py-2 rounded-md bg-surface-variant text-on-surface-variant text-label-sm font-bold group-hover:bg-primary group-hover:text-on-primary transition-colors">Apply Now</button>
+</div>
+<!-- Opportunity 2 -->
+<div class="group p-unit-md rounded-lg border border-outline-variant hover:border-primary hover:bg-surface-container-low transition-all cursor-pointer">
+<div class="flex justify-between items-start mb-unit-xs">
+<span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">Match Factor: FinTech</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary">bookmark</span>
+</div>
+<h4 class="text-label-md font-bold text-on-surface group-hover:text-primary">Equity Bank Internship</h4>
+<div class="flex items-center gap-1 text-on-surface-variant mb-unit-sm">
+<span class="text-label-sm">Equity Group</span>
+<span class="material-symbols-outlined text-[14px] text-primary fill-icon" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<button class="w-full py-2 rounded-md bg-surface-variant text-on-surface-variant text-label-sm font-bold group-hover:bg-primary group-hover:text-on-primary transition-colors">Learn More</button>
+</div>
+<!-- Opportunity 3 -->
+<div class="group p-unit-md rounded-lg border border-outline-variant hover:border-primary hover:bg-surface-container-low transition-all cursor-pointer">
+<div class="flex justify-between items-start mb-unit-xs">
+<span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">Match Factor: Campus Leader</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary">bookmark</span>
+</div>
+<h4 class="text-label-md font-bold text-on-surface group-hover:text-primary">KCB Student Ambassador</h4>
+<div class="flex items-center gap-1 text-on-surface-variant mb-unit-sm">
+<span class="text-label-sm">KCB Bank</span>
+<span class="material-symbols-outlined text-[14px] text-primary fill-icon" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<button class="w-full py-2 rounded-md bg-surface-variant text-on-surface-variant text-label-sm font-bold group-hover:bg-primary group-hover:text-on-primary transition-colors">Join Today</button>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Fixed Footer -->
+<footer class="w-full bg-surface-container-lowest border-t border-outline-variant py-unit-xl mt-unit-xl">
+<div class="max-w-7xl mx-auto px-margin flex flex-col md:flex-row justify-between items-start gap-unit-xl">
+<div class="flex flex-col gap-unit-sm max-w-sm">
+<span class="text-title-lg font-bold text-on-surface">Campozy</span>
+<p class="text-body-sm text-on-surface-variant">Building trust and transparency across Nairobi's student hostel and residence networks through reputation and verified community insights.</p>
+<p class="text-label-sm text-on-surface-variant mt-unit-md">© 2024 Campozy Student Trust Network. Nairobi, Kenya.</p>
+</div>
+<div class="grid grid-cols-2 gap-x-section-gap gap-y-unit-md">
+<div class="flex flex-col gap-unit-sm">
+<h5 class="text-label-md font-bold text-on-surface uppercase tracking-tight">Network</h5>
+<a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Institutional Partners</a>
+<a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Verification Standards</a>
+</div>
+<div class="flex flex-col gap-unit-sm">
+<h5 class="text-label-md font-bold text-on-surface uppercase tracking-tight">Legal</h5>
+<a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Trust &amp; Safety</a>
+<a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- Mobile Navigation Bar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-lowest border-t border-outline-variant px-unit-lg h-16 flex items-center justify-between z-50">
+<button class="flex flex-col items-center justify-center gap-1 text-primary">
+<span class="material-symbols-outlined fill-icon" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="text-[10px] font-bold">Community</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">home_work</span>
+<span class="text-[10px] font-medium">Hostels</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="text-[10px] font-medium">Ops</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</button>
+</nav>
+<script>
+    document.querySelectorAll('.group').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-2px)';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0)';
+        });
+    });
+</script>
+</body></html>

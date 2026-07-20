@@ -111,7 +111,7 @@ export const IdentityService = {
       .eq('user_id', userId)
 
     if (error || !data) return []
-    return data.map((ur: any) => ur.roles.name as RoleName)
+    return data.map((ur: { roles: { name: RoleName }[] }) => ur.roles[0]?.name).filter((name): name is RoleName => !!name)
   },
 
   async hasRole(userId: string, roleName: RoleName): Promise<boolean> {

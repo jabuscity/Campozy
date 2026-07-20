@@ -55,7 +55,7 @@ export default function LoginPage() {
         </form>
 
         <div className="mt-10 pt-10 border-t border-neutral-100 text-center">
-          <p className="text-neutral-500 mb-6 font-medium">Don't have an account yet?</p>
+          <p className="text-neutral-500 mb-6 font-medium">Don&apos;t have an account yet?</p>
           <Link href="/signup">
             <Button variant="outline" size="lg" className="w-full border-2 border-neutral-200 hover:border-primary transition-all">
               Create Student Profile

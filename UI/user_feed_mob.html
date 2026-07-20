@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Campozy - Nairobi Reputation Feed</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#a73400",
+                    "surface-container-highest": "#e2e1ed",
+                    "inverse-on-surface": "#f0f0fb",
+                    "primary": "#0037b0",
+                    "on-tertiary-fixed": "#390c00",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#b7c4ff",
+                    "on-secondary-fixed": "#2a1700",
+                    "on-primary-fixed": "#001551",
+                    "surface-dim": "#d9d9e5",
+                    "tertiary-fixed-dim": "#ffb59c",
+                    "on-surface": "#1a1b23",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "outline": "#747686",
+                    "primary-fixed": "#dce1ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#e8e7f3",
+                    "on-tertiary-fixed-variant": "#832700",
+                    "surface-bright": "#faf8ff",
+                    "on-tertiary-container": "#ffc9b7",
+                    "surface": "#faf8ff",
+                    "on-background": "#1a1b23",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "inverse-surface": "#2e3039",
+                    "background": "#faf8ff",
+                    "surface-container-low": "#f3f2fe",
+                    "on-error": "#ffffff",
+                    "tertiary": "#7f2500",
+                    "primary-container": "#1d4ed8",
+                    "secondary": "#855300",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed-variant": "#0039b5",
+                    "surface-tint": "#2151da",
+                    "secondary-container": "#fea619",
+                    "on-surface-variant": "#434655",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-container": "#684000",
+                    "on-primary-container": "#cad3ff",
+                    "surface-container": "#ededf9",
+                    "primary-fixed-dim": "#b7c4ff",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#ffddb8",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#e2e1ed",
+                    "outline-variant": "#c4c5d7",
+                    "tertiary-fixed": "#ffdbcf"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "columns": "12",
+                    "gutter": "24px",
+                    "unit-xs": "4px",
+                    "unit-lg": "24px",
+                    "margin": "48px",
+                    "unit-sm": "8px",
+                    "unit-md": "16px",
+                    "unit-xl": "32px",
+                    "section-gap": "64px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "label-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #F9FAFB;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            user-select: none;
+        }
+        .reputation-gradient {
+            background: linear-gradient(135deg, #0037b0 0%, #1d4ed8 100%);
+        }
+        .card-shadow {
+            box-shadow: 0px 1px 3px rgba(0,0,0,0.1);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface mb-24 overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface border-b border-outline-variant flex justify-between items-center px-6 h-16">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a young male student named Alex Mercer. He is smiling confidently, wearing a clean navy blue polo shirt against a blurred academic campus background. The lighting is soft and natural, emphasizing a high-trust, corporate-editorial aesthetic consistent with a premium educational platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgLW87c6Q7IFrIrT3wLK-AhziDGq_ox9FQD5XvXnxUONHWKsdC8tZgVOHAW-uQCnPf12U2Q_GkvYKYlzu7BGbmutY3CkiqQ4Gfskov51Fs1B2ugHfI6xhcFdOa-TUNPfyqrYNom7FFrCQlJh0gzEACBPlxq1BjD5G3P1RkCxieWk6n4S3BIUguy2JSSLgwOM6KQGCv_e4dgyZsDR5z4form6jop2cl55zrGDwG9XvotZZRULBQMUJpLQ"/>
+</div>
+<span class="font-title-lg text-title-lg text-primary font-bold">Campozy</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors active:scale-95 duration-100">search</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors active:scale-95 duration-100">notifications</button>
+</div>
+</header>
+<main class="mt-20 px-6 max-w-lg mx-auto">
+<!-- Reputation Hero / User Card -->
+<section class="mb-8">
+<div class="bg-white rounded-xl p-6 card-shadow border border-outline-variant relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 reputation-gradient opacity-10 rounded-bl-full -mr-8 -mt-8"></div>
+<div class="flex flex-col gap-4">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-1">Nairobi Reputation Feed</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Real-time alerts &amp; community verified intel.</p>
+</div>
+<div class="flex items-center gap-4 pt-4 border-t border-outline-variant">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Alex Mercer</span>
+<div class="flex items-center gap-2 mt-1">
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">stars</span>
+                                    Campus Expert Lvl 4
+                                </span>
+</div>
+</div>
+<div class="ml-auto text-right">
+<div class="font-display-lg text-[24px] text-primary font-bold">2,480</div>
+<div class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Rep Points</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Filters -->
+<section class="mb-6 flex gap-2 overflow-x-auto hide-scrollbar pb-2">
+<button class="bg-primary text-on-primary px-4 py-2 rounded-full font-label-md text-label-md whitespace-nowrap">All Alerts</button>
+<button class="bg-surface-container text-on-surface-variant px-4 py-2 rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high transition-colors">Transport</button>
+<button class="bg-surface-container text-on-surface-variant px-4 py-2 rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high transition-colors">Payments</button>
+<button class="bg-surface-container text-on-surface-variant px-4 py-2 rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high transition-colors">Safety</button>
+</section>
+<!-- Reputation Feed -->
+<section class="flex flex-col gap-4">
+<!-- Alert Card 1: Matatu Strike -->
+<div class="bg-white rounded-xl p-5 border border-outline-variant card-shadow hover:border-primary/30 transition-all group">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="font-label-md text-label-md text-error font-bold uppercase tracking-tight">Critical Alert</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">14m ago</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-2">Matatu strike impact: Ngong Road</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">
+                    Heavy disruption reported along Ngong Road. Most Stage 4 and 102 matatus are currently grounded. Expect long waits and potential fare hikes.
+                </p>
+<div class="flex items-center justify-between pt-4 border-t border-surface-container-highest">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white bg-primary-fixed flex items-center justify-center text-[10px] font-bold">+42</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">thumb_up</span>
+<span class="font-label-sm text-label-sm">Verify</span>
+</button>
+<button class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">chat_bubble_outline</span>
+<span class="font-label-sm text-label-sm">12</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Alert Card 2: M-Pesa Issues -->
+<div class="bg-white rounded-xl p-5 border border-outline-variant card-shadow hover:border-primary/30 transition-all">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">info</span>
+<span class="font-label-md text-label-md text-secondary font-bold uppercase tracking-tight">Utility Alert</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">1h ago</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-2">M-Pesa latency issues</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">
+                    Users reporting delays in STK push requests and balance inquiries. Some payments failing at supermarkets near the main campus.
+                </p>
+<div class="flex items-center justify-between pt-4 border-t border-surface-container-highest">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">person</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">Reported by 88 people</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">thumb_up</span>
+<span class="font-label-sm text-label-sm">Verified</span>
+</button>
+<button class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">share</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Alert Card 3: Water Shortage -->
+<div class="bg-white rounded-xl p-5 border border-outline-variant card-shadow">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+<span class="font-label-md text-label-md text-outline font-bold uppercase tracking-tight">Hostel Info</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">3h ago</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-2">Scheduled Water Maintenance</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">
+                    Hostel Block B and C will experience water outages tomorrow from 8:00 AM to 5:00 PM. Store enough water tonight.
+                </p>
+<div class="flex items-center justify-between pt-4 border-t border-surface-container-highest">
+<button class="text-primary font-label-md text-label-md">View details</button>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant">bookmark_border</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- FAB -->
+<button class="fixed bottom-24 right-6 bg-primary text-on-primary w-auto h-14 px-6 rounded-2xl shadow-lg flex items-center gap-3 active:scale-90 transition-transform duration-150 z-50">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-label-md text-label-md">Report Utility</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container shadow-md flex justify-around items-center px-2 pb-6 pt-2">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all px-3 py-1" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all px-3 py-1" href="#">
+<span class="material-symbols-outlined">apartment</span>
+<span class="font-label-sm text-label-sm">Hostels</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">report</span>
+<span class="font-label-sm text-label-sm">Report</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all px-3 py-1" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-sm text-label-sm">Community</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all px-3 py-1" href="#">
+<span class="material-symbols-outlined">work</span>
+<span class="font-label-sm text-label-sm">Opportunities</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction: Active state ripple effect or scale
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('click', function(e) {
+                // Basic feedback handled by active: classes in Tailwind
+            });
+        });
+
+        // Hide FAB on scroll down, show on scroll up for better focus
+        let lastScrollTop = 0;
+        const fab = document.querySelector('button.fixed.bottom-24');
+        window.addEventListener('scroll', function() {
+            let st = window.pageYOffset || document.documentElement.scrollTop;
+            if (st > lastScrollTop && st > 100) {
+                fab.style.transform = 'translateY(120%)';
+            } else {
+                fab.style.transform = 'translateY(0)';
+            }
+            lastScrollTop = st <= 0 ? 0 : st;
+        }, false);
+    </script>
+</body></html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Juja Modern Studios | Campozy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#a73400",
+                    "surface-container-highest": "#e2e1ed",
+                    "inverse-on-surface": "#f0f0fb",
+                    "primary": "#0037b0",
+                    "on-tertiary-fixed": "#390c00",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#b7c4ff",
+                    "on-secondary-fixed": "#2a1700",
+                    "on-primary-fixed": "#001551",
+                    "surface-dim": "#d9d9e5",
+                    "tertiary-fixed-dim": "#ffb59c",
+                    "on-surface": "#1a1b23",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "outline": "#747686",
+                    "primary-fixed": "#dce1ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#e8e7f3",
+                    "on-tertiary-fixed-variant": "#832700",
+                    "surface-bright": "#faf8ff",
+                    "on-tertiary-container": "#ffc9b7",
+                    "surface": "#faf8ff",
+                    "on-background": "#1a1b23",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "inverse-surface": "#2e3039",
+                    "background": "#faf8ff",
+                    "surface-container-low": "#f3f2fe",
+                    "on-error": "#ffffff",
+                    "tertiary": "#7f2500",
+                    "primary-container": "#1d4ed8",
+                    "secondary": "#855300",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed-variant": "#0039b5",
+                    "surface-tint": "#2151da",
+                    "secondary-container": "#fea619",
+                    "on-surface-variant": "#434655",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-container": "#684000",
+                    "on-primary-container": "#cad3ff",
+                    "surface-container": "#ededf9",
+                    "primary-fixed-dim": "#b7c4ff",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#ffddb8",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#e2e1ed",
+                    "outline-variant": "#c4c5d7",
+                    "tertiary-fixed": "#ffdbcf"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "columns": "12",
+                    "gutter": "24px",
+                    "unit-xs": "4px",
+                    "unit-lg": "24px",
+                    "margin": "48px",
+                    "unit-sm": "8px",
+                    "unit-md": "16px",
+                    "unit-xl": "32px",
+                    "section-gap": "64px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "label-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .matrix-gradient { background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(243,242,254,1) 100%); }
+        .sticky-cta { box-shadow: 0 -4px 20px -5px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen pb-32">
+<!-- Top Navigation Bar (Shared Component Context) -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-gutter h-16 transition-all duration-300" id="mainHeader">
+<button class="bg-surface/80 backdrop-blur-md p-2 rounded-full text-on-surface hover:bg-surface-container-low transition-colors active:scale-95 duration-100 shadow-sm">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex gap-2">
+<button class="bg-surface/80 backdrop-blur-md p-2 rounded-full text-on-surface shadow-sm active:scale-95 duration-100">
+<span class="material-symbols-outlined">share</span>
+</button>
+<button class="bg-surface/80 backdrop-blur-md p-2 rounded-full text-on-surface shadow-sm active:scale-95 duration-100">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+</header>
+<!-- Edge-to-Edge Image Carousel -->
+<section class="relative w-full h-[45vh] overflow-hidden">
+<div class="flex h-full overflow-x-auto snap-x snap-mandatory no-scrollbar" id="carousel">
+<div class="min-w-full h-full snap-start">
+<img class="w-full h-full object-cover" data-alt="A wide-angle interior shot of a contemporary studio apartment in Juja, Kenya. The room features polished concrete floors, large floor-to-ceiling windows letting in soft afternoon light, and minimalist wooden furniture. The color palette is composed of soft blues, crisp whites, and warm oak tones, reflecting a clean and editorial student living space. The atmosphere is calm, sophisticated, and professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVOWWKnccZk1pJDDzHAfMpsH2bMf_-MuzI2B2Wd1b3Cc1hjQM1V5WclX7GZE3Y9I0LoTYTvPveIKDYC_IVc27nQ0WcvEUc__yyc3dzy0_f6ypsj3l9iUtUMp5ON3m51rYovURCVZdVKXiY13wnAJ2y2M_hbZfyN2TjzdQIHnFvYCdwhl4v8csQ-DYhPq9uRXOKOOI-9CMg_UKwAWQ4BVyQNlV0nu3uANlUuownJnxD7cKJefrnIupjaQ"/>
+</div>
+<div class="min-w-full h-full snap-start">
+<img class="w-full h-full object-cover" data-alt="A detailed shot of a modern kitchenette in a student studio apartment. It features high-quality granite countertops, stainless steel appliances, and sleek matte black cabinetry. Bright, natural lighting highlights the clean surfaces and the premium architectural design. The scene is presented in a sophisticated editorial style, emphasizing reliability and upscale urban living for students." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_1RjKc3iiewKtYk-nXp3BhU2hNAmGY9rZV-1H0uYmJ3ypKSdeIJh_BScwQ7umCp0Pk1R4KpZ2ezA1MlMZ-rTZD-UPWiQL3HUiZVHxAaWe7BlI1wHxz5q5NF6XBBVgBdBTO0u_l9yxzZ_Iaq0Kjty7gjwQv0vO1ZgR3yneUOLAgTniKWQ7nQh5qjOrpAjt6llx0NkjiUyM4uzvx72D2k5waZm8j-1kw3KRStxIZtZSakWr3mLUTuXLNw"/>
+</div>
+<div class="min-w-full h-full snap-start">
+<div class="w-full h-full bg-cover bg-center" data-alt="A brightly lit, modern bathroom within a luxury studio apartment complex. The space uses large white marble tiles and minimalist black fixtures for a high-contrast, professional look. The lighting is bright and even, suggesting cleanliness and institutional prestige. The aesthetic is contemporary and high-trust, suitable for an elite academic residence." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBZPPjfQyjv7O7rqutCIfHQ_kv8alBrePEPhkDpBAgP8t8PXHLl8gZ2LS2tXeaGyy6Gn_RX-e4tXCJEM05qoDdjW0n33FF5vjTDU2fctrtKcGlLdr1wEWBe-uWT0g3aVrsZ5bxjyoQ7aRdCrvLy7YbmygGb7PZY2OclfWOgU4UkoZIr-aXikWw8rqLU93zyHMV5CGlFTCgi2BCc6Eyd0Dp-rMS3cP1vqMjCiHgg8ynFKCvErYqHYLPJmw')"></div>
+</div>
+</div>
+<!-- Carousel Indicators -->
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+<div class="w-2 h-2 rounded-full bg-on-primary"></div>
+<div class="w-2 h-2 rounded-full bg-on-primary/40"></div>
+<div class="w-2 h-2 rounded-full bg-on-primary/40"></div>
+</div>
+</section>
+<!-- Main Content Canvas -->
+<main class="px-gutter -mt-8 relative z-10">
+<div class="bg-surface-container-lowest rounded-xl p-unit-lg shadow-sm border border-outline-variant">
+<!-- Title & Price Section -->
+<div class="flex justify-between items-start mb-unit-md">
+<div class="space-y-1">
+<h1 class="font-headline-md text-headline-md text-on-surface">Juja Modern Studios</h1>
+<div class="flex items-center text-on-surface-variant gap-1">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<span class="font-body-sm text-body-sm">Juja, near JKUAT Main Gate</span>
+</div>
+</div>
+<div class="text-right">
+<div class="font-headline-md text-headline-md text-primary">KSh 18,500</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">per month</div>
+</div>
+</div>
+<!-- Tags -->
+<div class="flex flex-wrap gap-2 mb-unit-xl">
+<span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full font-label-sm text-label-sm">Premium Listing</span>
+<span class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full font-label-sm text-label-sm">Student Verified</span>
+<span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">bolt</span> Instant Booking
+                </span>
+</div>
+<!-- Utility Intelligence Matrix -->
+<div class="mb-section-gap">
+<div class="flex justify-between items-end mb-unit-md">
+<h2 class="font-title-lg text-title-lg text-on-surface">Utility Intelligence</h2>
+<span class="font-label-sm text-label-sm text-primary">Last 30 Days</span>
+</div>
+<div class="grid grid-cols-2 gap-unit-md">
+<!-- Electricity -->
+<div class="matrix-gradient p-unit-md rounded-xl border border-outline-variant flex flex-col gap-unit-sm">
+<div class="flex justify-between items-center">
+<span class="material-symbols-outlined text-secondary">bolt</span>
+<span class="text-on-secondary-container bg-secondary-container/20 px-2 py-0.5 rounded-full font-label-sm text-label-sm">Reliable</span>
+</div>
+<div class="mt-2">
+<div class="text-[28px] font-bold text-on-surface">98.2%</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Electricity Uptime</div>
+</div>
+</div>
+<!-- Water -->
+<div class="matrix-gradient p-unit-md rounded-xl border border-outline-variant flex flex-col gap-unit-sm">
+<div class="flex justify-between items-center">
+<span class="material-symbols-outlined text-primary">water_drop</span>
+<span class="text-on-primary-container bg-primary-container/20 px-2 py-0.5 rounded-full font-label-sm text-label-sm">Constant</span>
+</div>
+<div class="mt-2">
+<div class="text-[28px] font-bold text-on-surface">100%</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Water Supply</div>
+</div>
+</div>
+<!-- WiFi -->
+<div class="matrix-gradient p-unit-md rounded-xl border border-outline-variant flex flex-col gap-unit-sm">
+<div class="flex justify-between items-center">
+<span class="material-symbols-outlined text-tertiary">wifi</span>
+<span class="text-tertiary-container bg-tertiary-fixed/40 px-2 py-0.5 rounded-full font-label-sm text-label-sm">High Speed</span>
+</div>
+<div class="mt-2">
+<div class="text-[28px] font-bold text-on-surface">94.5%</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">WiFi Continuity</div>
+</div>
+</div>
+<!-- Security -->
+<div class="matrix-gradient p-unit-md rounded-xl border border-outline-variant flex flex-col gap-unit-sm">
+<div class="flex justify-between items-center">
+<span class="material-symbols-outlined text-on-surface">verified_user</span>
+<span class="text-on-surface-variant bg-outline-variant/30 px-2 py-0.5 rounded-full font-label-sm text-label-sm">24/7 Guard</span>
+</div>
+<div class="mt-2">
+<div class="text-[28px] font-bold text-on-surface">99.9%</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Security Rating</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Property Features -->
+<div class="mb-section-gap">
+<h2 class="font-title-lg text-title-lg text-on-surface mb-unit-md">Top Amenities</h2>
+<div class="flex overflow-x-auto gap-unit-md no-scrollbar pb-2">
+<div class="flex-shrink-0 flex flex-col items-center gap-2">
+<div class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined">local_parking</span>
+</div>
+<span class="font-label-sm text-label-sm">Parking</span>
+</div>
+<div class="flex-shrink-0 flex flex-col items-center gap-2">
+<div class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined">deck</span>
+</div>
+<span class="font-label-sm text-label-sm">Rooftop</span>
+</div>
+<div class="flex-shrink-0 flex flex-col items-center gap-2">
+<div class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined">genetics</span>
+</div>
+<span class="font-label-sm text-label-sm">Mini Gym</span>
+</div>
+<div class="flex-shrink-0 flex flex-col items-center gap-2">
+<div class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined">local_laundry_service</span>
+</div>
+<span class="font-label-sm text-label-sm">Laundry</span>
+</div>
+<div class="flex-shrink-0 flex flex-col items-center gap-2">
+<div class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined">video_camera_back</span>
+</div>
+<span class="font-label-sm text-label-sm">CCTV</span>
+</div>
+</div>
+</div>
+<!-- Landlord Profile -->
+<div class="bg-surface-container-low p-unit-md rounded-xl border border-outline-variant mb-unit-lg">
+<div class="flex items-center justify-between mb-unit-md">
+<div class="flex items-center gap-unit-md">
+<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a middle-aged Kenyan real estate owner with a friendly, trustworthy expression. He is wearing a sharp, navy blue blazer and a light blue dress shirt, set against a blurred background of a modern office. The lighting is professional and soft, typical of high-end corporate photography. The mood communicates reliability, experience, and institutional prestige." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFqqcIvudB7522qnpDmXyd9Tw1IfVft3gyHCkyGYcVHKB6rwXCDeWnubE5WwxPXl1ZGu2TJT7JF0s6sbC2NXlvlJUY-rgA8XMyMaE5M_IL5nQJJne5sMkfBd9W2aajKE5c-tGTnA-SL59BclEtNxNEdjgBnee3FkiUOzcPnn4mbsMb9WOs5-btFZxraLTPEKjYIFBvyOGLk2Y2-Aomz97MXVrQC2rQfZjUW0t8EWthJO7thZBN1TqV2A"/>
+</div>
+<div>
+<div class="font-title-lg text-title-lg text-on-surface">Dr. Silas Mwangi</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-label-md">
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">verified</span>
+                                Verified Owner
+                            </div>
+</div>
+</div>
+<div class="text-right">
+<div class="flex items-center text-secondary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold ml-1">4.9</span>
+</div>
+<div class="text-on-surface-variant font-label-sm text-label-sm">126 Reviews</div>
+</div>
+</div>
+<p class="text-on-surface-variant font-body-sm text-body-sm line-clamp-2">
+                    Committed to providing premium, secure, and well-maintained housing solutions for JKUAT students since 2015. 
+                </p>
+</div>
+</div>
+</main>
+<!-- Sticky Bottom CTA -->
+<div class="fixed bottom-0 left-0 w-full bg-surface/95 backdrop-blur-xl px-gutter py-4 sticky-cta z-[60] border-t border-outline-variant">
+<div class="max-w-[1280px] mx-auto flex items-center gap-unit-md">
+<button class="flex-shrink-0 w-14 h-14 rounded-xl border border-outline-variant flex items-center justify-center text-primary active:scale-90 transition-transform">
+<span class="material-symbols-outlined">chat</span>
+</button>
+<button class="flex-grow h-14 bg-primary text-on-primary font-title-lg text-title-lg rounded-xl shadow-lg hover:bg-primary-container active:scale-95 transition-all duration-150 flex items-center justify-center gap-unit-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">call</span>
+                Contact Verified Owner
+            </button>
+</div>
+</div>
+<!-- Scroll Logic for Header -->
+<script>
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('mainHeader');
+            if (window.scrollY > 100) {
+                header.classList.add('bg-surface', 'shadow-md');
+            } else {
+                header.classList.remove('bg-surface', 'shadow-md');
+            }
+        });
+
+        // Basic Carousel Auto-Indicator Logic (Visual Only)
+        const carousel = document.getElementById('carousel');
+        const dots = document.querySelectorAll('.absolute.bottom-6 .rounded-full');
+        
+        carousel.addEventListener('scroll', () => {
+            const scrollPercent = carousel.scrollLeft / (carousel.scrollWidth - carousel.clientWidth);
+            const activeIndex = Math.round(scrollPercent * (dots.length - 1));
+            
+            dots.forEach((dot, idx) => {
+                if (idx === activeIndex) {
+                    dot.classList.remove('bg-on-primary/40');
+                    dot.classList.add('bg-on-primary');
+                } else {
+                    dot.classList.remove('bg-on-primary');
+                    dot.classList.add('bg-on-primary/40');
+                }
+            });
+        });
+    </script>
+</body></html>

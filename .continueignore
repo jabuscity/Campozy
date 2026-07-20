@@ -4,4 +4,10 @@ node_modules/
 env/
 dist/
 build/
+.next/
+package-lock.json
+yarn.lock
+*.mp4
+*.png
+*.jpg
 *.log
