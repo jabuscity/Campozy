@@ -452,6 +452,7 @@ export interface PropertyReview extends CampozyScoreDimensions {
   updated_at: string;
   // Relations
   reviewer?: Profile;
+  profiles?: Profile;
   media?: PropertyReviewMedia[];
 }
 
