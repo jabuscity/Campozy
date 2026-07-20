@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { Users, ShieldCheck } from 'lucide-react'
+import { Users, ShieldCheck, Trophy } from 'lucide-react'
 
 export default async function FoundersPage() {
   const supabase = await createClient()
@@ -13,6 +13,15 @@ export default async function FoundersPage() {
       cohort:founder_cohorts(id, name, scope)
     `)
     .order('became_founder_at', { ascending: false })
+
+  const { data: events } = await supabase
+    .from('founder_qualification_events')
+    .select(`
+      *,
+      profile:profiles(id, full_name)
+    `)
+    .order('created_at', { ascending: false })
+    .limit(10)
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -63,6 +72,32 @@ export default async function FoundersPage() {
               </Button>
             </Link>
           </div>
+        )}
+
+        {events && events.length > 0 && (
+          <section className="mt-12">
+            <h2 className="text-2xl font-black text-neutral-900 mb-6 uppercase tracking-tight">
+              Recent Achievements
+            </h2>
+            <div className="bg-white rounded-3xl border border-neutral-200 divide-y divide-neutral-100">
+              {events.map((event) => (
+                <div key={event.id} className="p-6 flex items-center gap-4">
+                  <div className="h-10 w-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
+                    <Trophy className="h-5 w-5" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-neutral-900 text-sm">
+                      {event.profile?.full_name || 'Founder'}
+                    </p>
+                    <p className="text-sm text-neutral-500 line-clamp-1">{event.description}</p>
+                  </div>
+                  <div className="text-sm font-bold text-secondary shrink-0">
+                    +{event.points} pts
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
         )}
       </div>
     </div>
