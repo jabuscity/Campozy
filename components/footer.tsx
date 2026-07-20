@@ -9,7 +9,7 @@ export function Footer() {
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-success" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
+        <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
           <div className="space-y-8 lg:col-span-1">
             <Link href="/" className="flex items-center gap-2 group">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-lg transition-transform group-hover:scale-110">
@@ -91,7 +91,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+        <div className="hidden md:flex pt-12 border-t border-white/5 flex-col md:flex-row justify-between items-center gap-8">
           <div className="text-[10px] font-black text-neutral-500 uppercase tracking-[0.3em]">
             © 2026 Campozy Student Trust Network. All Rights Reserved.
           </div>
@@ -119,15 +119,15 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 bg-white/5 rounded-3xl border border-white/10 p-8">
-          <div className="flex flex-col md:flex-row items-center gap-6">
+        <div className="bg-white/5 rounded-3xl border border-white/10 p-6 md:p-8">
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
             <div className="flex items-center gap-3">
-              <ShieldCheck className="h-8 w-8 text-success" />
-              <span className="text-lg font-black uppercase tracking-widest italic">
+              <ShieldCheck className="h-6 w-6 md:h-8 md:w-8 text-success" />
+              <span className="text-base md:text-lg font-black uppercase tracking-widest italic">
                 Trust First
               </span>
             </div>
-            <p className="text-sm text-neutral-400 leading-relaxed font-medium flex-1">
+            <p className="text-xs md:text-sm text-neutral-400 leading-relaxed font-medium flex-1 text-center md:text-left">
               All data is human-verified and student-curated. We prioritize
               privacy and safety in every corner of the network.
             </p>
