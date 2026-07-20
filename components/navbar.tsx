@@ -16,6 +16,7 @@ export async function Navbar() {
     { href: '/neighborhoods', label: 'Neighborhoods' },
     { href: '/community', label: 'Community' },
     { href: '/opportunities', label: 'Opportunities' },
+    { href: '/employers', label: 'Employers' },
     { href: '/businesses', label: 'Businesses' },
     { href: '/founders', label: 'Founders' },
     { href: '/alumni', label: 'Alumni' },
