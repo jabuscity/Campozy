@@ -296,7 +296,7 @@ export default function HomePage() {
                 See all
               </Button>
             </div>
-            <div className="flex gap-4 overflow-x-auto hide-scrollbar -mx-6 px-6 pb-4 md:mx-0 md:px-0">
+            <div className="flex gap-4 overflow-x-auto hide-scrollbar -mx-6 px-6 pb-4 md:mx-0 md:px-0 md:grid md:grid-cols-3">
               {/* Insight Card 1 */}
               <div className="min-w-[280px] bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm flex flex-col hover:shadow-md transition-all cursor-pointer group">
                 <div className="h-32 bg-neutral-100 relative">
