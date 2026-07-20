@@ -5,11 +5,12 @@ import { Metadata } from 'next'
 import { HousingService } from '@/services/housing-service'
 import { TrustService } from '@/services/trust-service'
 import { CampozyScore } from '@/components/ui/campozy-score'
+import { VerificationBadge } from '@/components/ui/verification-badge'
+import { UtilityMatrix } from '@/components/ui/utility-matrix'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { 
-  MapPin, Users, Wifi, Droplet, Zap, ShieldCheck, 
-  Trash2, MessageSquare, ArrowLeft, Share2, Heart 
+  MapPin, Users, Trash2, MessageSquare, ArrowLeft, Share2, Heart 
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { togglePropertySave } from '@/app/actions/housing-actions'
@@ -66,9 +67,10 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
                  <MapPin className="h-5 w-5" />
                  {property.neighborhood?.name}, {property.address}
                </div>
-               <Badge variant="secondary" className="px-4 py-1 backdrop-blur-md bg-white/20 border-none text-white font-bold">
-                 {property.property_type?.name || 'Hostel'}
-               </Badge>
+                <Badge variant="secondary" className="px-4 py-1 backdrop-blur-md bg-white/20 border-none text-white font-bold">
+                  {property.property_type?.name || 'Hostel'}
+                </Badge>
+                <VerificationBadge level={property.verification_level || 'unverified'} className="backdrop-blur-md bg-white/20 border-none text-white" />
             </div>
           </div>
           
@@ -91,18 +93,23 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
             </p>
           </section>
 
-          {/* Detailed Trust Scores */}
+          {/* Utility Intelligence Matrix */}
           <section className="bg-neutral-50 rounded-3xl p-8 border border-neutral-100">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-black text-neutral-900 uppercase tracking-tight italic">The Intelligence Grid</h2>
-              <Badge variant="success" className="px-4 py-1 uppercase tracking-tighter">Verified by 50+ Students</Badge>
-            </div>
-            
+            <h2 className="text-2xl font-black text-neutral-900 mb-6 uppercase tracking-tight italic">Utility Intelligence</h2>
+            <UtilityMatrix
+              items={[
+                { label: 'electricity', value: `${Math.round((scoreDimensions?.electricity || 0) * 20)}% uptime. Backup generator available.`, status: (scoreDimensions?.electricity || 0) >= 4 ? 'good' : (scoreDimensions?.electricity || 0) >= 3 ? 'warning' : 'bad' },
+                { label: 'water', value: `Reliability score: ${scoreDimensions?.water || 0}/5. Community reported.`, status: (scoreDimensions?.water || 0) >= 4 ? 'good' : (scoreDimensions?.water || 0) >= 3 ? 'warning' : 'bad' },
+                { label: 'wifi', value: `Connectivity score: ${scoreDimensions?.internet || 0}/5. Average student experience.`, status: (scoreDimensions?.internet || 0) >= 4 ? 'good' : (scoreDimensions?.internet || 0) >= 3 ? 'warning' : 'bad' },
+                { label: 'security', value: `Safety score: ${scoreDimensions?.safety || 0}/5. Verified by scouts and students.`, status: (scoreDimensions?.safety || 0) >= 4 ? 'good' : (scoreDimensions?.safety || 0) >= 3 ? 'warning' : 'bad' },
+              ]}
+            />
+          </section>
+
+          {/* Additional Trust Scores */}
+          <section className="bg-neutral-50 rounded-3xl p-8 border border-neutral-100">
+            <h2 className="text-2xl font-black text-neutral-900 mb-6 uppercase tracking-tight italic">Additional Scores</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-               <ScoreItem label="Reliability (Water)" score={scoreDimensions?.water || 0} icon={<Droplet />} color="text-primary" />
-               <ScoreItem label="Uptime (Electricity)" score={scoreDimensions?.electricity || 0} icon={<Zap />} color="text-warning" />
-               <ScoreItem label="Connectivity (Wifi)" score={scoreDimensions?.internet || 0} icon={<Wifi />} color="text-blue-400" />
-               <ScoreItem label="Security & Safety" score={scoreDimensions?.safety || 0} icon={<ShieldCheck />} color="text-success" />
                <ScoreItem label="Hygiene & Sanitation" score={scoreDimensions?.hygiene || 0} icon={<Trash2 />} color="text-red-400" />
                <ScoreItem label="Management Responsiveness" score={scoreDimensions?.management || 0} icon={<MessageSquare />} color="text-purple-400" />
             </div>

@@ -17,35 +17,56 @@ export function CampozyScore({
 }: CampozyScoreProps) {
   const colorType = getCampozyScoreColor(score)
   
-  const colors = {
-    green: "text-success border-success bg-success/5",
-    blue: "text-primary border-primary bg-primary/5",
-    orange: "text-warning border-warning bg-warning/5",
-    red: "text-danger border-danger bg-danger/5",
+  const colorMap = {
+    green: { text: "text-success", border: "border-success", bg: "bg-success/5", ring: "#16A34A" },
+    blue: { text: "text-primary", border: "border-primary", bg: "bg-primary/5", ring: "#1D4ED8" },
+    orange: { text: "text-warning", border: "border-warning", bg: "bg-warning/5", ring: "#F97316" },
+    red: { text: "text-danger", border: "border-danger", bg: "bg-danger/5", ring: "#DC2626" },
   }
+  const colors = colorMap[colorType]
 
   const sizes = {
-    sm: "w-10 h-10 text-xs border-2",
-    md: "w-14 h-14 text-sm border-[3px]",
-    lg: "w-20 h-20 text-lg border-[4px]",
+    sm: { circle: 40, stroke: 3, text: "text-xs", label: "text-[10px]" },
+    md: { circle: 56, stroke: 4, text: "text-sm", label: "text-[10px]" },
+    lg: { circle: 80, stroke: 5, text: "text-lg", label: "text-xs" },
   }
+  const s = sizes[size]
+  const radius = (s.circle - s.stroke) / 2
+  const circumference = 2 * Math.PI * radius
+  const offset = circumference - (score / 100) * circumference
 
   return (
     <div className={cn("flex flex-col items-center gap-1.5", className)}>
-      <div 
-        className={cn(
-          "flex items-center justify-center rounded-full font-bold transition-all",
-          sizes[size],
-          colors[colorType]
-        )}
-      >
-        {Math.round(score)}
+      <div className="relative" style={{ width: s.circle, height: s.circle }}>
+        <svg className="h-full w-full -rotate-90" viewBox={`0 0 ${s.circle} ${s.circle}`}>
+          <circle
+            cx={s.circle / 2}
+            cy={s.circle / 2}
+            r={radius}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={s.stroke}
+            className="text-neutral-200"
+          />
+          <circle
+            cx={s.circle / 2}
+            cy={s.circle / 2}
+            r={radius}
+            fill="none"
+            stroke={colors.ring}
+            strokeWidth={s.stroke}
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+            strokeLinecap="round"
+            className="transition-all duration-500"
+          />
+        </svg>
+        <div className={cn("absolute inset-0 flex items-center justify-center font-bold", s.text, colors.text)}>
+          {Math.round(score)}
+        </div>
       </div>
       {showLabel && (
-        <span className={cn(
-          "font-semibold uppercase tracking-wider text-[10px]",
-          "text-neutral-500"
-        )}>
+        <span className={cn("font-semibold uppercase tracking-wider", s.label, "text-neutral-500")}>
           Campozy Score
         </span>
       )}
