@@ -32,61 +32,62 @@ export function Footer() {
 
           <div>
             <h4 className="text-sm font-black uppercase tracking-[0.2em] mb-8 text-neutral-500">
-              Intelligence
+              Product
             </h4>
             <ul className="space-y-4 font-bold text-neutral-300">
               <li>
                 <FooterLink href="/discovery">Housing Portal</FooterLink>
               </li>
               <li>
-                <FooterLink href="/trust">Scoring Engine</FooterLink>
+                <FooterLink href="/universities">Universities</FooterLink>
               </li>
               <li>
-                <FooterLink href="/scouts">Scout Program</FooterLink>
+                <FooterLink href="/neighborhoods">Neighborhoods</FooterLink>
               </li>
               <li>
-                <FooterLink href="/verification">Verification</FooterLink>
+                <FooterLink href="/opportunities">Opportunities</FooterLink>
               </li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-sm font-black uppercase tracking-[0.2em] mb-8 text-neutral-500">
-              Community
+              Trust
             </h4>
             <ul className="space-y-4 font-bold text-neutral-300">
               <li>
-                <FooterLink href="/community">The Feed</FooterLink>
+                <FooterLink href="/scouts">Scout Program</FooterLink>
               </li>
               <li>
-                <FooterLink href="/founders">Founders Program</FooterLink>
+                <FooterLink href="/verification">Verification</FooterLink>
               </li>
               <li>
-                <FooterLink href="/mentorship">Mentorship</FooterLink>
+                <FooterLink href="/recommendations">Recommendations</FooterLink>
               </li>
               <li>
-                <FooterLink href="/ambassadors">Ambassadors</FooterLink>
+                <FooterLink href="/parents">Parent Confidence</FooterLink>
               </li>
             </ul>
           </div>
 
-          <div className="bg-white/5 p-8 rounded-3xl border border-white/10">
-            <div className="flex items-center gap-3 mb-4">
-              <ShieldCheck className="h-6 w-6 text-success" />
-              <span className="text-sm font-black uppercase tracking-widest italic">
-                Trust First
-              </span>
-            </div>
-            <p className="text-xs text-neutral-400 leading-relaxed font-medium mb-6">
-              All data is human-verified and student-curated. We prioritize
-              privacy and safety.
-            </p>
-            <Link
-              href="/privacy"
-              className="text-xs font-bold text-primary hover:underline"
-            >
-              Read Privacy Constitution
-            </Link>
+          <div>
+            <h4 className="text-sm font-black uppercase tracking-[0.2em] mb-8 text-neutral-500">
+              Legal
+            </h4>
+            <ul className="space-y-4 font-bold text-neutral-300">
+              <li>
+                <FooterLink href="/terms">Terms of Service</FooterLink>
+              </li>
+              <li>
+                <FooterLink href="/privacy">Privacy Policy</FooterLink>
+              </li>
+              <li>
+                <FooterLink href="/cookies">Cookies</FooterLink>
+              </li>
+              <li>
+                <FooterLink href="/about">About Campozy</FooterLink>
+              </li>
+            </ul>
           </div>
         </div>
 
@@ -115,6 +116,27 @@ export function Footer() {
               <Globe className="h-3 w-3" />
               <span>EN-KE</span>
             </div>
+          </div>
+        </div>
+
+        <div className="mt-12 bg-white/5 rounded-3xl border border-white/10 p-8">
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="flex items-center gap-3">
+              <ShieldCheck className="h-8 w-8 text-success" />
+              <span className="text-lg font-black uppercase tracking-widest italic">
+                Trust First
+              </span>
+            </div>
+            <p className="text-sm text-neutral-400 leading-relaxed font-medium flex-1">
+              All data is human-verified and student-curated. We prioritize
+              privacy and safety in every corner of the network.
+            </p>
+            <Link
+              href="/privacy"
+              className="shrink-0 text-xs font-bold text-primary hover:underline uppercase tracking-widest"
+            >
+              Read Privacy Constitution
+            </Link>
           </div>
         </div>
       </div>
