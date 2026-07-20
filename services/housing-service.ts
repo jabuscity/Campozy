@@ -69,7 +69,7 @@ export const HousingService = {
     const supabase = await createClient()
     const { data, error } = await supabase
       .from('universities')
-      .select('*, campuses(*), countries(name, iso_code)')
+      .select('*, campuses(*), country:countries(name, iso_code)')
       .eq('id', universityId)
       .single()
 
@@ -95,7 +95,7 @@ export const HousingService = {
     const supabase = await createClient()
     const query = supabase
       .from('universities')
-      .select('*, countries(name)')
+      .select('*, country:countries(name)')
       .order('name')
 
     const { data, error } = await query
@@ -107,7 +107,7 @@ export const HousingService = {
     const supabase = await createClient()
     const { data, error } = await supabase
       .from('neighborhoods')
-      .select('*, cities(name, countries(name))')
+      .select('*, cities(name, country:countries(name))')
       .order('name')
 
     if (error) throw new Error(`Failed to fetch neighborhoods: ${error.message}`)
