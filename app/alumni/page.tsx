@@ -31,22 +31,22 @@ export default async function AlumniPage() {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-10">
-          <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <div className="mb-8 md:mb-10">
+          <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Alumni
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
+          <p className="mt-2 text-neutral-500 text-base md:text-lg">
             Mentorship, success stories, and the Campozy graduate network.
           </p>
         </div>
 
         {mentors && mentors.length > 0 ? (
-          <section className="mb-12">
-            <h2 className="text-2xl font-black text-neutral-900 mb-6 uppercase tracking-tight">
+          <section className="mb-8 md:mb-12">
+            <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-4 md:mb-6 uppercase tracking-tight">
               Available Mentors
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {mentors.map((mentor) => (
                 <div
                   key={mentor.id}
@@ -75,11 +75,11 @@ export default async function AlumniPage() {
         ) : null}
 
         <section>
-          <h2 className="text-2xl font-black text-neutral-900 mb-6 uppercase tracking-tight">
+          <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-4 md:mb-6 uppercase tracking-tight">
             Alumni Directory
           </h2>
           {alumni && alumni.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {alumni.map((entry) => (
                 <div
                   key={entry.id}
@@ -109,11 +109,11 @@ export default async function AlumniPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-              <GraduationCap className="h-12 w-12 text-neutral-300 mx-auto mb-4" />
-              <p className="text-neutral-500 text-lg">No alumni profiles yet.</p>
-              <Link href="/signup" className="mt-6 inline-flex">
-                <Button size="lg" className="px-10 h-14 text-lg font-bold rounded-xl shadow-lg shadow-primary/20">
+            <div className="text-center py-12 md:py-20 bg-white rounded-3xl border border-neutral-200">
+              <GraduationCap className="h-10 md:h-12 w-10 md:w-12 text-neutral-300 mx-auto mb-3 md:mb-4" />
+              <p className="text-neutral-500 text-base md:text-lg">No alumni profiles yet.</p>
+              <Link href="/signup" className="mt-4 md:mt-6 inline-flex">
+                <Button size="lg" className="px-8 md:px-10 h-12 md:h-14 text-base md:text-lg font-bold rounded-xl shadow-lg shadow-primary/20">
                   Join Network
                 </Button>
               </Link>
@@ -134,11 +134,11 @@ export default async function AlumniPage() {
         </section>
 
         {employers && employers.length > 0 && (
-          <section className="mt-12">
-            <h2 className="text-2xl font-black text-neutral-900 mb-6 uppercase tracking-tight">
+          <section className="mt-8 md:mt-12">
+            <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-4 md:mb-6 uppercase tracking-tight">
               Employer Network
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {employers.map((employer) => (
                 <div
                   key={employer.id}

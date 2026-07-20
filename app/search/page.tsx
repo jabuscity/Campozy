@@ -80,18 +80,18 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-10">
-          <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <div className="mb-8 md:mb-10">
+          <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Search
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
+          <p className="mt-2 text-neutral-500 text-base md:text-lg">
             {query ? `Results for &quot;${query}&quot;` : 'Search across properties, universities, campuses, neighborhoods, businesses, discussions, opportunities, alumni, and founders.'}
           </p>
         </div>
 
         {query && (
-          <div className="mb-8">
+          <div className="mb-6 md:mb-8">
             <p className="text-sm text-neutral-500">
               {totalResults} result{totalResults !== 1 ? 's' : ''} found
             </p>
@@ -99,23 +99,23 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
         )}
 
         {!query ? (
-          <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-            <Search className="h-12 w-12 text-neutral-300 mx-auto mb-4" />
-            <p className="text-neutral-500 text-lg">Enter a search term to find results across Campozy.</p>
+          <div className="text-center py-16 md:py-20 bg-white rounded-3xl border border-neutral-200">
+            <Search className="h-10 md:h-12 w-10 md:w-12 text-neutral-300 mx-auto mb-4" />
+            <p className="text-neutral-500 text-base md:text-lg">Enter a search term to find results across Campozy.</p>
           </div>
         ) : totalResults === 0 ? (
-          <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-            <Search className="h-12 w-12 text-neutral-300 mx-auto mb-4" />
-            <p className="text-neutral-500 text-lg">No results found for &quot;{query}&quot;.</p>
+          <div className="text-center py-16 md:py-20 bg-white rounded-3xl border border-neutral-200">
+            <Search className="h-10 md:h-12 w-10 md:w-12 text-neutral-300 mx-auto mb-4" />
+            <p className="text-neutral-500 text-base md:text-lg">No results found for &quot;{query}&quot;.</p>
           </div>
         ) : (
-          <div className="space-y-8">
-            {results.universities.length > 0 && (
-              <section>
-                <h2 className="text-xl font-black text-neutral-900 mb-4 uppercase tracking-tight flex items-center gap-2">
-                  <GraduationCap className="h-5 w-5 text-primary" /> Universities
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="space-y-6 md:space-y-8">
+             {results.universities.length > 0 && (
+               <section>
+                 <h2 className="text-lg md:text-xl font-black text-neutral-900 mb-3 md:mb-4 uppercase tracking-tight flex items-center gap-2">
+                   <GraduationCap className="h-4 md:h-5 w-4 md:w-5 text-primary" /> Universities
+                 </h2>
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                   {results.universities.map((item) => (
                     <Link key={item.id} href={`/universities/${item.id}`} className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all">
                       <h3 className="font-bold text-neutral-900">{item.name}</h3>
@@ -126,12 +126,12 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
               </section>
             )}
 
-            {results.campuses.length > 0 && (
-              <section>
-                <h2 className="text-xl font-black text-neutral-900 mb-4 uppercase tracking-tight flex items-center gap-2">
-                  <GraduationCap className="h-5 w-5 text-primary" /> Campuses
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+             {results.campuses.length > 0 && (
+               <section>
+                 <h2 className="text-lg md:text-xl font-black text-neutral-900 mb-3 md:mb-4 uppercase tracking-tight flex items-center gap-2">
+                   <GraduationCap className="h-4 md:h-5 w-4 md:w-5 text-primary" /> Campuses
+                 </h2>
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                   {results.campuses.map((item) => (
                     <Link key={item.id} href={`/campuses/${item.id}`} className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all">
                       <h3 className="font-bold text-neutral-900">{item.name}</h3>
@@ -142,12 +142,12 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
               </section>
             )}
 
-            {results.neighborhoods.length > 0 && (
-              <section>
-                <h2 className="text-xl font-black text-neutral-900 mb-4 uppercase tracking-tight flex items-center gap-2">
-                  <MapPin className="h-5 w-5 text-primary" /> Neighborhoods
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+             {results.neighborhoods.length > 0 && (
+               <section>
+                 <h2 className="text-lg md:text-xl font-black text-neutral-900 mb-3 md:mb-4 uppercase tracking-tight flex items-center gap-2">
+                   <MapPin className="h-4 md:h-5 w-4 md:w-5 text-primary" /> Neighborhoods
+                 </h2>
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                   {results.neighborhoods.map((item) => (
                     <Link key={item.id} href={`/neighborhoods/${item.id}`} className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all">
                       <h3 className="font-bold text-neutral-900">{item.name}</h3>
@@ -158,12 +158,12 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
               </section>
             )}
 
-            {results.properties.length > 0 && (
-              <section>
-                <h2 className="text-xl font-black text-neutral-900 mb-4 uppercase tracking-tight flex items-center gap-2">
-                  <MapPin className="h-5 w-5 text-primary" /> Properties
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+             {results.properties.length > 0 && (
+               <section>
+                 <h2 className="text-lg md:text-xl font-black text-neutral-900 mb-3 md:mb-4 uppercase tracking-tight flex items-center gap-2">
+                   <MapPin className="h-4 md:h-5 w-4 md:w-5 text-primary" /> Properties
+                 </h2>
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                   {results.properties.map((item) => (
                     <Link key={item.id} href={`/property/${item.id}`} className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all">
                       <h3 className="font-bold text-neutral-900">{item.name}</h3>
@@ -174,12 +174,12 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
               </section>
             )}
 
-            {results.businesses.length > 0 && (
-              <section>
-                <h2 className="text-xl font-black text-neutral-900 mb-4 uppercase tracking-tight flex items-center gap-2">
-                  <Briefcase className="h-5 w-5 text-primary" /> Businesses
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+             {results.businesses.length > 0 && (
+               <section>
+                 <h2 className="text-lg md:text-xl font-black text-neutral-900 mb-3 md:mb-4 uppercase tracking-tight flex items-center gap-2">
+                   <Briefcase className="h-4 md:h-5 w-4 md:w-5 text-primary" /> Businesses
+                 </h2>
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                   {results.businesses.map((item) => (
                     <Link key={item.id} href={`/businesses/${item.id}`} className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all">
                       <h3 className="font-bold text-neutral-900">{item.name}</h3>
@@ -190,12 +190,12 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
               </section>
             )}
 
-            {results.discussions.length > 0 && (
-              <section>
-                <h2 className="text-xl font-black text-neutral-900 mb-4 uppercase tracking-tight flex items-center gap-2">
-                  <MessageSquare className="h-5 w-5 text-primary" /> Discussions
-                </h2>
-                <div className="space-y-4">
+             {results.discussions.length > 0 && (
+               <section>
+                 <h2 className="text-lg md:text-xl font-black text-neutral-900 mb-3 md:mb-4 uppercase tracking-tight flex items-center gap-2">
+                   <MessageSquare className="h-4 md:h-5 w-4 md:w-5 text-primary" /> Discussions
+                 </h2>
+                 <div className="space-y-3 md:space-y-4">
                   {results.discussions.map((item) => (
                     <Link key={item.id} href={`/community?discussion=${item.id}`} className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all">
                       <h3 className="font-bold text-neutral-900">{item.title}</h3>
@@ -206,12 +206,12 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
               </section>
             )}
 
-            {results.opportunities.length > 0 && (
-              <section>
-                <h2 className="text-xl font-black text-neutral-900 mb-4 uppercase tracking-tight flex items-center gap-2">
-                  <Briefcase className="h-5 w-5 text-primary" /> Opportunities
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+             {results.opportunities.length > 0 && (
+               <section>
+                 <h2 className="text-lg md:text-xl font-black text-neutral-900 mb-3 md:mb-4 uppercase tracking-tight flex items-center gap-2">
+                   <Briefcase className="h-4 md:h-5 w-4 md:w-5 text-primary" /> Opportunities
+                 </h2>
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                   {results.opportunities.map((item) => (
                     <Link key={item.id} href={`/opportunities/${item.id}`} className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all">
                       <h3 className="font-bold text-neutral-900">{item.title}</h3>
@@ -222,12 +222,12 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
               </section>
             )}
 
-            {results.alumni.length > 0 && (
-              <section>
-                <h2 className="text-xl font-black text-neutral-900 mb-4 uppercase tracking-tight flex items-center gap-2">
-                  <GraduationCap className="h-5 w-5 text-primary" /> Alumni
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+             {results.alumni.length > 0 && (
+               <section>
+                 <h2 className="text-lg md:text-xl font-black text-neutral-900 mb-3 md:mb-4 uppercase tracking-tight flex items-center gap-2">
+                   <GraduationCap className="h-4 md:h-5 w-4 md:w-5 text-primary" /> Alumni
+                 </h2>
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                   {results.alumni.map((item) => (
                     <Link key={item.id} href="/alumni" className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all">
                       <h3 className="font-bold text-neutral-900">{item.current_position || 'Alumni'}</h3>
@@ -238,12 +238,12 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
               </section>
             )}
 
-            {results.founders.length > 0 && (
-              <section>
-                <h2 className="text-xl font-black text-neutral-900 mb-4 uppercase tracking-tight flex items-center gap-2">
-                  <Users className="h-5 w-5 text-primary" /> Founders
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+             {results.founders.length > 0 && (
+               <section>
+                 <h2 className="text-lg md:text-xl font-black text-neutral-900 mb-3 md:mb-4 uppercase tracking-tight flex items-center gap-2">
+                   <Users className="h-4 md:h-5 w-4 md:w-5 text-primary" /> Founders
+                 </h2>
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                   {results.founders.map((item) => (
                     <Link key={item.id} href="/founders" className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all">
                       <h3 className="font-bold text-neutral-900">{item.profile?.full_name || 'Founder'}</h3>
@@ -254,12 +254,12 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
               </section>
             )}
 
-            {results.roommates.length > 0 && (
-              <section>
-                <h2 className="text-xl font-black text-neutral-900 mb-4 uppercase tracking-tight flex items-center gap-2">
-                  <Users className="h-5 w-5 text-primary" /> Roommates
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+             {results.roommates.length > 0 && (
+               <section>
+                 <h2 className="text-lg md:text-xl font-black text-neutral-900 mb-3 md:mb-4 uppercase tracking-tight flex items-center gap-2">
+                   <Users className="h-4 md:h-5 w-4 md:w-5 text-primary" /> Roommates
+                 </h2>
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                   {results.roommates.map((item) => (
                     <Link key={item.id} href="/roommates" className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all">
                       <h3 className="font-bold text-neutral-900">{item.profile?.full_name || 'Student'}</h3>
@@ -271,12 +271,12 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
               </section>
             )}
 
-            {results.friends.length > 0 && (
-              <section>
-                <h2 className="text-xl font-black text-neutral-900 mb-4 uppercase tracking-tight flex items-center gap-2">
-                  <Users className="h-5 w-5 text-primary" /> Friends
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+             {results.friends.length > 0 && (
+               <section>
+                 <h2 className="text-lg md:text-xl font-black text-neutral-900 mb-3 md:mb-4 uppercase tracking-tight flex items-center gap-2">
+                   <Users className="h-4 md:h-5 w-4 md:w-5 text-primary" /> Friends
+                 </h2>
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                   {results.friends.map((item) => (
                     <Link key={item.id} href="/friends" className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all">
                       <h3 className="font-bold text-neutral-900">{item.profile?.full_name || 'Student'}</h3>

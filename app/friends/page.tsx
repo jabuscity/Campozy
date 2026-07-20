@@ -83,41 +83,41 @@ export default function FriendsPage() {
       </nav>
 
       <main className="flex-1">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 text-secondary rounded-full mb-4">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+          <div className="text-center mb-8 md:mb-12">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 text-secondary rounded-full mb-3 md:mb-4">
               <Users className="h-4 w-4" />
               <span className="text-xs font-bold uppercase tracking-wider">Friendfinder</span>
             </div>
-            <h1 className="text-4xl font-black text-neutral-900 tracking-tight mb-4">
+            <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight mb-3 md:mb-4">
               Find Your <span className="text-secondary italic">Crew</span>
             </h1>
-            <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
+            <p className="text-base md:text-lg text-neutral-600 max-w-2xl mx-auto">
               Connect with students who share your interests and vibe.
             </p>
           </div>
 
           {!hasProfile ? (
-            <div className="text-center py-20 bg-white rounded-2xl border border-neutral-200">
-              <Sparkles className="h-12 w-12 text-neutral-300 mx-auto mb-4" />
-              <h2 className="text-2xl font-black text-neutral-900 mb-2">Set Up Your Profile</h2>
-              <p className="text-neutral-600 mb-6">Complete your friend profile to start getting suggestions.</p>
+            <div className="text-center py-12 md:py-20 bg-white rounded-2xl border border-neutral-200">
+              <Sparkles className="h-10 md:h-12 w-10 md:w-12 text-neutral-300 mx-auto mb-3 md:mb-4" />
+              <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-2">Set Up Your Profile</h2>
+              <p className="text-neutral-600 mb-4 md:mb-6 text-sm md:text-base">Complete your friend profile to start getting suggestions.</p>
               <Link href="/friends/preferences"><Button>Get Started</Button></Link>
             </div>
           ) : loading ? (
-            <div className="text-center py-20">
-              <RefreshCw className="h-8 w-8 animate-spin text-secondary mx-auto mb-4" />
-              <p className="text-neutral-600">Finding your best matches...</p>
+            <div className="text-center py-12 md:py-20">
+              <RefreshCw className="h-6 md:h-8 w-6 md:w-8 animate-spin text-secondary mx-auto mb-4" />
+              <p className="text-neutral-600 text-sm md:text-base">Finding your best matches...</p>
             </div>
           ) : matches.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-2xl border border-neutral-200">
-              <Users className="h-12 w-12 text-neutral-300 mx-auto mb-4" />
-              <h2 className="text-2xl font-black text-neutral-900 mb-2">No Suggestions Yet</h2>
-              <p className="text-neutral-600 mb-6">Check back later or update your preferences.</p>
+            <div className="text-center py-12 md:py-20 bg-white rounded-2xl border border-neutral-200">
+              <Users className="h-10 md:h-12 w-10 md:w-12 text-neutral-300 mx-auto mb-3 md:mb-4" />
+              <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-2">No Suggestions Yet</h2>
+              <p className="text-neutral-600 mb-4 md:mb-6 text-sm md:text-base">Check back later or update your preferences.</p>
               <Link href="/friends/preferences"><Button>Update Preferences</Button></Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {matches.map(match => match.profile && (
                 <FriendCard
                   key={match.id}

@@ -71,8 +71,8 @@ export default async function DiscoveryPage({
       </div>
 
       {/* Results Section */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12">
-        <div className="flex items-center justify-between mb-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-8 md:pt-12">
+        <div className="flex items-center justify-between mb-6 md:mb-8">
           <div className="text-neutral-900">
             <span className="font-bold text-lg">{properties.length}</span>
             <span className="text-neutral-500 ml-2 italic">
@@ -104,21 +104,21 @@ export default async function DiscoveryPage({
           </div>
         </div>
 
-        {properties.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+         {properties.length > 0 ? (
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
             {properties.map((property) => (
               <PropertyCard key={property.id} property={property} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-32 bg-white rounded-3xl border-2 border-dashed border-neutral-200">
-            <div className="h-20 w-20 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-6 text-neutral-400">
-              <MapPin className="h-10 w-10" />
+          <div className="text-center py-16 md:py-32 bg-white rounded-3xl border-2 border-dashed border-neutral-200">
+            <div className="h-16 md:h-20 w-16 md:w-20 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6 text-neutral-400">
+              <MapPin className="h-8 md:h-10 w-8 md:w-10" />
             </div>
-            <h3 className="text-2xl font-bold text-neutral-900 mb-2">
+            <h3 className="text-xl md:text-2xl font-bold text-neutral-900 mb-2">
               No Verified Housing Found
             </h3>
-            <p className="text-neutral-500 max-w-xs mx-auto mb-8">
+            <p className="text-neutral-500 max-w-xs mx-auto mb-6 md:mb-8">
               We&apos;re still mapping this campus. Be a pioneer and nominate
               yours. first hostel!
             </p>

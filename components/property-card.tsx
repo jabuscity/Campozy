@@ -67,8 +67,8 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
           </div>
 
           {/* Info Section */}
-          <div className="p-6">
-            <h3 className="text-lg font-bold text-neutral-900 line-clamp-1 mb-1 group-hover:text-primary transition-colors">
+          <div className="p-4 md:p-5">
+            <h3 className="text-base md:text-lg font-bold text-neutral-900 line-clamp-1 mb-1 group-hover:text-primary transition-colors">
               {property.name}
             </h3>
 
@@ -79,7 +79,7 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
               </span>
             </div>
 
-            <div className="flex items-center gap-4 mb-6 pt-4 border-t border-neutral-50">
+            <div className="flex items-center gap-4 mb-4 pt-3 md:pt-4 border-t border-neutral-50">
               <UtilityIcon
                 icon={<Droplet />}
                 active={property.utilities?.some(
@@ -102,7 +102,7 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
 
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-xl font-black text-neutral-900 leading-none tracking-tight">
+                <span className="text-lg md:text-xl font-black text-neutral-900 leading-none tracking-tight">
                   {minPrice.toLocaleString()}
                 </span>
                 <span className="text-neutral-400 text-[10px] uppercase font-bold ml-1 tracking-widest">

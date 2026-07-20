@@ -28,10 +28,10 @@ export function DiscussionCard({
   return (
     <Link
       href={`/community?discussion=${id}`}
-      className={cn(
-        'block bg-white rounded-2xl border border-neutral-200 p-5 hover:border-primary hover:shadow-md transition-all',
-        className
-      )}
+       className={cn(
+         'block bg-white rounded-2xl border border-neutral-200 p-4 md:p-5 hover:border-primary hover:shadow-md transition-all',
+         className
+       )}
     >
       <div className="flex items-start gap-4">
         {upvotes !== undefined && (

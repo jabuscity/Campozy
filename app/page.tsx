@@ -83,7 +83,7 @@ export default function HomePage() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative min-h-[600px] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden pt-20">
+      <section className="relative min-h-[400px] md:min-h-[600px] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden pt-16 md:pt-20">
         {/* Decorative background */}
         <div className="absolute top-1/4 -left-20 w-64 h-56 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-secondary/5 rounded-full blur-3xl pointer-events-none" />
@@ -99,11 +99,11 @@ export default function HomePage() {
             </p>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-black text-neutral-900 tracking-tight leading-[1.1] mb-6">
+          <h1 className="text-3xl md:text-5xl lg:text-7xl font-black text-neutral-900 tracking-tight leading-[1.1] mb-4 md:mb-6">
             Decide with{" "}
             <span className="text-primary italic">Confidence.</span>
           </h1>
-          <p className="text-xl text-neutral-600 leading-relaxed mb-10 max-w-2xl mx-auto font-medium">
+          <p className="text-base md:text-xl text-neutral-600 leading-relaxed mb-6 md:mb-10 max-w-2xl mx-auto font-medium">
             Verified student residences in Nairobi. Real utility updates. Zero
             guesswork. The trust network built for Strathmore, UoN, JKUAT, and
             beyond.
@@ -149,8 +149,8 @@ export default function HomePage() {
       </section>
 
       {/* Bento Featured Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-5">
           {/* Large Card: Main Housing Insight */}
           <div className="col-span-1 lg:col-span-7 rounded-2xl border border-neutral-200 bg-white overflow-hidden flex flex-col md:flex-row group transition-all duration-300 hover:shadow-xl">
             <div className="md:w-1/2 relative h-56 md:h-auto min-h-[240px]">
@@ -286,18 +286,18 @@ export default function HomePage() {
       </section>
 
       {/* Informational Section */}
-      <section className="bg-neutral-50 py-16 border-y border-neutral-100">
+      <section className="bg-neutral-50 py-10 md:py-16 border-y border-neutral-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight mb-4">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-neutral-900 tracking-tight mb-3 md:mb-4">
               Kenyan Institutional Trust, Built by Students
             </h2>
-            <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
+            <p className="text-base md:text-lg text-neutral-600 max-w-2xl mx-auto">
               We bridge the gap between &quot;brochure promises&quot; and the
               actual student experience in East African campuses.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             <div className="text-center">
               <ShieldCheck className="h-12 w-12 text-primary mx-auto mb-4" />
               <h4 className="text-xl font-black text-neutral-900 mb-2">
@@ -333,8 +333,8 @@ export default function HomePage() {
       </section>
 
       {/* Additional Local Content Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-neutral-200">
-        <div className="flex flex-col md:flex-row gap-8 items-center">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 border-t border-neutral-200">
+        <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center">
           <div className="md:w-1/2">
             <h2 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight mb-4">
               Find Your Fit Near Your Campus

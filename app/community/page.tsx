@@ -45,7 +45,7 @@ export default async function CommunityPage({
          </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 grid lg:grid-cols-4 gap-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12 grid lg:grid-cols-4 gap-6 md:gap-8">
         {/* Sidebar: Navigation & Filters */}
         <div className="hidden lg:block space-y-8">
            <div className="bg-white rounded-3xl border border-neutral-200 p-6 shadow-sm">
@@ -86,12 +86,12 @@ export default async function CommunityPage({
                 commentCount={discussion.reply_count || 0}
                 categoryName={discussion.category?.name}
               />
-            )) : (
-              <div className="text-center py-20 bg-white rounded-[2.5rem] border border-neutral-100">
-                 <h3 className="text-xl font-bold text-neutral-900 mb-2">The feed is quiet...</h3>
-                 <p className="text-neutral-500">Be the first to share an update about your campus!</p>
-              </div>
-            )}
+             )) : (
+               <div className="text-center py-12 md:py-20 bg-white rounded-[2.5rem] border border-neutral-100">
+                  <h3 className="text-lg md:text-xl font-bold text-neutral-900 mb-2">The feed is quiet...</h3>
+                  <p className="text-neutral-500 text-sm md:text-base">Be the first to share an update about your campus!</p>
+               </div>
+             )}
          </div>
       </div>
     </div>

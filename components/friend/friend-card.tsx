@@ -44,7 +44,7 @@ function FriendCard({
         </div>
       </div>
 
-      <div className="p-5 space-y-3">
+      <div className="p-4 md:p-5 space-y-2 md:space-y-3">
         <div>
           <h3 className="text-lg font-black text-neutral-900">Student {profile.student_id.slice(-4)}</h3>
           <p className="text-sm text-neutral-500 line-clamp-2">{profile.bio || 'No bio yet'}</p>

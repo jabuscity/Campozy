@@ -13,18 +13,18 @@ export default async function ParentsPage() {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-10">
-          <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <div className="mb-8 md:mb-10">
+          <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Parents
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
+          <p className="mt-2 text-neutral-500 text-base md:text-lg">
             Parent engagement, verification signals, and housing confidence.
           </p>
         </div>
 
         {parents && parents.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {parents.map((parent) => (
               <div
                 key={parent.id}
@@ -51,9 +51,9 @@ export default async function ParentsPage() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-            <Users className="h-12 w-12 text-neutral-300 mx-auto mb-4" />
-            <p className="text-neutral-500 text-lg">No parents registered yet.</p>
+          <div className="text-center py-12 md:py-20 bg-white rounded-3xl border border-neutral-200">
+            <Users className="h-10 md:h-12 w-10 md:w-12 text-neutral-300 mx-auto mb-3 md:mb-4" />
+            <p className="text-neutral-500 text-base md:text-lg">No parents registered yet.</p>
           </div>
         )}
       </div>

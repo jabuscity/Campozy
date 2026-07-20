@@ -74,20 +74,20 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-12 grid lg:grid-cols-3 gap-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8 md:mt-12 grid lg:grid-cols-3 gap-6 md:gap-8">
         {/* Left Column: Details */}
-        <div className="lg:col-span-2 space-y-12">
+        <div className="lg:col-span-2 space-y-8 md:space-y-12">
           {/* Overview */}
           <section>
-            <h2 className="text-2xl font-black text-neutral-900 mb-6 uppercase tracking-tight italic">Hostel Overview</h2>
+            <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-4 md:mb-6 uppercase tracking-tight italic">Hostel Overview</h2>
             <p className="text-neutral-600 text-lg leading-relaxed">
               {property.description || "No description provided for this verified property. However, it holds a Campozy official score based on student intelligence."}
             </p>
           </section>
 
           {/* Utility Intelligence Matrix */}
-          <section className="bg-neutral-50 rounded-3xl p-8 border border-neutral-100">
-            <h2 className="text-2xl font-black text-neutral-900 mb-6 uppercase tracking-tight italic">Utility Intelligence</h2>
+          <section className="bg-neutral-50 rounded-3xl p-4 md:p-8 border border-neutral-100">
+            <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-4 md:mb-6 uppercase tracking-tight italic">Utility Intelligence</h2>
             <UtilityMatrix
               items={[
                 { label: 'electricity', value: `${Math.round((scoreDimensions?.electricity || 0) * 20)}% uptime. Backup generator available.`, status: (scoreDimensions?.electricity || 0) >= 4 ? 'good' : (scoreDimensions?.electricity || 0) >= 3 ? 'warning' : 'bad' },
@@ -99,9 +99,9 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
           </section>
 
           {/* Additional Trust Scores */}
-          <section className="bg-neutral-50 rounded-3xl p-8 border border-neutral-100">
-            <h2 className="text-2xl font-black text-neutral-900 mb-6 uppercase tracking-tight italic">Additional Scores</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <section className="bg-neutral-50 rounded-3xl p-4 md:p-8 border border-neutral-100">
+            <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-4 md:mb-6 uppercase tracking-tight italic">Additional Scores</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
                <ScoreItem label="Hygiene & Sanitation" score={scoreDimensions?.hygiene || 0} icon={<Trash2 />} color="text-red-400" />
                <ScoreItem label="Management Responsiveness" score={scoreDimensions?.management || 0} icon={<MessageSquare />} color="text-purple-400" />
             </div>
@@ -109,10 +109,10 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
 
           {/* Rooms Section */}
           <section>
-            <h2 className="text-2xl font-black text-neutral-900 mb-8 uppercase tracking-tight italic">Available Units</h2>
-            <div className="space-y-4">
+            <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-6 md:mb-8 uppercase tracking-tight italic">Available Units</h2>
+            <div className="space-y-3 md:space-y-4">
                {property.rooms?.map(room => (
-                 <div key={room.id} className="flex items-center justify-between p-6 rounded-2xl border border-neutral-200 hover:border-primary transition-colors hover:shadow-lg bg-white">
+                 <div key={room.id} className="flex items-center justify-between p-4 md:p-6 rounded-2xl border border-neutral-200 hover:border-primary transition-colors hover:shadow-lg bg-white">
                     <div className="flex items-center gap-6">
                        <div className="h-16 w-16 bg-neutral-100 rounded-xl flex items-center justify-center text-neutral-400">
                           <Users className="h-8 w-8" />
