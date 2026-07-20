@@ -202,6 +202,97 @@ Visual presentation of confidence and quality.
 
 ---
 
+### SCREEN 5: Roommate Finder (Trust-Based Matching)
+*   **Layout Structure**:
+    1.  **Header**: "Find Your Perfect Roommate" (`H3 / Bold / Neutral-900`)
+    2.  **Match Card Stack** (Swipeable / Scrollable):
+        *   **Profile Header**:
+            *   Avatar + Name: "Jordan K."
+            *   Campus: "Central University — Year 2"
+            *   Campozy Score Badge: "92 / Highly Reliable" (`Blue Ring`)
+            *   Verification: "Student Verified ✓"
+        *   **Compatibility Breakdown**:
+            *   Budget Match: "GHS 800–1,200 / 95% overlap" (`Success Green`)
+            *   Lifestyle: "Early bird, neat, moderate social" (`Match indicators`)
+            *   Location: "Same neighborhood preference" (`Success Green`)
+            *   Academic: "Computer Science, Year 2" (`Success Green`)
+        *   **Match Reasons Tag List**:
+            *   "Same sleep schedule"
+            *   "Budget aligned"
+            *   "Both non-smoking"
+        *   **Primary Actions**:
+            *   Pass (`×` / Neutral-500)
+            *   Super Like (`★` / Brand Secondary)
+            *   Message (`💬` / Brand Primary)
+    3.  **Preference Shortcut**:
+        *   "Edit Preferences" link at bottom
+    4.  **Trust Signals Row**:
+        *   "Verified Student" | "No Reports" | "Active 2d ago"
+
+*   **Google Stitch Content Block**:
+    ```json
+    {
+      "component": "RoommateMatchCard",
+      "name": "Jordan K.",
+      "campus": "Central University — Year 2",
+      "campozyScore": 92,
+      "compatibility": {
+        "budget": "95%",
+        "lifestyle": "Aligned",
+        "location": "Same neighborhood",
+        "academic": "Same program"
+      },
+      "matchReasons": ["Same sleep schedule", "Budget aligned", "Both non-smoking"],
+      "actions": ["pass", "super_like", "message"]
+    }
+    ```
+
+---
+
+### SCREEN 6: Friendfinder (Social Discovery)
+*   **Layout Structure**:
+    1.  **Header**: "Find Friends at Your Campus" (`H3 / Bold / Neutral-900`)
+    2.  **Filter Bar**:
+        *   Pill: `All` | `Study Buddies` | `Event Buddies` | `Same Program`
+    3.  **Friend Suggestion Cards** (Grid: 2 columns on mobile):
+        *   **Card 1**:
+            *   Avatar + Name: "Sarah M."
+            *   Campus: "Central University — Year 2"
+            *   Program: "Computer Science"
+            *   Shared Interests: "🤝 Coding, 🎮 Gaming, 🏋️ Fitness"
+            *   Compatibility Score: "87% match" (`Blue badge`)
+            *   Match Reasons: "Same year, same program, gaming interest"
+            *   Action: `+ Connect` (Primary Blue)
+        *   **Card 2**:
+            *   Avatar + Name: "David A."
+            *   Campus: "Central University — Year 3"
+            *   Program: "Computer Science"
+            *   Shared Interests: "🤝 Coding, 📚 Study groups"
+            *   Compatibility Score: "79% match" (`Blue badge`)
+            *   Action: `+ Connect`
+    4.  **Existing Connections Strip**:
+        *   Horizontal scroll of connected friends with avatars
+        *   "2 connections" label
+    5.  **Empty State** (when no suggestions):
+        *   "Complete your friend preferences to see suggestions"
+        *   CTA: "Set Preferences"
+
+*   **Google Stitch Content Block**:
+    ```json
+    {
+      "component": "FriendSuggestionCard",
+      "name": "Sarah M.",
+      "campus": "Central University — Year 2",
+      "program": "Computer Science",
+      "interests": ["Coding", "Gaming", "Fitness"],
+      "compatibilityScore": 87,
+      "matchReasons": ["Same year", "Same program", "Gaming interest"],
+      "cta": "Connect"
+    }
+    ```
+
+---
+
 ## 4. COPY-PASTEABLE GENERATIVE UI PROMPTS
 
 Use these exact prompts inside your Generative UI generator (like Google Stitch, Figma AI, or v0) to automatically build the mockups.
@@ -256,3 +347,9 @@ On desktop, Campozy shifts into a calm, elegant, and highly informative dashboar
 
 ### Prompt 5: Desktop "Calm & Authoritative" Decision Dashboard
 > "Design a calm, elegant desktop dual-pane dashboard for a student trust housing network. Left side: beautiful interactive map. Right side: spacious grid of property cards showing high-quality imagery, and detailed hover tooltips explaining the verification source. Use generous whitespace, a primary blue (`#1D4ED8`) and clean grey palette, and include a side-by-side comparison table showing up to three student hostels with utility metrics (Water, Power, WiFi) mapped horizontally. The feel must be clean, editorial, professional, and trustworthy."
+
+### Prompt 6: Roommate Finder Match Card UI
+> "Generate a mobile-first roommate matching card for a student housing trust platform. The card shows a user avatar, name, campus, and a circular Campozy Score badge in blue. Display a compatibility breakdown with four metric bars: Budget Match (95%, green), Lifestyle (aligned, green), Location (same neighborhood, green), Academic (same program, green). Below the metrics, show match reason tags like 'Same sleep schedule', 'Budget aligned', 'Both non-smoking'. Include three action buttons: Pass (grey), Super Like (gold), and Message (blue). The overall feel should be clean, trustworthy, and action-oriented."
+
+### Prompt 7: Friendfinder Suggestion Grid UI
+> "Design a mobile-first friend suggestion grid for a student social platform. Show 2-column cards with avatar, name, campus, program, and shared interest tags (Coding, Gaming, Fitness). Each card displays a blue compatibility score badge (e.g., '87% match') and match reasons. Include a prominent blue 'Connect' button. Add a filter bar at the top with pills for 'All', 'Study Buddies', 'Event Buddies', 'Same Program'. Include an empty state with a 'Set Preferences' call-to-action when no suggestions exist. Use a friendly, approachable design with the brand blue (#1D4ED8)."

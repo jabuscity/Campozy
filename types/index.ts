@@ -950,8 +950,86 @@ export interface AlumniProfile {
 }
 
 // ---------------------------------------------------------------------------
+// Akwet Transition Domain
+// ---------------------------------------------------------------------------
+
+export interface TransitionProfile {
+  id: string;
+  target_city_id: string | null;
+  target_move_date: string | null;
+  budget_range_min: number | null;
+  budget_range_max: number | null;
+  housing_type_preference: string[] | null;
+  created_at: string;
+  updated_at: string;
+  // Relations
+  target_city?: City;
+}
+
+export interface HousingTransitionPreference {
+  id: string;
+  transition_profile_id: string;
+  property_type: string | null;
+  min_bedrooms: number | null;
+  max_bedrooms: number | null;
+  min_bathrooms: number | null;
+  furnished: boolean | null;
+  utilities_included: boolean | null;
+  created_at: string;
+}
+
+export interface AkwetRecommendationProfile {
+  id: string;
+  transition_profile_id: string;
+  recommended_property_id: string | null;
+  recommended_neighborhood_id: string | null;
+  score: number | null;
+  reasoning: string | null;
+  created_at: string;
+}
+
+export interface TransitionEvent {
+  id: string;
+  transition_profile_id: string;
+  event_type: string;
+  payload: Record<string, unknown>;
+  created_at: string;
+}
+
+export interface TransitionRecommendation {
+  id: string;
+  transition_profile_id: string;
+  entity_type: 'property' | 'neighborhood' | 'business';
+  entity_id: string;
+  score: number;
+  reasoning: string | null;
+  is_viewed: boolean;
+  is_saved: boolean;
+  created_at: string;
+}
+
+// ---------------------------------------------------------------------------
 // Recommendation Domain
 // ---------------------------------------------------------------------------
+
+export interface RecommendationProfile {
+  id: string;
+  user_id: string;
+  preference_vector: number[] | null;
+  behavior_vector: number[] | null;
+  last_computed_at: string | null;
+}
+
+export interface RecommendationCandidate {
+  id: string;
+  user_id: string;
+  entity_type: 'property' | 'neighborhood' | 'business' | 'opportunity';
+  entity_id: string;
+  score: number;
+  reason: string | null;
+  source: 'rules' | 'preferences' | 'behavior' | 'graph' | 'ai';
+  created_at: string;
+}
 
 export interface RecommendationFeedback {
   id: string;
@@ -959,6 +1037,79 @@ export interface RecommendationFeedback {
   entity_id: string;
   entity_type: string;
   action: 'viewed' | 'saved' | 'dismissed' | 'clicked' | 'applied';
+  created_at: string;
+}
+
+// ---------------------------------------------------------------------------
+// Forum Domain
+// ---------------------------------------------------------------------------
+
+export interface Forum {
+  id: string;
+  name: string;
+  description: string | null;
+  campus_id: string | null;
+  neighborhood_id: string | null;
+  is_public: boolean;
+  created_by: string;
+  created_at: string;
+  // Relations
+  topics?: ForumTopic[];
+  created_by_profile?: {
+    id: string;
+    full_name: string | null;
+    avatar_url: string | null;
+  };
+}
+
+export interface ForumMembership {
+  id: string;
+  forum_id: string;
+  user_id: string;
+  role: 'member' | 'moderator' | 'admin';
+  joined_at: string;
+}
+
+export interface ForumTopic {
+  id: string;
+  forum_id: string;
+  user_id: string;
+  title: string;
+  content: string;
+  is_pinned: boolean;
+  is_locked: boolean;
+  view_count: number;
+  reply_count: number;
+  last_reply_at: string | null;
+  created_at: string;
+  updated_at: string;
+  // Relations
+  author?: Profile;
+  forum?: Forum;
+  posts?: ForumPost[];
+}
+
+export interface ForumPost {
+  id: string;
+  topic_id: string;
+  user_id: string;
+  content: string;
+  parent_post_id: string | null;
+  is_solution: boolean;
+  upvotes: number;
+  downvotes: number;
+  created_at: string;
+  updated_at: string;
+  // Relations
+  author?: Profile;
+  topic?: ForumTopic;
+}
+
+export interface ForumSubscription {
+  id: string;
+  user_id: string;
+  topic_id: string;
+  notify_on_reply: boolean;
   created_at: string;
 }
 

@@ -58,6 +58,7 @@ Campozy begins as a modular monolith, not microservices.
 - Founders
 - Ambassadors
 - Scouts
+- Matching
 
 ## Trust Layer
 - Reputation Engine
@@ -75,6 +76,8 @@ Campozy begins as a modular monolith, not microservices.
 - Akwet Transition Recommendations
 - Founder qualification projections
 - Campus intelligence projections
+- Roommate Compatibility Scoring
+- Friend Compatibility Scoring
 
 ## Event Architecture
 Every meaningful action becomes an event.
@@ -88,6 +91,9 @@ Examples:
 - founder_points_earned
 - scout_report_submitted
 - ambassador_assignment_completed
+- roommate_match_viewed
+- roommate_interaction_recorded
+- friend_connection_created
 
 ## Projection System
 - recommendation_projection
@@ -96,6 +102,8 @@ Examples:
 - trust_projection
 - founder_projection
 - campus_projection
+- roommate_match_projection
+- friend_match_projection
 
 ## Founder Backend Support
 The backend must explicitly support:

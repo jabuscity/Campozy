@@ -252,6 +252,23 @@ Tables:
 - transition_events
 - transition_recommendations
 
+## Matching Domain: Roommate Finder
+Tables:
+- roommate_preferences
+- roommate_profiles
+- roommate_matches
+- roommate_interactions
+- roommate_conversations
+- roommate_messages
+
+## Matching Domain: Friendfinder
+Tables:
+- friend_preferences
+- friend_profiles
+- friend_matches
+- friend_connections
+- friend_interactions
+
 ## Analytics Domain
 Tables:
 - analytics_profiles
@@ -309,7 +326,9 @@ A neighborhood contains many properties and businesses.
 A property has many reviews, utility reports, hygiene reports, and verification records.  
 A user may hold multiple founder memberships across campus, country, and global scope.  
 A founder may later become an ambassador, scout, mentor, alumni member, and employer.  
-Opportunities connect students, mentors, alumni, employers, and future lifecycle stages.
+Opportunities connect students, mentors, alumni, employers, and future lifecycle stages.  
+A student may have roommate preferences and profiles, generating ranked compatibility matches.  
+A student may have friend preferences and profiles, generating ranked friend suggestions and mutual connections.
 
 ## Schema North Star
 The schema should make it possible to answer:
@@ -321,3 +340,5 @@ The schema should make it possible to answer:
 - Which alumni can mentor this student?
 - Which opportunities best fit this student?
 - When should this student transition to Akwet?
+- Which roommates are most compatible with this student?
+- Which friends share this student's academic and social interests?

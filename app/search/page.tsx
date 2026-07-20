@@ -13,6 +13,8 @@ type SearchResult = {
   opportunities: Opportunity[]
   alumni: { id: string; current_position: string | null; current_company: string | null; degree: string | null }[]
   founders: { id: string; contribution_score: number; profile: { full_name: string | null } | null }[]
+  roommates: { id: string; bio: string | null; campozy_score: number; profile: { full_name: string | null } | null }[]
+  friends: { id: string; bio: string | null; campozy_score: number; profile: { full_name: string | null } | null }[]
 }
 
 export default async function SearchPage({ searchParams }: { searchParams: { q?: string } }) {
@@ -29,6 +31,8 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
     opportunities: [],
     alumni: [],
     founders: [],
+    roommates: [],
+    friends: [],
   }
 
   if (query.trim()) {
@@ -43,6 +47,8 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
       opportunityData,
       alumniData,
       founderData,
+      roommateData,
+      friendData,
     ] = await Promise.all([
       supabase.from('universities').select('id, name, description').ilike('name', `%${q}%`).limit(5),
       supabase.from('campuses').select('id, name, description').ilike('name', `%${q}%`).limit(5),
@@ -53,6 +59,8 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
       supabase.from('opportunities').select('id, title, description').ilike('title', `%${q}%`).limit(5),
       supabase.from('alumni_profiles').select('id, current_position, current_company, degree').or(`current_position.ilike.%${q}%,current_company.ilike.%${q}%,degree.ilike.%${q}%`).limit(5),
       supabase.from('founder_memberships').select('id, contribution_score, profile:profiles(id, full_name)').limit(5),
+      supabase.from('roommate_profiles').select('id, bio, campozy_score, student:profiles(id, full_name)').or(`bio.ilike.%${q}%,interests.cs.{${q}}`).limit(5),
+      supabase.from('friend_profiles').select('id, bio, campozy_score, student:profiles(id, full_name)').or(`bio.ilike.%${q}%,interests.cs.{${q}},hobbies.cs.{${q}}`).limit(5),
     ])
 
     results.universities = uniData.data || []
@@ -64,9 +72,11 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
     results.opportunities = (opportunityData.data || []) as Opportunity[]
     results.alumni = (alumniData.data || []) as SearchResult['alumni']
     results.founders = (founderData.data || []) as unknown as SearchResult['founders']
+    results.roommates = (roommateData.data || []) as unknown as SearchResult['roommates']
+    results.friends = (friendData.data || []) as unknown as SearchResult['friends']
   }
 
-  const totalResults = results.universities.length + results.campuses.length + results.neighborhoods.length + results.properties.length + results.businesses.length + results.discussions.length + results.opportunities.length + results.alumni.length + results.founders.length
+  const totalResults = results.universities.length + results.campuses.length + results.neighborhoods.length + results.properties.length + results.businesses.length + results.discussions.length + results.opportunities.length + results.alumni.length + results.founders.length + results.roommates.length + results.friends.length
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -238,6 +248,40 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
                     <Link key={item.id} href="/founders" className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all">
                       <h3 className="font-bold text-neutral-900">{item.profile?.full_name || 'Founder'}</h3>
                       <p className="text-sm text-neutral-500 line-clamp-2">Contribution Score: {item.contribution_score}</p>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {results.roommates.length > 0 && (
+              <section>
+                <h2 className="text-xl font-black text-neutral-900 mb-4 uppercase tracking-tight flex items-center gap-2">
+                  <Users className="h-5 w-5 text-primary" /> Roommates
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {results.roommates.map((item) => (
+                    <Link key={item.id} href="/roommates" className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all">
+                      <h3 className="font-bold text-neutral-900">{item.profile?.full_name || 'Student'}</h3>
+                      <p className="text-sm text-neutral-500 line-clamp-2">{item.bio || 'Roommate profile'}</p>
+                      <p className="text-xs text-neutral-400 mt-1">Score: {item.campozy_score}</p>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {results.friends.length > 0 && (
+              <section>
+                <h2 className="text-xl font-black text-neutral-900 mb-4 uppercase tracking-tight flex items-center gap-2">
+                  <Users className="h-5 w-5 text-primary" /> Friends
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {results.friends.map((item) => (
+                    <Link key={item.id} href="/friends" className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all">
+                      <h3 className="font-bold text-neutral-900">{item.profile?.full_name || 'Student'}</h3>
+                      <p className="text-sm text-neutral-500 line-clamp-2">{item.bio || 'Friend profile'}</p>
+                      <p className="text-xs text-neutral-400 mt-1">Score: {item.campozy_score}</p>
                     </Link>
                   ))}
                 </div>

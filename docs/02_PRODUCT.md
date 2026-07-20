@@ -65,6 +65,9 @@ Akwet integration and professional-housing transition.
 ### 11. Growth Layer
 Referrals, founders, ambassadors, scouts, community recognition.
 
+### 12. Matching Layer
+Roommate Finder and Friendfinder — trust-based compatibility matching for students seeking housing partners and social connections.
+
 ## Signature Modules
 - University Intelligence
 - Neighborhood Intelligence
@@ -76,6 +79,8 @@ Referrals, founders, ambassadors, scouts, community recognition.
 - Opportunity Hub
 - Mentorship Network
 - Alumni Network
+- Roommate Finder
+- Friendfinder
 
 ## Founders Program
 Founders are qualified contributors, not early spectators. Founder identity is layered across campus, country, and global levels.

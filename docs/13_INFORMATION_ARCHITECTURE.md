@@ -14,12 +14,18 @@ Campozy organizes information so students can quickly find, understand, trust, a
 - Neighborhoods
 - Community
 - Opportunities
+- Employers
 - Businesses
 - Founders
 - Alumni
+- Mentors
+- Parents
+- Ambassadors
+- Scouts
 - Resources
 - About
 - Profile
+- Search (Global Modal)
 
 ## Core Ecosystem
 - Housing
@@ -30,6 +36,7 @@ Campozy organizes information so students can quickly find, understand, trust, a
 - Alumni
 - Businesses
 - Universities
+- Matching (Roommate Finder & Friendfinder)
 
 ## User Roles
 Primary:
@@ -156,6 +163,38 @@ Founders:
 - Audit History
 - Recognition
 
+## Matching Architecture
+
+### Roommate Finder
+Roommate Finder:
+- Browse Matches
+- Preference Wizard
+- Match Details (compatibility breakdown)
+- Conversations
+- Saved Matches
+- Super Likes
+
+Roommate interactions:
+- Like
+- Pass
+- Super Like
+- Message
+
+### Friendfinder
+Friendfinder:
+- Browse Suggestions
+- Preference Settings
+- Friend Suggestions
+- Connections
+- Study Buddies
+- Event Buddies
+
+Friend interactions:
+- Viewed
+- Liked
+- Passed
+- Connected
+
 ## Alumni Architecture
 - Alumni Directory
 - Mentorship
@@ -172,7 +211,7 @@ Founders:
 - Parent Resources
 
 ## Search Architecture
-Global search should reach:
+Global search (modal) should reach:
 - properties
 - universities
 - campuses
@@ -182,6 +221,8 @@ Global search should reach:
 - opportunities
 - founders
 - alumni
+- roommates
+- friends
 
 ## Lifecycle Architecture
 Prospective Student

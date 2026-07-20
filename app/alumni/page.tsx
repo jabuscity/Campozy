@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { GraduationCap } from 'lucide-react'
+import { GraduationCap, ArrowRight } from 'lucide-react'
 
 export default async function AlumniPage() {
   const supabase = await createClient()
@@ -119,6 +119,18 @@ export default async function AlumniPage() {
               </Link>
             </div>
           )}
+
+        <section className="mt-12">
+          <h2 className="text-2xl font-black text-neutral-900 mb-6 uppercase tracking-tight">
+            Akwet Transition
+          </h2>
+          <div className="bg-white rounded-3xl border border-neutral-200 p-8 text-center">
+            <p className="text-neutral-500 text-lg mb-4">Plan your transition from campus to career with housing and neighborhood intelligence.</p>
+            <Link href="/alumni/transition" className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
+              View your transition plan <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </section>
         </section>
 
         {employers && employers.length > 0 && (
