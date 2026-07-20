@@ -8,7 +8,7 @@ interface DiscussionCardProps {
   content: string
   authorName: string
   createdAt: string
-  upvotes: number
+  upvotes?: number
   commentCount: number
   categoryName?: string
   className?: string
@@ -34,10 +34,12 @@ export function DiscussionCard({
       )}
     >
       <div className="flex items-start gap-4">
-        <div className="flex flex-col items-center gap-1 pt-1">
-          <ArrowUp className="h-5 w-5 text-neutral-400" />
-          <span className="text-sm font-bold text-neutral-700">{upvotes}</span>
-        </div>
+        {upvotes !== undefined && (
+          <div className="flex flex-col items-center gap-1 pt-1">
+            <ArrowUp className="h-5 w-5 text-neutral-400" />
+            <span className="text-sm font-bold text-neutral-700">{upvotes}</span>
+          </div>
+        )}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-2">
             {categoryName && (

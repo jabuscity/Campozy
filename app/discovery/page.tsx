@@ -1,10 +1,12 @@
 import { HousingService } from "@/services/housing-service";
 import { PropertyCard } from "@/components/property-card";
 import { Button } from "@/components/ui/button";
-import { redirect } from "next/navigation";
 import { CampusFilter } from "@/components/discovery/campus-filter";
 import { DiscoveryControls } from "@/components/discovery/discovery-controls";
-import { MapPin } from "lucide-react"; // Fixes 'MapPin' is not defined
+import { DiscoveryMobileFilters } from "@/components/discovery-mobile-filters";
+import { RealTimeFeed } from "@/components/ui/real-time-feed";
+import { MapPin } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function DiscoveryPage({
   searchParams,
@@ -22,7 +24,30 @@ export default async function DiscoveryPage({
 
   const properties = campusId
     ? await HousingService.getPropertiesByCampus(campusId, { sort })
-    : [];
+    : []
+
+  const supabase = await createClient()
+  const { data: feedItems } = await supabase
+    .from('utility_incidents')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(5)
+
+  const feed = (feedItems || []).map((item: {
+    id: string
+    type: string
+    title: string
+    description: string
+    created_at: string
+    property_id?: string
+  }) => ({
+    id: item.id,
+    type: item.type as 'utility' | 'scout_report' | 'warning' | 'success',
+    title: item.title,
+    description: item.description,
+    timestamp: item.created_at,
+    link: item.property_id ? `/property/${item.property_id}` : undefined,
+  }))
 
   return (
     <div className="bg-neutral-50 min-h-screen pb-20">
@@ -57,22 +82,25 @@ export default async function DiscoveryPage({
 
           <div className="flex items-center gap-2 text-sm font-medium text-neutral-500">
             Sort by:
-            {/* WARNING: This select dropdown will throw a runtime error in its current state */}
-            <select
-              className="bg-transparent border-none focus:ring-0 font-bold text-neutral-900 cursor-pointer"
-              value={sort}
-              onChange={(e) => {
-                const newSearchParams = new URLSearchParams(
-                  window.location.search,
-                );
-                newSearchParams.set("sort", e.currentTarget.value);
-                redirect(`/discovery?${newSearchParams.toString()}`);
-              }}
-            >
-              <option value="highest_score">Highest Score</option>
-              <option value="price_asc">Price: Low to High</option>
-              <option value="latest">Latest</option>
-            </select>
+            <form method="get" className="flex items-center gap-2">
+              <select
+                name="sort"
+                className="bg-transparent border-none focus:ring-0 font-bold text-neutral-900 cursor-pointer"
+                defaultValue={sort}
+                onChange={(e) => {
+                  const form = e.target.form
+                  if (form) {
+                    const params = new URLSearchParams(window.location.search)
+                    if (e.target.value) params.set('sort', e.target.value)
+                    window.location.search = params.toString()
+                  }
+                }}
+              >
+                <option value="highest_score">Highest Score</option>
+                <option value="price_asc">Price: Low to High</option>
+                <option value="latest">Latest</option>
+              </select>
+            </form>
           </div>
         </div>
 
@@ -101,6 +129,11 @@ export default async function DiscoveryPage({
         )}
       </div>
 
+      {/* Real-Time Feed */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12">
+        <RealTimeFeed items={feed} />
+      </div>
+
       {/* Map Toggle Floating Button (Mobile) */}
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 lg:hidden">
         <Button
@@ -111,6 +144,11 @@ export default async function DiscoveryPage({
         </Button>
       </div>
       <CampusFilter campuses={campuses} campusId={campusId} />
+      <DiscoveryMobileFilters currentSort={sort} onSortChange={(newSort) => {
+        const params = new URLSearchParams(window.location.search)
+        params.set('sort', newSort)
+        window.location.search = params.toString()
+      }} />
     </div>
   );
 }

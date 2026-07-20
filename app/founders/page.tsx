@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
+import { FounderBadge } from '@/components/ui/founder-badge'
 import Link from 'next/link'
 import { Users, ShieldCheck, Trophy } from 'lucide-react'
 
@@ -46,14 +47,12 @@ export default async function FoundersPage() {
                   <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black">
                     {membership.profile?.full_name?.[0] || 'F'}
                   </div>
-                  <div>
-                    <p className="font-bold text-neutral-900">
-                      {membership.profile?.full_name || 'Founder'}
-                    </p>
-                    <p className="text-xs text-neutral-500 uppercase tracking-tight">
-                      {membership.cohort?.scope || 'Campus'} Founder
-                    </p>
-                  </div>
+                   <div>
+                      <p className="font-bold text-neutral-900">
+                         {membership.profile?.full_name || 'Founder'}
+                      </p>
+                      <FounderBadge scope={membership.cohort?.scope === 'country' ? 'country' : membership.cohort?.scope === 'global' ? 'global' : 'campus'} />
+                   </div>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-neutral-500">
                   <ShieldCheck className="h-4 w-4 text-secondary" />
