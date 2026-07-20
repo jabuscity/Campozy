@@ -20,6 +20,7 @@ export async function Navbar() {
     { href: '/businesses', label: 'Businesses' },
     { href: '/founders', label: 'Founders' },
     { href: '/alumni', label: 'Alumni' },
+    { href: '/mentors', label: 'Mentors' },
     { href: '/parents', label: 'Parents' },
     { href: '/ambassadors', label: 'Ambassadors' },
     { href: '/scouts', label: 'Scouts' },
