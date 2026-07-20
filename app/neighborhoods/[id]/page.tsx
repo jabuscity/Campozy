@@ -18,6 +18,7 @@ export default async function NeighborhoodPage({ params }: { params: { id: strin
   const discussions = neighborhood.city_id
     ? await CommunityService.getDiscussions({ neighborhoodId: neighborhood.id, limit: 5 })
     : []
+  const properties = await HousingService.getPropertiesByNeighborhood(neighborhood.id).then(props => props.slice(0, 6))
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -64,6 +65,33 @@ export default async function NeighborhoodPage({ params }: { params: { id: strin
               <Link href="/community">
                 <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
                   View all discussions <ArrowRight className="h-4 w-4" />
+                </span>
+              </Link>
+            </section>
+
+            <section className="bg-white rounded-3xl border border-neutral-200 p-8">
+              <h2 className="text-2xl font-black text-neutral-900 mb-6 uppercase tracking-tight">
+                Housing
+              </h2>
+              {properties.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {properties.map((property) => (
+                    <Link
+                      key={property.id}
+                      href={`/property/${property.id}`}
+                      className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all"
+                    >
+                      <h3 className="font-bold text-neutral-900">{property.name}</h3>
+                      <p className="text-sm text-neutral-500 line-clamp-2">{property.description}</p>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-neutral-500">No properties listed in this neighborhood yet.</p>
+              )}
+              <Link href="/discovery" className="mt-4 inline-flex">
+                <span className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
+                  View all housing <ArrowRight className="h-4 w-4" />
                 </span>
               </Link>
             </section>
