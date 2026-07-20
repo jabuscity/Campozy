@@ -77,7 +77,7 @@ export async function Navbar() {
                 <Bell className="h-5 w-5" />
               </Button>
               <Link href="/profile">
-                <div className="ml-2 flex h-9 w-9 items-center justify-center rounded-full bg-neutral-100 border border-neutral-200 overflow-hidden hover:border-primary transition-colors">
+                <div className="ml-2 hidden sm:flex h-9 w-9 items-center justify-center rounded-full bg-neutral-100 border border-neutral-200 overflow-hidden hover:border-primary transition-colors">
                   <User className="h-5 w-5 text-neutral-500" />
                 </div>
               </Link>
