@@ -1,7 +1,7 @@
 import { ShieldCheck, Shield, ShieldX } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-type VerificationLevel = 'unverified' | 'claimed' | 'community_verified' | 'scout_verified' | 'campozy_verified'
+export type VerificationLevel = 'unverified' | 'claimed' | 'community_verified' | 'scout_verified' | 'campozy_verified'
 
 interface VerificationBadgeProps {
   level: VerificationLevel

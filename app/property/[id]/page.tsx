@@ -1,12 +1,13 @@
 import * as React from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { Metadata } from 'next'
 import { HousingService } from '@/services/housing-service'
 import { TrustService } from '@/services/trust-service'
 import { CampozyScore } from '@/components/ui/campozy-score'
 import { VerificationBadge } from '@/components/ui/verification-badge'
+import { VerificationTooltip } from '@/components/ui/verification-tooltip'
 import { UtilityMatrix } from '@/components/ui/utility-matrix'
+import { ImageCarousel } from '@/components/ui/image-carousel'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { 
@@ -50,34 +51,25 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
 
       {/* Hero Gallery Section */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="relative h-[400px] lg:h-[600px] rounded-3xl overflow-hidden group">
-          <Image 
-            src={primaryImage}
-            alt={property.name}
-            fill
-            sizes="(min-width: 1024px) 100vw, 100vw"
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-          <div className="absolute bottom-10 left-10 text-white">
-            <h1 className="text-4xl lg:text-6xl font-black mb-4 tracking-tight uppercase italic">{property.name}</h1>
-            <div className="flex items-center gap-4">
-               <div className="flex items-center gap-1.5 text-lg font-medium opacity-90">
-                 <MapPin className="h-5 w-5" />
-                 {property.neighborhood?.name}, {property.address}
-               </div>
-                <Badge variant="secondary" className="px-4 py-1 backdrop-blur-md bg-white/20 border-none text-white font-bold">
-                  {property.property_type?.name || 'Hostel'}
-                </Badge>
-                <VerificationBadge level={property.verification_level || 'unverified'} className="backdrop-blur-md bg-white/20 border-none text-white" />
-            </div>
-          </div>
-          
-          <div className="absolute bottom-10 right-10 flex gap-2">
-            <Button className="bg-white text-neutral-900 hover:bg-neutral-100 rounded-xl px-6 font-bold shadow-lg">
-              View All Photos
-            </Button>
+        <ImageCarousel
+          images={property.media?.map(m => ({ url: m.url, alt: property.name })) || [{ url: primaryImage, alt: property.name }]}
+          aspectRatio="wide"
+          className="rounded-3xl"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-3xl pointer-events-none" />
+        <div className="absolute bottom-10 left-10 text-white">
+          <h1 className="text-4xl lg:text-6xl font-black mb-4 tracking-tight uppercase italic">{property.name}</h1>
+          <div className="flex items-center gap-4">
+             <div className="flex items-center gap-1.5 text-lg font-medium opacity-90">
+               <MapPin className="h-5 w-5" />
+               {property.neighborhood?.name}, {property.address}
+             </div>
+             <Badge variant="secondary" className="px-4 py-1 backdrop-blur-md bg-white/20 border-none text-white font-bold">
+               {property.property_type?.name || 'Hostel'}
+             </Badge>
+             <VerificationTooltip level={property.verification_level || 'unverified'} scoutName="Scout Official">
+               <VerificationBadge level={property.verification_level || 'unverified'} className="backdrop-blur-md bg-white/20 border-none text-white" />
+             </VerificationTooltip>
           </div>
         </div>
       </div>
