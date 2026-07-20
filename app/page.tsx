@@ -408,28 +408,6 @@ export default function HomePage() {
           </section>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="border-t border-neutral-200 bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white">
-              <School className="h-4 w-4" />
-            </div>
-            <span className="text-sm font-bold text-neutral-900 uppercase tracking-tight">
-              Campozy
-            </span>
-          </div>
-          <p className="text-sm text-neutral-500">
-            Built in Nairobi. Trusted by students across Kenya.
-          </p>
-          <div className="flex gap-6">
-            <Link href="/about" className="text-sm text-neutral-500 hover:text-primary transition-colors">About</Link>
-            <Link href="/privacy" className="text-sm text-neutral-500 hover:text-primary transition-colors">Privacy</Link>
-            <Link href="/terms" className="text-sm text-neutral-500 hover:text-primary transition-colors">Terms</Link>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
