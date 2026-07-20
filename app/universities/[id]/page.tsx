@@ -1,11 +1,13 @@
 import { HousingService } from '@/services/housing-service'
 import { CommunityService } from '@/services/community-service'
 import { OpportunityService } from '@/services/opportunity-service'
+import { createClient } from '@/lib/supabase/server'
 import type { Neighborhood } from '@/types'
 import Link from 'next/link'
 import { MapPin, Users, Briefcase, ArrowRight } from 'lucide-react'
 
 export default async function UniversityPage({ params }: { params: { id: string } }) {
+  const supabase = await createClient()
   const university = await HousingService.getUniversityById(params.id)
   const campuses = await HousingService.getCampuses(university.id)
 
@@ -19,12 +21,22 @@ export default async function UniversityPage({ params }: { params: { id: string 
   const propertiesPromise = campusIds.length > 0
     ? HousingService.getPropertiesByCampus(campusIds[0], { limit: 6 })
     : Promise.resolve([])
+  const reportsPromise = campusIds.length > 0
+    ? supabase
+        .from('campus_intelligence_reports')
+        .select('*')
+        .in('campus_id', campusIds)
+        .order('created_at', { ascending: false })
+        .limit(3)
+        .then(({ data }) => data || [])
+    : Promise.resolve([])
 
-  const [discussions, opportunities, neighborhoods, properties] = await Promise.all([
+  const [discussions, opportunities, neighborhoods, properties, reports] = await Promise.all([
     discussionsPromise,
     opportunitiesPromise,
     neighborhoodsPromise,
     propertiesPromise,
+    reportsPromise,
   ])
 
   return (
@@ -90,6 +102,46 @@ export default async function UniversityPage({ params }: { params: { id: string 
                     >
                       <h3 className="font-bold text-neutral-900">{discussion.title}</h3>
                       <p className="text-sm text-neutral-500 line-clamp-2">{discussion.content}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-neutral-500">No discussions yet.</p>
+              )}
+              <Link href="/community" className="mt-4 inline-flex">
+                <span className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
+                  View all discussions <ArrowRight className="h-4 w-4" />
+                </span>
+              </Link>
+            </section>
+
+            <section className="bg-white rounded-3xl border border-neutral-200 p-8">
+              <h2 className="text-2xl font-black text-neutral-900 mb-6 uppercase tracking-tight">
+                Opportunities
+              </h2>
+              {opportunities.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {opportunities.map((opportunity) => (
+                    <Link
+                      key={opportunity.id}
+                      href={`/opportunities/${opportunity.id}`}
+                      className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all"
+                    >
+                      <h3 className="font-bold text-neutral-900">{opportunity.title}</h3>
+                      <p className="text-sm text-neutral-500 line-clamp-2">{opportunity.description}</p>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-neutral-500">No opportunities posted yet.</p>
+              )}
+              <Link href="/opportunities" className="mt-4 inline-flex">
+                <span className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
+                  View all opportunities <ArrowRight className="h-4 w-4" />
+                </span>
+              </Link>
+            </section>
+
             <section className="bg-white rounded-3xl border border-neutral-200 p-8">
               <h2 className="text-2xl font-black text-neutral-900 mb-6 uppercase tracking-tight">
                 Neighborhoods
@@ -145,45 +197,44 @@ export default async function UniversityPage({ params }: { params: { id: string 
                 </span>
               </Link>
             </section>
-          </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-neutral-500">No discussions yet.</p>
-              )}
-              <Link href="/community" className="mt-4 inline-flex">
-                <span className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
-                  View all discussions <ArrowRight className="h-4 w-4" />
-                </span>
-              </Link>
-            </section>
 
-            <section className="bg-white rounded-3xl border border-neutral-200 p-8">
-              <h2 className="text-2xl font-black text-neutral-900 mb-6 uppercase tracking-tight">
-                Opportunities
-              </h2>
-              {opportunities.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {opportunities.map((opportunity) => (
-                    <Link
-                      key={opportunity.id}
-                      href={`/opportunities/${opportunity.id}`}
-                      className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all"
-                    >
-                      <h3 className="font-bold text-neutral-900">{opportunity.title}</h3>
-                      <p className="text-sm text-neutral-500 line-clamp-2">{opportunity.description}</p>
-                    </Link>
+            {reports.length > 0 && (
+              <section className="bg-white rounded-3xl border border-neutral-200 p-8">
+                <h2 className="text-2xl font-black text-neutral-900 mb-6 uppercase tracking-tight">
+                  Reports
+                </h2>
+                <div className="space-y-4">
+                  {reports.map((report) => (
+                    <div key={report.id} className="p-4 rounded-2xl border border-neutral-200">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-bold text-neutral-900">Campus Report</span>
+                        <span className="text-xs text-neutral-500">
+                          {new Date(report.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        <div>
+                          <p className="text-neutral-500">Properties</p>
+                          <p className="font-bold text-neutral-900">{report.active_properties}</p>
+                        </div>
+                        <div>
+                          <p className="text-neutral-500">Avg Score</p>
+                          <p className="font-bold text-neutral-900">{report.avg_campozy_score}</p>
+                        </div>
+                        <div>
+                          <p className="text-neutral-500">Reviews</p>
+                          <p className="font-bold text-neutral-900">{report.review_count}</p>
+                        </div>
+                        <div>
+                          <p className="text-neutral-500">Contributors</p>
+                          <p className="font-bold text-neutral-900">{report.contributor_count}</p>
+                        </div>
+                      </div>
+                    </div>
                   ))}
                 </div>
-              ) : (
-                <p className="text-neutral-500">No opportunities posted yet.</p>
-              )}
-              <Link href="/opportunities" className="mt-4 inline-flex">
-                <span className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
-                  View all opportunities <ArrowRight className="h-4 w-4" />
-                </span>
-              </Link>
-            </section>
+              </section>
+            )}
           </div>
 
           <div className="space-y-8">
