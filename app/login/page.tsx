@@ -1,9 +1,26 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ShieldCheck, ArrowLeft } from 'lucide-react'
+import { ShieldCheck, ArrowLeft, CheckCircle2 } from 'lucide-react'
+import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
 import { login } from '@/app/actions/auth-actions'
+import { PasswordInput } from '@/components/ui/password-input'
 
-export default function LoginPage() {
+interface LoginPageProps {
+  searchParams: Promise<{ verified?: string; error?: string }>
+}
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (user) {
+    redirect('/')
+  }
+
+  const params = await searchParams
+  const verified = params.verified === '1'
+  const error = params.error
+
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
       <Link href="/" className="fixed top-8 left-8 flex items-center gap-2 text-neutral-500 hover:text-neutral-900 transition-colors">
@@ -19,16 +36,36 @@ export default function LoginPage() {
           <p className="text-neutral-500">Sign in to your student trust network.</p>
         </div>
 
+        {verified && user && (
+          <div className="mb-6 p-4 rounded-xl bg-green-50 border border-green-200 flex items-center gap-3">
+            <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
+            <p className="text-sm font-medium text-green-800">Email verified successfully. Sign in below.</p>
+          </div>
+        )}
+
+        {verified && !user && (
+          <div className="mb-6 p-4 rounded-xl bg-blue-50 border border-blue-200 flex items-center gap-3">
+            <CheckCircle2 className="h-5 w-5 text-blue-600 flex-shrink-0" />
+            <p className="text-sm font-medium text-blue-800">Account created. Check your email to verify, then sign in.</p>
+          </div>
+        )}
+
+        {error === 'verification_failed' && (
+          <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200">
+            <p className="text-sm font-medium text-red-800">Verification failed. Please try again.</p>
+          </div>
+        )}
+
         <form className="space-y-6" action={login}>
           <div>
             <label className="block text-sm font-bold text-neutral-700 mb-2 uppercase tracking-wide">
               Student Email
             </label>
-            <input 
+            <input
               name="email"
-              type="email" 
+              type="email"
               required
-              placeholder="e.g. name@university.ac" 
+              placeholder="e.g. name@university.ac"
               className="w-full px-5 h-14 rounded-xl border border-neutral-200 bg-neutral-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-medium"
             />
           </div>
@@ -38,15 +75,15 @@ export default function LoginPage() {
               <label className="block text-sm font-bold text-neutral-700 uppercase tracking-wide">
                 Password
               </label>
-              <Link href="#" className="text-xs font-bold text-primary hover:underline">Forgot?</Link>
+              <Link href="/forgot-password" className="text-xs font-bold text-primary hover:underline">Forgot?</Link>
             </div>
-            <input 
-              name="password"
-              type="password" 
-              required
-              placeholder="••••••••" 
-              className="w-full px-5 h-14 rounded-xl border border-neutral-200 bg-neutral-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-medium"
-            />
+            <PasswordInput
+                name="password"
+                autoComplete="current-password"
+                required
+                placeholder="••••••••"
+                className="w-full px-5 h-14 rounded-xl border border-neutral-200 bg-neutral-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-medium"
+              />
           </div>
 
           <Button type="submit" size="lg" className="w-full text-lg font-bold">

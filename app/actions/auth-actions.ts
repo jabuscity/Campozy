@@ -28,11 +28,8 @@ export async function signup(formData: FormData): Promise<void> {
 
   const email = formData.get('email') as string
   const password = formData.get('password') as string
-  const fullName = formData.get('fullName') as string
-  const role = formData.get('role') as string
-  const formerSchool = formData.get('formerSchool') as string
-  const phone = formData.get('phone') as string
-  const address = formData.get('address') as string
+  const fullName = (formData.get('fullName') as string | null)?.trim() || ''
+  const formerSchool = (formData.get('formerSchool') as string | null)?.trim() || ''
 
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -40,8 +37,9 @@ export async function signup(formData: FormData): Promise<void> {
     options: {
       data: {
         full_name: fullName,
-        role: role,
+        role: 'student',
       },
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/auth/callback`,
     },
   })
 
@@ -51,65 +49,37 @@ export async function signup(formData: FormData): Promise<void> {
 
   const userId = data.user.id
 
-  if (role === 'student') {
-    if (formerSchool && formerSchool.trim()) {
-      const { data: schoolData, error: schoolError } = await supabase
-        .from('high_schools')
-        .upsert(
-          { name: formerSchool.trim() },
-          { onConflict: 'name' }
-        )
-        .select('id')
-        .single()
+  if (formerSchool) {
+    const { data: schoolData, error: schoolError } = await supabase
+      .from('high_schools')
+      .upsert(
+        { name: formerSchool },
+        { onConflict: 'name' }
+      )
+      .select('id')
+      .single()
 
-      if (!schoolError && schoolData) {
-        await supabase
-          .from('profiles')
-          .update({ former_school_id: schoolData.id })
-          .eq('id', userId)
-      }
-    }
-  }
-
-  if (role === 'owner') {
-    const ownerAddress = (address || '').trim()
-    const ownerPhone = (phone || '').trim()
-
-    if (!ownerAddress) {
-      redirect('/signup?error=missing_address')
-    }
-
-    await supabase.from('owners').insert({
-      id: userId,
-      address: ownerAddress,
-    })
-
-    if (ownerPhone) {
+    if (!schoolError && schoolData) {
       await supabase
         .from('profiles')
-        .update({ phone: ownerPhone })
+        .update({ former_school_id: schoolData.id })
         .eq('id', userId)
     }
   }
 
-  if (role && role !== 'student') {
-    const { data: roleData, error: roleError } = await supabase
-      .from('roles')
-      .select('id')
-      .eq('name', role)
-      .single()
+  await supabase.from('students').insert({
+    id: userId,
+    enrollment_year: null,
+    expected_graduation_year: null,
+  }).select('id').maybeSingle()
 
-    if (!roleError && roleData) {
-      await supabase.from('user_roles').delete().eq('user_id', userId)
-      await supabase.from('user_roles').insert({
-        user_id: userId,
-        role_id: roleData.id,
-      })
-    }
-  }
+  await supabase
+    .from('profiles')
+    .update({ is_onboarded: false })
+    .eq('id', userId)
 
   revalidatePath('/', 'layout')
-  redirect('/')
+  redirect('/login?verified=1')
 }
 
 export async function signOut() {
@@ -117,4 +87,68 @@ export async function signOut() {
   await supabase.auth.signOut()
   revalidatePath('/', 'layout')
   redirect('/login')
+}
+
+export async function forgotPassword(formData: FormData): Promise<{ error?: string }> {
+  const supabase = await createClient()
+
+  const email = formData.get('email') as string
+
+  await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/reset-password`,
+  })
+
+  return {}
+}
+
+export async function resetPassword(formData: FormData): Promise<{ error?: string }> {
+  const supabase = await createClient()
+
+  const password = formData.get('password') as string
+
+  if (password.length < 8) {
+    return { error: 'Password must be at least 8 characters.' }
+  }
+
+  const { error } = await supabase.auth.updateUser({ password })
+
+  if (error) {
+    return { error: 'Failed to reset password.' }
+  }
+
+  revalidatePath('/', 'layout')
+  redirect('/login?reset=success')
+}
+
+export async function updateProfile(formData: FormData) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    return { success: false, error: 'Not authenticated' }
+  }
+
+  const fullName = (formData.get('fullName') as string | null)?.trim() || null
+  const username = (formData.get('username') as string | null)?.trim() || null
+  const bio = (formData.get('bio') as string | null)?.trim() || null
+  const phoneNumber = (formData.get('phoneNumber') as string | null)?.trim() || null
+  const avatarUrl = (formData.get('avatarUrl') as string | null)?.trim() || null
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({
+      full_name: fullName,
+      username,
+      bio,
+      phone_number: phoneNumber,
+      avatar_url: avatarUrl,
+    })
+    .eq('id', user.id)
+
+  if (error) {
+    return { success: false, error: 'Update failed' }
+  }
+
+  revalidatePath('/profile', 'layout')
+  return { success: true }
 }
