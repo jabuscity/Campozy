@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import { supabaseAdmin } from '@/lib/supabase/admin'
+import { createClient as createAdminClient } from '@supabase/supabase-js'
 
 export interface TipCategory {
   id: string
@@ -30,7 +30,21 @@ export interface TipSuggestionWithCategory extends TipSuggestion {
 
 export class TipService {
   static async getCategories(): Promise<TipCategory[]> {
-    const supabase = supabaseAdmin
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim()
+
+    if (!supabaseUrl || !serviceRoleKey) {
+      console.error('Missing Supabase env vars for admin client', {
+        hasUrl: !!supabaseUrl,
+        hasKey: !!serviceRoleKey,
+        rawUrl: JSON.stringify(process.env.NEXT_PUBLIC_SUPABASE_URL),
+      })
+      return []
+    }
+
+    const supabase = createAdminClient(supabaseUrl, serviceRoleKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    })
     const { data, error } = await supabase
       .from('tip_categories')
       .select('*')
@@ -50,7 +64,17 @@ export class TipService {
   }
 
   static async getApprovedTips(): Promise<TipSuggestionWithCategory[]> {
-    const supabase = supabaseAdmin
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim()
+
+    if (!supabaseUrl || !serviceRoleKey) {
+      console.error('Missing Supabase env vars for admin client')
+      return []
+    }
+
+    const supabase = createAdminClient(supabaseUrl, serviceRoleKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    })
     const { data, error } = await supabase
       .from('tip_suggestions')
       .select(`
