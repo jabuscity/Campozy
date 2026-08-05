@@ -76,8 +76,7 @@ export default async function PropertyDiscussionPage({ params }: { params: { id:
         ) : (
           <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
             <MessageSquare className="h-12 w-12 text-neutral-300 mx-auto mb-4" />
-            <p className="text-neutral-500 text-lg">No discussions yet for this neighborhood.</p>
-            <p className="text-neutral-400 text-sm mt-2">Be the first to start a conversation.</p>
+             <p className="text-neutral-500 text-lg">Nothing here yet.</p>
           </div>
         )}
       </div>

@@ -48,9 +48,7 @@ export default async function UniversityPage({ params }: { params: { id: string 
               <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
                 {university.name}
               </h1>
-              <p className="mt-2 text-neutral-500 text-lg">
-                {university.country?.name || 'Kenya'}
-              </p>
+
             </div>
             {university.website && (
               <a
@@ -85,7 +83,7 @@ export default async function UniversityPage({ params }: { params: { id: string 
                   ))}
                 </div>
               ) : (
-                <p className="text-neutral-500">No campuses listed yet.</p>
+                <p className="text-neutral-500">None yet.</p>
               )}
             </section>
 
@@ -106,7 +104,7 @@ export default async function UniversityPage({ params }: { params: { id: string 
                   ))}
                 </div>
               ) : (
-                <p className="text-neutral-500">No discussions yet.</p>
+                <p className="text-neutral-500">Nothing here yet.</p>
               )}
               <Link href="/community" className="mt-4 inline-flex">
                 <span className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
@@ -133,7 +131,7 @@ export default async function UniversityPage({ params }: { params: { id: string 
                   ))}
                 </div>
               ) : (
-                <p className="text-neutral-500">No opportunities posted yet.</p>
+                <p className="text-neutral-500">Nothing here yet.</p>
               )}
               <Link href="/opportunities" className="mt-4 inline-flex">
                 <span className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
@@ -162,7 +160,7 @@ export default async function UniversityPage({ params }: { params: { id: string 
                   ))}
                 </div>
               ) : (
-                <p className="text-neutral-500">No neighborhoods mapped yet.</p>
+                <p className="text-neutral-500">None yet.</p>
               )}
               <Link href="/neighborhoods" className="mt-4 inline-flex">
                 <span className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
@@ -189,7 +187,7 @@ export default async function UniversityPage({ params }: { params: { id: string 
                   ))}
                 </div>
               ) : (
-                <p className="text-neutral-500">No properties listed near this university yet.</p>
+                <p className="text-neutral-500">Nothing here yet.</p>
               )}
               <Link href="/discovery" className="mt-4 inline-flex">
                 <span className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">

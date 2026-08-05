@@ -17,7 +17,7 @@ export default function RoadmapPage() {
           <div className="bg-white rounded-3xl border border-neutral-200 p-4 md:p-8">
             <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-3 md:mb-4">Phase 1: Foundation</h2>
             <p className="text-neutral-500 leading-relaxed text-sm md:text-base">
-              Verified housing, identity verification, and trust scoring for students, owners, and businesses.
+              Verified housing, identity verification, and trust scoring for students and campus communities.
             </p>
           </div>
           <div className="bg-white rounded-3xl border border-neutral-200 p-4 md:p-8">

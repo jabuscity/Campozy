@@ -5,9 +5,10 @@ import Link from 'next/link'
 export default async function BusinessesPage({
   searchParams,
 }: {
-  searchParams: { category?: string }
+  searchParams: Promise<{ category?: string }>
 }) {
-  const category = searchParams.category
+  const params = await searchParams
+  const category = params.category
   const businesses = category
     ? await BusinessService.getBusinesses({ category })
     : await BusinessService.getBusinesses()
@@ -22,9 +23,6 @@ export default async function BusinessesPage({
           <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Businesses
           </h1>
-          <p className="mt-2 text-neutral-500 text-base md:text-lg">
-            Student-serving businesses with reviews, trust signals, and recommendations.
-          </p>
         </div>
 
         {categories.length > 0 && (
@@ -63,7 +61,7 @@ export default async function BusinessesPage({
           </div>
         ) : (
           <div className="text-center py-16 md:py-20 bg-white rounded-3xl border border-neutral-200">
-            <p className="text-neutral-500 text-base md:text-lg">No businesses listed yet.</p>
+             <p className="text-neutral-500 text-base md:text-lg">Nothing listed yet.</p>
           </div>
         )}
       </div>

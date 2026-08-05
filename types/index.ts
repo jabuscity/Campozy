@@ -10,9 +10,9 @@
 export type VerificationLevel = 'unverified' | 'claimed' | 'community_verified' | 'scout_verified' | 'campozy_verified';
 export type TrustLevel = 'new' | 'member' | 'contributor' | 'trusted_contributor' | 'campus_expert' | 'community_leader' | 'campozy_fellow';
 export type FounderScope = 'campus' | 'country' | 'global';
-export type OpportunityType = 'internship' | 'attachment' | 'scholarship' | 'fellowship' | 'competition' | 'graduate_trainee' | 'mentorship' | 'ambassador_program' | 'employer_partnership';
-export type NotificationType = 'review' | 'verification' | 'opportunity' | 'message' | 'founder' | 'system' | 'alert';
-export type ModerationActionType = 'warning' | 'content_removal' | 'temporary_restriction' | 'suspension' | 'permanent_ban';
+export type OpportunityType = 'job' | 'internship' | 'scholarship' | 'volunteer' | 'event';
+export type NotificationType = 'review' | 'verification' | 'opportunity' | 'message' | 'founder' | 'system' | 'alert' | 'utility_report';
+export type ModerationActionType = 'warning' | 'content_removed' | 'temporary_restriction' | 'account_suspension';
 export type RoleName = 'student' | 'owner' | 'scout' | 'founder' | 'ambassador' | 'mentor' | 'alumni' | 'employer' | 'parent' | 'moderator' | 'admin';
 
 // ---------------------------------------------------------------------------
@@ -104,6 +104,8 @@ export interface Profile {
   bio: string | null;
   phone_number: string | null;
   is_verified: boolean;
+  is_onboarded: boolean;
+  date_of_birth: string | null;
   trust_level: TrustLevel;
   reputation_score: number;
   contribution_score: number;
@@ -220,6 +222,10 @@ export interface Student {
   enrollment_year: number | null;
   expected_graduation_year: number | null;
   former_school_id: string | null;
+  personality: string | null;
+  fun_activities: string | null;
+  religious_inclination: string | null;
+  study_type: string | null;
   created_at: string;
   updated_at: string;
   // Relations
@@ -227,7 +233,6 @@ export interface Student {
   campus?: Campus;
   program?: AcademicProgram;
   former_school?: HighSchool;
-  preferences?: StudentPreferences;
 }
 
 export interface StudentPreferences {
@@ -253,6 +258,8 @@ export interface Neighborhood {
   name: string;
   description: string | null;
   safety_score: number;
+  reputation_score: number | null;
+  image_url: string | null;
   created_at: string;
   updated_at: string;
   // Relations
@@ -291,7 +298,6 @@ export interface NeighborhoodCampusDistance {
 export interface Property {
   id: string;
   neighborhood_id: string | null;
-  owner_id: string | null;
   name: string;
   address: string;
   description: string | null;
@@ -308,9 +314,10 @@ export interface Property {
   updated_at: string;
   // Relations
   neighborhood?: Neighborhood;
-  owner?: Profile;
+  neighborhoods?: Neighborhood;
   property_type?: PropertyType;
   rooms?: PropertyRoom[];
+  property_media?: PropertyMedia[];
   media?: PropertyMedia[];
   amenities?: PropertyAmenity[];
   utilities?: PropertyUtility[];
@@ -392,11 +399,14 @@ export interface UtilityReport {
 
 export interface UtilityIncident {
   id: string;
-  property_id: string;
+  property_id: string | null;
   utility_type_id: string;
   reported_by: string;
+  title: string;
   description: string;
   severity: 'low' | 'medium' | 'high' | 'critical';
+  location_type: 'property' | 'campus' | 'other';
+  location_description: string | null;
   resolved_at: string | null;
   created_at: string;
 }
@@ -642,6 +652,8 @@ export interface ConversationMember {
   joined_at: string;
   last_read_at: string | null;
   is_muted: boolean;
+  // Relations
+  profiles?: Profile;
 }
 
 export interface Message {
@@ -713,17 +725,8 @@ export interface BusinessReview {
 }
 
 // ---------------------------------------------------------------------------
-// Parent Domain
+// Education Domain
 // ---------------------------------------------------------------------------
-
-export interface ParentProfile {
-  id: string;
-  relationship: string;
-  created_at: string;
-  // Relations
-  profile?: Profile;
-  student_links?: ParentStudentLink[];
-}
 
 export interface ParentStudentLink {
   parent_id: string;

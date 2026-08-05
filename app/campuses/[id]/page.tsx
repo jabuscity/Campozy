@@ -47,9 +47,7 @@ export default async function CampusPage({ params }: { params: { id: string } })
           <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             {campus.name}
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
-                {campus.university?.name || 'Independent Campus'}
-          </p>
+
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -81,7 +79,7 @@ export default async function CampusPage({ params }: { params: { id: string } })
                   ))}
                 </div>
               ) : (
-                <p className="text-neutral-500">No properties listed near this campus yet.</p>
+                <p className="text-neutral-500">None yet.</p>
               )}
               <Link href="/discovery">
                 <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
@@ -107,7 +105,7 @@ export default async function CampusPage({ params }: { params: { id: string } })
                   ))}
                 </div>
               ) : (
-                <p className="text-neutral-500">No discussions yet.</p>
+                <p className="text-neutral-500">Nothing here yet.</p>
               )}
               <Link href="/community">
                 <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
@@ -134,7 +132,7 @@ export default async function CampusPage({ params }: { params: { id: string } })
                   ))}
                 </div>
               ) : (
-                <p className="text-neutral-500">No opportunities posted yet.</p>
+                <p className="text-neutral-500">Nothing here yet.</p>
               )}
               <Link href="/opportunities">
                 <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
@@ -161,7 +159,7 @@ export default async function CampusPage({ params }: { params: { id: string } })
                   ))}
                 </div>
               ) : (
-                <p className="text-neutral-500">No businesses listed near this campus yet.</p>
+                <p className="text-neutral-500">Nothing here yet.</p>
               )}
               <Link href="/businesses">
                 <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">

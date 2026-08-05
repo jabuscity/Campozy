@@ -31,9 +31,6 @@ export default async function FoundersPage() {
           <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Founders
           </h1>
-          <p className="mt-2 text-neutral-500 text-base md:text-lg">
-            Campus, country, and global pioneers building Campozy.
-          </p>
         </div>
 
             {memberships && memberships.length > 0 ? (
@@ -64,7 +61,7 @@ export default async function FoundersPage() {
         ) : (
           <div className="text-center py-12 md:py-20 bg-white rounded-3xl border border-neutral-200">
             <Users className="h-10 md:h-12 w-10 md:w-12 text-neutral-300 mx-auto mb-3 md:mb-4" />
-            <p className="text-neutral-500 text-base md:text-lg">No founders yet. Be the first.</p>
+            <p className="text-neutral-500 text-base md:text-lg">None yet.</p>
             <Link href="/signup" className="mt-4 md:mt-6 inline-flex">
               <Button size="lg" className="px-8 md:px-10 h-12 md:h-14 text-base md:text-lg font-bold rounded-xl shadow-lg shadow-primary/20">
                 Join Network

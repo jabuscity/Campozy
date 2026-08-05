@@ -12,9 +12,7 @@ export default async function CampusOpportunitiesPage() {
           <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Opportunities
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
-            Jobs, internships, and programs for students
-          </p>
+
         </div>
 
         {opportunities.length > 0 ? (
@@ -36,7 +34,7 @@ export default async function CampusOpportunitiesPage() {
           </div>
         ) : (
           <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-            <p className="text-neutral-500 text-lg">No opportunities posted yet.</p>
+            <p className="text-neutral-500 text-lg">Nothing here yet.</p>
             <Link href="/opportunities" className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
               Browse all opportunities <ArrowRight className="h-4 w-4" />
             </Link>

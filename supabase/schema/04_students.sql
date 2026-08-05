@@ -32,31 +32,7 @@ CREATE TABLE IF NOT EXISTS high_schools (
 
 CREATE INDEX IF NOT EXISTS idx_high_schools_city ON high_schools(city_id);
 
--- OWNERS
-
-CREATE TABLE IF NOT EXISTS owners (
-    id UUID PRIMARY KEY REFERENCES profiles(id) ON DELETE CASCADE,
-    address TEXT NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
-ALTER TABLE owners ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY owners_select ON owners FOR
-SELECT
-    TO authenticated USING (auth.uid() = id);
-
-CREATE POLICY owners_insert ON owners FOR
-INSERT
-    TO authenticated WITH CHECK (auth.uid() = id);
-
-CREATE POLICY owners_update ON owners FOR
-UPDATE
-    TO authenticated USING (auth.uid() = id) WITH CHECK (auth.uid() = id);
-
 -- STUDENT DOMAIN
-
-CREATE TABLE IF NOT EXISTS students (
     id UUID PRIMARY KEY REFERENCES profiles(id) ON DELETE CASCADE,
     university_id UUID REFERENCES universities(id),
     campus_id UUID REFERENCES campuses(id),

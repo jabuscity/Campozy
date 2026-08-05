@@ -25,9 +25,7 @@ export default async function PropertyReviewsPage({ params }: { params: { id: st
           <h1 className="text-3xl font-black text-neutral-900 tracking-tight uppercase italic">
             Reviews
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
-            {property.name} • {reviews.length} review{reviews.length !== 1 ? 's' : ''}
-          </p>
+
         </div>
 
         {reviews.length > 0 ? (
@@ -176,7 +174,7 @@ export default async function PropertyReviewsPage({ params }: { params: { id: st
           </div>
         ) : (
           <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-            <p className="text-neutral-500 text-lg">No reviews yet.</p>
+            <p className="text-neutral-500 text-lg">None yet.</p>
           </div>
         )}
       </div>

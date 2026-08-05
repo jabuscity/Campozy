@@ -13,11 +13,13 @@ CREATE TABLE IF NOT EXISTS profiles (
         OR length(trim(full_name)) > 0
     ),
     avatar_url TEXT,
-    phone TEXT,
+    phone_number TEXT,
     bio TEXT,
     university_id UUID REFERENCES universities(id),
     campus_id UUID REFERENCES campuses(id),
     former_school_id UUID REFERENCES high_schools(id),
+    is_onboarded BOOLEAN NOT NULL DEFAULT FALSE,
+    date_of_birth DATE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

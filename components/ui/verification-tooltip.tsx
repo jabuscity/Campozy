@@ -23,7 +23,7 @@ export function VerificationTooltip({
 
   const details = {
     unverified: 'No verification has been performed on this listing.',
-    claimed: 'The owner has claimed this property but verification is pending.',
+    claimed: 'This listing has been claimed and verification is pending.',
     community_verified: 'Verified by student reviews and community feedback.',
     scout_verified: `Audited by scout ${scoutName || 'official'} on ${auditDate ? new Date(auditDate).toLocaleDateString() : 'recently'}.`,
     campozy_verified: 'Fully verified by Campozy. Includes scout audit, student reviews, and utility checks.',

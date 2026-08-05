@@ -25,9 +25,7 @@ export default async function BusinessPage({ params }: { params: { id: string } 
               <h1 className="text-3xl font-black text-neutral-900 tracking-tight uppercase italic">
                 {business.name}
               </h1>
-              <p className="mt-2 text-neutral-500 text-lg">
-                {business.category || 'Local Business'}
-              </p>
+
             </div>
             {business.website && (
               <a
@@ -85,7 +83,7 @@ export default async function BusinessPage({ params }: { params: { id: string } 
                   ))}
                 </div>
               ) : (
-                <p className="text-neutral-500">No reviews yet.</p>
+                <p className="text-neutral-500">None yet.</p>
               )}
             </section>
           </div>

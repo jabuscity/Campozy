@@ -24,7 +24,7 @@ export default function AboutPage() {
             </div>
             <h3 className="text-lg font-black text-neutral-900 mb-2">Community First</h3>
             <p className="text-sm text-neutral-500">
-              Every feature is designed to strengthen trust between students, owners, and local businesses.
+              Every feature is designed to strengthen trust between students, campuses, and the local community.
             </p>
           </div>
           <div className="bg-white rounded-2xl border border-neutral-200 p-6">

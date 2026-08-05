@@ -32,9 +32,7 @@ export default async function CampusBusinessesPage({ params }: { params: { id: s
           <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Businesses
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
-            Local businesses and services near {campus.name}
-          </p>
+
         </div>
 
         {businesses.length > 0 ? (
@@ -56,7 +54,7 @@ export default async function CampusBusinessesPage({ params }: { params: { id: s
           </div>
         ) : (
           <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-            <p className="text-neutral-500 text-lg">No businesses listed near this campus yet.</p>
+            <p className="text-neutral-500 text-lg">Nothing here yet.</p>
             <Link href="/businesses" className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
               Browse all businesses <ArrowRight className="h-4 w-4" />
             </Link>

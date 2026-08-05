@@ -22,9 +22,7 @@ export default async function UniversityNeighborhoodsPage({ params }: { params: 
           <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Neighborhoods
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
-            Student-friendly neighborhoods near {university.name}
-          </p>
+
         </div>
 
         {unique.length > 0 ? (
@@ -44,7 +42,7 @@ export default async function UniversityNeighborhoodsPage({ params }: { params: 
           </div>
         ) : (
           <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-            <p className="text-neutral-500 text-lg">No neighborhoods mapped near this university yet.</p>
+            <p className="text-neutral-500 text-lg">Nothing here yet.</p>
             <Link href="/neighborhoods" className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
               Browse all neighborhoods <ArrowRight className="h-4 w-4" />
             </Link>

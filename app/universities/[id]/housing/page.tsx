@@ -2,8 +2,9 @@ import { HousingService } from '@/services/housing-service'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 
-export default async function UniversityHousingPage({ params }: { params: { id: string } }) {
-  const university = await HousingService.getUniversityById(params.id)
+export default async function UniversityHousingPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const university = await HousingService.getUniversityById(id)
   const campuses = await HousingService.getCampuses(university.id)
 
   const campusIds = campuses.map(c => c.id)
@@ -24,9 +25,7 @@ export default async function UniversityHousingPage({ params }: { params: { id: 
           <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Housing
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
-            Verified student housing near {university.name}
-          </p>
+
         </div>
 
         {properties.length > 0 ? (
@@ -48,7 +47,7 @@ export default async function UniversityHousingPage({ params }: { params: { id: 
           </div>
         ) : (
           <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-            <p className="text-neutral-500 text-lg">No properties listed near this university yet.</p>
+            <p className="text-neutral-500 text-lg">Nothing here yet.</p>
             <Link href="/discovery" className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
               Browse all housing <ArrowRight className="h-4 w-4" />
             </Link>

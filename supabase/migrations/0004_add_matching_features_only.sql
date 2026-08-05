@@ -233,78 +233,18 @@ CREATE INDEX IF NOT EXISTS idx_friend_connections_user_b ON friend_connections(u
 CREATE INDEX IF NOT EXISTS idx_friend_interactions_user ON friend_interactions(user_id);
 CREATE INDEX IF NOT EXISTS idx_friend_interactions_target ON friend_interactions(target_id);
 
--- ============================================================================
--- RLS Policies for Roommate Finder
--- ============================================================================
-
+-- RLS for Roommate Finder & Friendfinder tables
+-- Policies are defined in migration 0009_harden_rls_policies.sql
 ALTER TABLE roommate_preferences ENABLE ROW LEVEL SECURITY;
-CREATE POLICY roommate_preferences_select ON roommate_preferences FOR SELECT TO authenticated USING (true);
-CREATE POLICY roommate_preferences_insert ON roommate_preferences FOR INSERT TO authenticated WITH CHECK (true);
-CREATE POLICY roommate_preferences_update ON roommate_preferences FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
-CREATE POLICY roommate_preferences_delete ON roommate_preferences FOR DELETE TO authenticated USING (true);
-
 ALTER TABLE roommate_profiles ENABLE ROW LEVEL SECURITY;
-CREATE POLICY roommate_profiles_select ON roommate_profiles FOR SELECT TO authenticated USING (true);
-CREATE POLICY roommate_profiles_insert ON roommate_profiles FOR INSERT TO authenticated WITH CHECK (true);
-CREATE POLICY roommate_profiles_update ON roommate_profiles FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
-CREATE POLICY roommate_profiles_delete ON roommate_profiles FOR DELETE TO authenticated USING (true);
-
 ALTER TABLE roommate_matches ENABLE ROW LEVEL SECURITY;
-CREATE POLICY roommate_matches_select ON roommate_matches FOR SELECT TO authenticated USING (true);
-CREATE POLICY roommate_matches_insert ON roommate_matches FOR INSERT TO authenticated WITH CHECK (true);
-CREATE POLICY roommate_matches_update ON roommate_matches FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
-CREATE POLICY roommate_matches_delete ON roommate_matches FOR DELETE TO authenticated USING (true);
-
 ALTER TABLE roommate_interactions ENABLE ROW LEVEL SECURITY;
-CREATE POLICY roommate_interactions_select ON roommate_interactions FOR SELECT TO authenticated USING (true);
-CREATE POLICY roommate_interactions_insert ON roommate_interactions FOR INSERT TO authenticated WITH CHECK (true);
-CREATE POLICY roommate_interactions_update ON roommate_interactions FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
-CREATE POLICY roommate_interactions_delete ON roommate_interactions FOR DELETE TO authenticated USING (true);
-
 ALTER TABLE roommate_conversations ENABLE ROW LEVEL SECURITY;
-CREATE POLICY roommate_conversations_select ON roommate_conversations FOR SELECT TO authenticated USING (true);
-CREATE POLICY roommate_conversations_insert ON roommate_conversations FOR INSERT TO authenticated WITH CHECK (true);
-CREATE POLICY roommate_conversations_update ON roommate_conversations FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
-CREATE POLICY roommate_conversations_delete ON roommate_conversations FOR DELETE TO authenticated USING (true);
-
 ALTER TABLE roommate_messages ENABLE ROW LEVEL SECURITY;
-CREATE POLICY roommate_messages_select ON roommate_messages FOR SELECT TO authenticated USING (true);
-CREATE POLICY roommate_messages_insert ON roommate_messages FOR INSERT TO authenticated WITH CHECK (true);
-CREATE POLICY roommate_messages_update ON roommate_messages FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
-CREATE POLICY roommate_messages_delete ON roommate_messages FOR DELETE TO authenticated USING (true);
-
--- ============================================================================
--- RLS Policies for Friendfinder
--- ============================================================================
-
 ALTER TABLE friend_preferences ENABLE ROW LEVEL SECURITY;
-CREATE POLICY friend_preferences_select ON friend_preferences FOR SELECT TO authenticated USING (true);
-CREATE POLICY friend_preferences_insert ON friend_preferences FOR INSERT TO authenticated WITH CHECK (true);
-CREATE POLICY friend_preferences_update ON friend_preferences FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
-CREATE POLICY friend_preferences_delete ON friend_preferences FOR DELETE TO authenticated USING (true);
-
 ALTER TABLE friend_profiles ENABLE ROW LEVEL SECURITY;
-CREATE POLICY friend_profiles_select ON friend_profiles FOR SELECT TO authenticated USING (true);
-CREATE POLICY friend_profiles_insert ON friend_profiles FOR INSERT TO authenticated WITH CHECK (true);
-CREATE POLICY friend_profiles_update ON friend_profiles FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
-CREATE POLICY friend_profiles_delete ON friend_profiles FOR DELETE TO authenticated USING (true);
-
 ALTER TABLE friend_matches ENABLE ROW LEVEL SECURITY;
-CREATE POLICY friend_matches_select ON friend_matches FOR SELECT TO authenticated USING (true);
-CREATE POLICY friend_matches_insert ON friend_matches FOR INSERT TO authenticated WITH CHECK (true);
-CREATE POLICY friend_matches_update ON friend_matches FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
-CREATE POLICY friend_matches_delete ON friend_matches FOR DELETE TO authenticated USING (true);
-
 ALTER TABLE friend_connections ENABLE ROW LEVEL SECURITY;
-CREATE POLICY friend_connections_select ON friend_connections FOR SELECT TO authenticated USING (true);
-CREATE POLICY friend_connections_insert ON friend_connections FOR INSERT TO authenticated WITH CHECK (true);
-CREATE POLICY friend_connections_update ON friend_connections FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
-CREATE POLICY friend_connections_delete ON friend_connections FOR DELETE TO authenticated USING (true);
-
 ALTER TABLE friend_interactions ENABLE ROW LEVEL SECURITY;
-CREATE POLICY friend_interactions_select ON friend_interactions FOR SELECT TO authenticated USING (true);
-CREATE POLICY friend_interactions_insert ON friend_interactions FOR INSERT TO authenticated WITH CHECK (true);
-CREATE POLICY friend_interactions_update ON friend_interactions FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
-CREATE POLICY friend_interactions_delete ON friend_interactions FOR DELETE TO authenticated USING (true);
 
 COMMIT;

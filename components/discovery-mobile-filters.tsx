@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { BottomSheet } from '@/components/ui/bottom-sheet'
 import { Button } from '@/components/ui/button'
 import { SlidersHorizontal, MapPin, Star, X } from 'lucide-react'
@@ -19,11 +20,19 @@ const sortOptions: FilterOption[] = [
 
 interface DiscoveryMobileFiltersProps {
   currentSort: string
-  onSortChange: (sort: string) => void
 }
 
-export function DiscoveryMobileFilters({ currentSort, onSortChange }: DiscoveryMobileFiltersProps) {
+export function DiscoveryMobileFilters({ currentSort }: DiscoveryMobileFiltersProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const handleSortChange = (sort: string) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('sort', sort)
+    router.push(`?${params.toString()}`)
+    setIsOpen(false)
+  }
 
   return (
     <>
@@ -44,10 +53,7 @@ export function DiscoveryMobileFilters({ currentSort, onSortChange }: DiscoveryM
               {sortOptions.map((option) => (
                 <button
                   key={option.value}
-                  onClick={() => {
-                    onSortChange(option.value)
-                    setIsOpen(false)
-                  }}
+                  onClick={() => handleSortChange(option.value)}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border transition-all ${
                     currentSort === option.value
                       ? 'border-primary bg-primary/5 text-primary'

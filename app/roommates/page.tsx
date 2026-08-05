@@ -1,19 +1,28 @@
 'use client';
 
 import * as React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { RoommateCard } from "@/components/roommate/roommate-card";
 import { ArrowLeft, Heart, Settings, Sparkles, RefreshCw } from "lucide-react";
 import type { RoommateMatch, RoommateProfile } from "@/types";
 
 export default function RoommatesPage() {
+  const router = useRouter();
   const [matches, setMatches] = useState<(RoommateMatch & { profile?: RoommateProfile })[]>([]);
   const [loading, setLoading] = useState(true);
   const [hasProfile, setHasProfile] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const mountedRef = useRef(true);
+
+  React.useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
   React.useEffect(() => {
     (async () => {
@@ -23,13 +32,13 @@ export default function RoommatesPage() {
         const supabase = createClient();
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) {
-          window.location.href = '/login';
+          router.push('/login');
           return;
         }
         setUserId(user.id);
 
         const profileResult = await getRoommateProfile(user.id);
-        setHasProfile(!!profileResult?.profile);
+        if (mountedRef.current) setHasProfile(!!profileResult?.profile);
 
         if (profileResult?.profile) {
           const matchesResult = await getRoommateMatches(user.id, 20, 0);
@@ -43,43 +52,19 @@ export default function RoommatesPage() {
               return { ...match, profile: profile as RoommateProfile };
             })
           );
-          setMatches(matchesWithProfiles.filter(m => m.profile));
+          if (mountedRef.current) setMatches(matchesWithProfiles.filter(m => m.profile));
         }
       } catch (error) {
         console.error('Error loading matches:', error);
         setError('Failed to load matches');
       } finally {
-        setLoading(false);
+        if (mountedRef.current) setLoading(false);
       }
     })();
-  }, []);
+  }, [router]);
 
   return (
     <div className="min-h-screen bg-neutral-50 flex flex-col">
-      <nav className="sticky top-0 z-50 w-full border-b border-neutral-200 bg-white/80 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-lg">
-              <span className="text-xl font-bold italic">C</span>
-            </div>
-            <span className="text-xl font-black tracking-tight text-neutral-900 uppercase italic">Campozy</span>
-          </Link>
-          <div className="flex items-center gap-3">
-            <Link href="/roommates/preferences">
-              <Button variant="ghost" size="sm">
-                <Settings className="h-4 w-4 mr-2" />
-                Preferences
-              </Button>
-            </Link>
-            <Link href="/">
-              <Button variant="ghost" size="icon">
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
-
       <main className="flex-1">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
           <div className="text-center mb-8 md:mb-12">
@@ -100,7 +85,7 @@ export default function RoommatesPage() {
               <Sparkles className="h-10 md:h-12 w-10 md:w-12 text-neutral-300 mx-auto mb-3 md:mb-4" />
               <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-2">Set Up Your Profile</h2>
               <p className="text-neutral-600 mb-4 md:mb-6 text-sm md:text-base">Complete your roommate profile to start getting matches.</p>
-              <Link href="/roommates/preferences"><Button>Get Started</Button></Link>
+              <Link href="/connections/preferences"><Button>Get Started</Button></Link>
             </div>
           ) : loading ? (
             <div className="text-center py-12 md:py-20">
@@ -112,7 +97,7 @@ export default function RoommatesPage() {
               <Heart className="h-10 md:h-12 w-10 md:w-12 text-neutral-300 mx-auto mb-3 md:mb-4" />
               <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-2">No Matches Yet</h2>
               <p className="text-neutral-600 mb-4 md:mb-6 text-sm md:text-base">Check back later or update your preferences.</p>
-              <Link href="/roommates/preferences"><Button>Update Preferences</Button></Link>
+              <Link href="/connections/preferences"><Button>Update Preferences</Button></Link>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -134,7 +119,7 @@ export default function RoommatesPage() {
                     );
                   }}
                   onMessage={() => {
-                    window.location.href = `/roommates/conversations/${match.id}`;
+                    router.push(`/roommates/conversations/${match.id}`);
                   }}
                 />
               ))}

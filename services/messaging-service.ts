@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import type { Conversation, Message } from '@/types'
+import type { Conversation, Message, ConversationMember } from '@/types'
 
 export const MessagingService = {
   async getConversations(userId: string) {
@@ -8,10 +8,9 @@ export const MessagingService = {
       .from('conversations')
       .select(`
         *,
-        members:conversation_members(*, profiles(*))
+        members:conversation_members(*, profiles!conversation_members_user_id_fkey(*))
       `)
-      .or(`participant_a.eq.${userId},participant_b.eq.${userId}`)
-      .order('last_message_at', { ascending: false })
+      .order('updated_at', { ascending: false })
 
     if (error) throw new Error(`Failed to fetch conversations: ${error.message}`)
     return data as Conversation[]
@@ -23,7 +22,7 @@ export const MessagingService = {
       .from('messages')
       .select(`
         *,
-        sender:profiles(*)
+        sender:profiles!messages_sender_id_fkey(*)
       `)
       .eq('conversation_id', conversationId)
       .order('created_at', { ascending: true })
@@ -44,7 +43,7 @@ export const MessagingService = {
 
     await supabase
       .from('conversations')
-      .update({ last_message_at: new Date().toISOString() })
+      .update({ updated_at: new Date().toISOString() })
       .eq('id', conversationId)
 
     return data as Message

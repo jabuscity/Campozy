@@ -1,0 +1,1 @@
+SELECT table_name, column_name FROM information_schema.columns WHERE table_name IN ('discussions', 'community_posts', 'forums', 'forum_topics', 'businesses', 'opportunities', 'employers') ORDER BY table_name, ordinal_position;

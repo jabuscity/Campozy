@@ -69,9 +69,7 @@ export default async function CampusSafetyPage({ params }: { params: { id: strin
           <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Safety
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
-            Safety ratings and reports from the community
-          </p>
+
         </div>
 
         {allReviews.length > 0 ? (
@@ -108,7 +106,7 @@ export default async function CampusSafetyPage({ params }: { params: { id: strin
           </div>
         ) : (
           <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-            <p className="text-neutral-500 text-lg">No safety reports available yet.</p>
+            <p className="text-neutral-500 text-lg">None yet.</p>
           </div>
         )}
       </div>

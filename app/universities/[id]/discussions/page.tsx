@@ -13,9 +13,7 @@ export default async function UniversityDiscussionsPage({ params }: { params: { 
           <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Discussions
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
-            Student conversations and community insights
-          </p>
+
         </div>
 
         {discussions.length > 0 ? (
@@ -37,7 +35,7 @@ export default async function UniversityDiscussionsPage({ params }: { params: { 
           </div>
         ) : (
           <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-            <p className="text-neutral-500 text-lg">No discussions yet.</p>
+            <p className="text-neutral-500 text-lg">Nothing here yet.</p>
             <Link href="/community" className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
               Browse all discussions <ArrowRight className="h-4 w-4" />
             </Link>

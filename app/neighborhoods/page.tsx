@@ -1,32 +1,76 @@
 import { HousingService } from '@/services/housing-service'
-import { NeighborhoodCard } from '@/components/neighborhood-card'
-import type { Neighborhood } from '@/types'
+import { BentoGrid } from '@/components/bento-grid'
+import type { Neighborhood, NeighborhoodCampusDistance } from '@/types'
 
-export default async function NeighborhoodsPage() {
-  const neighborhoods = await HousingService.getNeighborhoods()
+export default async function NeighborhoodsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ campus?: string }>
+}) {
+  const params = await searchParams
+  const campusId = params.campus || ''
+
+  let rawNeighborhoods: unknown[] = []
+  if (campusId) {
+    try {
+      const data = await HousingService.getNeighborhoodsByCampus(campusId)
+      rawNeighborhoods = (data || []) as unknown[]
+    } catch {
+      rawNeighborhoods = []
+    }
+  } else {
+    rawNeighborhoods = (await HousingService.getNeighborhoods()) as unknown[]
+  }
+
+  const neighborhoods: Neighborhood[] = rawNeighborhoods.map((item: unknown) => {
+    if (campusId) {
+      const typed = item as NeighborhoodCampusDistance & { neighborhoods: Neighborhood }
+      return typed.neighborhoods
+    }
+    return item as Neighborhood
+  })
+
+  const neighborhoodsWithCounts = await Promise.all(
+    neighborhoods.map(async (neighborhood) => {
+      try {
+        const properties = await HousingService.getPropertiesByNeighborhood(neighborhood.id)
+        return {
+          neighborhood,
+          propertyCount: (properties || []).length,
+        }
+      } catch {
+        return {
+          neighborhood,
+          propertyCount: 0,
+        }
+      }
+    })
+  )
+
+  const sorted = [...neighborhoodsWithCounts].sort((a, b) => {
+    const scoreA = a.neighborhood.reputation_score ?? 0
+    const scoreB = b.neighborhood.reputation_score ?? 0
+    return scoreB - scoreA
+  })
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="bg-neutral-50 min-h-screen">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         <div className="mb-8 md:mb-10">
           <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Neighborhoods
           </h1>
-          <p className="mt-2 text-neutral-500 text-base md:text-lg">
-            Explore student-friendly neighborhoods across Kenya.
-          </p>
+          {campusId && (
+            <p className="text-neutral-600 mt-2">Neighborhoods near your campus</p>
+          )}
         </div>
 
-        {neighborhoods.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {(neighborhoods as Neighborhood[]).map((neighborhood) => (
-              <NeighborhoodCard key={neighborhood.id} neighborhood={neighborhood} />
-            ))}
-          </div>
+        {sorted.length > 0 ? (
+          <BentoGrid neighborhoods={sorted.map(({ neighborhood, propertyCount }) => ({ neighborhood, propertyCount }))} />
         ) : (
-            <div className="text-center py-12 md:py-20 bg-white rounded-3xl border border-neutral-200">
-              <p className="text-neutral-500 text-base md:text-lg">No neighborhoods mapped yet.</p>
-            </div>
+          <div className="text-center py-12 md:py-20 bg-white rounded-3xl border border-neutral-200">
+            <p className="text-neutral-500 text-base md:text-lg">None yet.</p>
+          </div>
         )}
       </div>
     </div>

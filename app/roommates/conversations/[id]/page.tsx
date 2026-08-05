@@ -61,22 +61,6 @@ export default function ConversationPage({ params }: { params: { id: string } })
 
   return (
     <div className="min-h-screen bg-neutral-50 flex flex-col">
-      <nav className="sticky top-0 z-50 w-full border-b border-neutral-200 bg-white/80 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-lg">
-              <span className="text-xl font-bold italic">C</span>
-            </div>
-            <span className="text-xl font-black tracking-tight text-neutral-900 uppercase italic">Campozy</span>
-          </Link>
-          <Link href="/roommates/matches">
-            <Button variant="ghost" size="icon">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          </Link>
-        </div>
-      </nav>
-
       <main className="flex-1">
         <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 py-6">
           {loading ? (
@@ -91,7 +75,7 @@ export default function ConversationPage({ params }: { params: { id: string } })
 
               <div className="flex-1 overflow-y-auto p-4 space-y-3">
                 {messages.length === 0 ? (
-                  <p className="text-center text-neutral-500 py-8">No messages yet. Say hello!</p>
+                  <p className="text-center text-neutral-500 py-8">Nothing here yet.</p>
                 ) : (
                   messages.map(msg => (
                     <div

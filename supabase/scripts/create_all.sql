@@ -101,12 +101,19 @@ DO $ $ BEGIN CREATE TYPE notification_type AS ENUM (
     'opportunity',
     'founder',
     'system',
-    'verification'
+    'verification',
+    'utility_report'
 );
 
 EXCEPTION
 WHEN duplicate_object THEN NULL;
 
+END $ $;
+
+DO $ $ BEGIN
+    ALTER TYPE notification_type ADD VALUE 'utility_report';
+EXCEPTION
+WHEN duplicate_object THEN NULL;
 END $ $;
 
 DO $ $ BEGIN CREATE TYPE moderation_status AS ENUM (
@@ -223,6 +230,7 @@ CREATE TABLE IF NOT EXISTS neighborhoods (
     description TEXT,
     safety_score NUMERIC(3, 2) NOT NULL DEFAULT 0 CHECK (safety_score BETWEEN 0 AND 100),
     reputation_score NUMERIC(5, 2) NOT NULL DEFAULT 0 CHECK (reputation_score BETWEEN 0 AND 100),
+    image_url TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     UNIQUE(city_id, name)
 );
@@ -536,6 +544,7 @@ CREATE TABLE IF NOT EXISTS properties (
         AND 100
     ),
     reputation_score NUMERIC(5, 2) NOT NULL DEFAULT 0 CHECK(
+    image_url TEXT,
         reputation_score BETWEEN 0
         AND 100
     ),
@@ -1132,11 +1141,14 @@ CREATE INDEX idx_hygiene_reports_category_id ON hygiene_reports(category_id);
 
 CREATE TABLE IF NOT EXISTS utility_incidents (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    property_id UUID NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
+    property_id UUID REFERENCES properties(id) ON DELETE CASCADE,
     utility_type_id UUID NOT NULL REFERENCES utility_types(id),
     reported_by UUID NOT NULL REFERENCES profiles(id),
+    title TEXT NOT NULL CHECK (length(trim(title)) > 0),
     description TEXT NOT NULL CHECK (length(trim(description)) > 0),
     severity TEXT NOT NULL DEFAULT 'medium' CHECK (length(trim(severity)) > 0),
+    location_type TEXT NOT NULL DEFAULT 'property' CHECK (length(trim(location_type)) > 0),
+    location_description TEXT,
     resolved_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -1252,7 +1264,7 @@ $$;
 -- 15_rls.sql
 -- ============================================================================
 
-﻿-- ============================================================================
+ï»¿-- ============================================================================
 -- Module 15: Row Level Security Policies
 -- ============================================================================
 

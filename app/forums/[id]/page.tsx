@@ -16,9 +16,7 @@ export default async function ForumPage({ params }: { params: { id: string } }) 
               <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
                 {forum.name}
               </h1>
-              <p className="mt-2 text-neutral-500 text-lg">
-                {forum.description || 'Forum discussions'}
-              </p>
+
             </div>
             <ForumNewTopicButton forumId={forum.id} />
           </div>
@@ -58,7 +56,7 @@ export default async function ForumPage({ params }: { params: { id: string } }) 
           </div>
         ) : (
           <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-            <p className="text-neutral-500 text-lg">No topics yet.</p>
+            <p className="text-neutral-500 text-lg">Nothing here yet.</p>
             <ForumNewTopicButton forumId={forum.id} />
           </div>
         )}

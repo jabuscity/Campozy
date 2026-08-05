@@ -1,0 +1,1 @@
+SELECT table_name, column_name, data_type FROM information_schema.columns WHERE table_name IN ('property_media', 'property_amenities', 'property_utilities', 'property_reviews', 'saved_properties', 'property_inquiries', 'viewing_requests', 'property_claims') ORDER BY table_name, ordinal_position;

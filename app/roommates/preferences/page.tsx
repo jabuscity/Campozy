@@ -29,22 +29,6 @@ export default function RoommatePreferencesPage() {
 
   return (
     <div className="min-h-screen bg-neutral-50 flex flex-col">
-      <nav className="sticky top-0 z-50 w-full border-b border-neutral-200 bg-white/80 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-lg">
-              <span className="text-xl font-bold italic">C</span>
-            </div>
-            <span className="text-xl font-black tracking-tight text-neutral-900 uppercase italic">Campozy</span>
-          </Link>
-          <Link href="/roommates">
-            <Button variant="ghost" size="icon">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          </Link>
-        </div>
-      </nav>
-
       <main className="flex-1">
         <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center mb-8">
@@ -59,7 +43,7 @@ export default function RoommatePreferencesPage() {
               <CheckCircle2 className="h-12 w-12 text-success mx-auto mb-4" />
               <h2 className="text-2xl font-black text-neutral-900 mb-2">Preferences Saved!</h2>
               <p className="text-neutral-600 mb-6">We&apos;ll use these to find your ideal roommate matches.</p>
-              <Link href="/roommates"><Button>View Matches</Button></Link>
+              <Link href="/connections"><Button>Find Connections</Button></Link>
             </div>
           ) : (
             <div className="bg-white rounded-2xl border border-neutral-200 p-6">

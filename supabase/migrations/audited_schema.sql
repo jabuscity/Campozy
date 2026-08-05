@@ -92,12 +92,19 @@ DO $$ BEGIN CREATE TYPE notification_type AS ENUM (
     'opportunity',
     'founder',
     'system',
-    'verification'
+    'verification',
+    'utility_report'
 );
 
 EXCEPTION
 WHEN duplicate_object THEN NULL;
 
+END $$;
+
+DO $$ BEGIN
+    ALTER TYPE notification_type ADD VALUE 'utility_report';
+EXCEPTION
+WHEN duplicate_object THEN NULL;
 END $$;
 
 DO $$ BEGIN CREATE TYPE moderation_status AS ENUM (

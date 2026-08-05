@@ -19,7 +19,6 @@ CREATE TABLE IF NOT EXISTS property_types (
 -- ============================================================================
 CREATE TABLE IF NOT EXISTS properties (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    owner_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     neighborhood_id UUID REFERENCES neighborhoods(id),
     property_type_id UUID REFERENCES property_types(id),
     name TEXT NOT NULL CHECK(length(trim(name)) > 0),
@@ -55,16 +54,17 @@ CREATE TABLE IF NOT EXISTS properties (
         AND 100
     ),
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    curated_by UUID REFERENCES profiles(id),
+    curation_notes TEXT,
+    data_source TEXT DEFAULT 'scout_verified' CHECK(
+        data_source IN ('scout_verified', 'community_verified', 'campozy_verified')
+    ),
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_properties_owner ON properties(owner_id);
-
 CREATE INDEX IF NOT EXISTS idx_properties_neighborhood ON properties(neighborhood_id);
-
 CREATE INDEX IF NOT EXISTS idx_properties_status ON properties(status);
-
 CREATE INDEX IF NOT EXISTS idx_properties_score ON properties(campozy_score DESC);
 
 -- ============================================================================
@@ -188,51 +188,6 @@ CREATE TABLE IF NOT EXISTS property_reviews (
 CREATE INDEX IF NOT EXISTS idx_property_reviews_property ON property_reviews(property_id);
 
 CREATE INDEX IF NOT EXISTS idx_property_reviews_reviewer ON property_reviews(reviewer_id);
-
--- ============================================================================
--- PROPERTY INQUIRIES
--- ============================================================================
-CREATE TABLE IF NOT EXISTS property_inquiries (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    property_id UUID NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
-    sender_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-    message TEXT NOT NULL CHECK(length(trim(message)) > 0),
-    status TEXT NOT NULL DEFAULT 'open' CHECK(
-        status IN (
-            'open',
-            'responded',
-            'closed'
-        )
-    ),
-    created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-CREATE INDEX IF NOT EXISTS idx_property_inquiries_property ON property_inquiries(property_id);
-
-CREATE INDEX IF NOT EXISTS idx_property_inquiries_sender ON property_inquiries(sender_id);
-
--- ============================================================================
--- VIEWING REQUESTS
--- ============================================================================
-CREATE TABLE IF NOT EXISTS viewing_requests (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    property_id UUID NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
-    requester_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-    requested_time TIMESTAMPTZ,
-    status TEXT NOT NULL DEFAULT 'pending' CHECK(
-        status IN (
-            'pending',
-            'approved',
-            'rejected',
-            'completed'
-        )
-    ),
-    created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-CREATE INDEX IF NOT EXISTS idx_viewing_requests_property ON viewing_requests(property_id);
-
-CREATE INDEX IF NOT EXISTS idx_viewing_requests_requester ON viewing_requests(requester_id);
 
 -- ============================================================================
 -- SAVED PROPERTIES

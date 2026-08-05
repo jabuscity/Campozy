@@ -10,11 +10,11 @@ import { UtilityMatrix } from '@/components/ui/utility-matrix'
 import { ImageCarousel } from '@/components/ui/image-carousel'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import PropertySaveButton from '@/components/property-save-button'
 import { 
-  MapPin, Users, Trash2, MessageSquare, ArrowLeft, Share2, Heart 
+  MapPin, Users, Trash2, MessageSquare, ArrowLeft, Share2 
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { togglePropertySave } from '@/app/actions/housing-actions'
 import { IdentityService } from '@/services/identity-service'
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
@@ -40,12 +40,12 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
     <div className="bg-white min-h-screen pb-20 text-neutral-900">
       {/* Header Actions */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 flex items-center justify-between font-medium">
-        <Link href="/discovery" className="flex items-center gap-2 text-neutral-500 hover:text-neutral-900 transition-colors">
-          <ArrowLeft className="h-4 w-4" /> Back to Discovery
+        <Link href="/housing" className="flex items-center gap-2 text-neutral-500 hover:text-neutral-900 transition-colors">
+          <ArrowLeft className="h-4 w-4" /> Back to Housing
         </Link>
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" className="text-neutral-500"><Share2 className="h-5 w-5" /></Button>
-          <PropertySaveButton propertyId={property.id} userId={currentUser?.id} initialIsSaved={currentUser ? await HousingService.isPropertySaved(currentUser.id, property.id) : false} />
+          <PropertySaveButton propertyId={property.id} userId={currentUser?.id} initialIsSaved={currentUser ? await HousingService.isPropertySaved(property.id) : false} />
         </div>
       </div>
 
@@ -57,14 +57,14 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
           className="rounded-3xl"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-3xl pointer-events-none" />
-        <div className="absolute bottom-10 left-10 text-white">
-          <h1 className="text-4xl lg:text-6xl font-black mb-4 tracking-tight uppercase italic">{property.name}</h1>
-          <div className="flex items-center gap-4">
-             <div className="flex items-center gap-1.5 text-lg font-medium opacity-90">
-               <MapPin className="h-5 w-5" />
+        <div className="absolute bottom-4 left-4 right-4 sm:bottom-10 sm:left-10 sm:right-auto text-white">
+          <h1 className="text-2xl sm:text-4xl lg:text-6xl font-black mb-2 sm:mb-4 tracking-tight uppercase italic">{property.name}</h1>
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+             <div className="flex items-center gap-1.5 text-base sm:text-lg font-medium opacity-90">
+               <MapPin className="h-4 w-4 sm:h-5 sm:w-5" />
                {property.neighborhood?.name}, {property.address}
              </div>
-             <Badge variant="secondary" className="px-4 py-1 backdrop-blur-md bg-white/20 border-none text-white font-bold">
+             <Badge variant="secondary" className="px-3 py-0.5 sm:px-4 sm:py-1 backdrop-blur-md bg-white/20 border-none text-white font-bold text-xs sm:text-sm">
                {property.property_type?.name || 'Hostel'}
              </Badge>
              <VerificationTooltip level={property.verification_level || 'unverified'} scoutName="Scout Official">
@@ -144,14 +144,12 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
                     This score is calculated based on 10 dimensions of verified student data from this semester.
                  </p>
                  
-                 <div className="space-y-4">
-                    <Button size="lg" className="w-full text-xl font-bold h-16 shadow-lg shadow-primary/40">
-                       Book Inspection
-                    </Button>
-                    <Button variant="outline" size="lg" className="w-full border-white/20 text-white hover:bg-white/10 h-16 text-xl">
-                       Message Owner
-                    </Button>
-                 </div>
+                  <div className="space-y-4">
+                     <Button size="lg" className="w-full text-xl font-bold h-16 shadow-lg shadow-primary/40" asChild>
+                        <Link href={`/report?propertyId=${property.id}`}>Report Utility Issue</Link>
+                     </Button>
+                     <PropertySaveButton propertyId={property.id} userId={currentUser?.id} initialIsSaved={currentUser ? await HousingService.isPropertySaved(property.id) : false} />
+                  </div>
               </div>
 
               <div className="mt-8 pt-8 border-t border-white/10 flex items-center justify-center gap-3">
@@ -188,29 +186,3 @@ function ScoreItem({ label, score, icon, color }: { label: string, score: number
   )
 }
 
-function PropertySaveButton({ propertyId, userId, initialIsSaved }: { propertyId: string; userId: string | undefined; initialIsSaved: boolean }) {
-  const [saved, setSaved] = React.useState(initialIsSaved)
-
-  const handleToggleSave = async () => {
-    if (!userId) {
-      console.warn("User not authenticated. Cannot save property.")
-      // TODO: Implement a more graceful login prompt (e.g., redirect to login)
-      return
-    }
-    // Optimistically update UI
-    setSaved(prev => !prev)
-    // Call server action
-    await togglePropertySave(userId, propertyId, saved)
-  }
-
-  return (
-    <Button 
-      variant="ghost" 
-      size="icon" 
-      onClick={handleToggleSave}
-      className={cn("transition-colors", saved ? "text-red-500 hover:text-red-600" : "text-neutral-500 hover:text-neutral-600")}
-    >
-      <Heart className={cn("h-5 w-5", saved && "fill-red-500")} />
-    </Button>
-  )
-}

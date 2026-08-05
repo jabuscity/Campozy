@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import type { Opportunity, OpportunityType, MentorshipProfile } from '@/types'
+import type { Opportunity, OpportunityType, MentorshipProfile, OpportunityApplication } from '@/types'
 
 // ============================================================================
 // OPPORTUNITY SERVICE
@@ -66,5 +66,53 @@ export const OpportunityService = {
     })
 
     return data
-  }
+  },
+
+  async getPersonalizedOpportunities(studentId: string, options?: { limit?: number; offset?: number }) {
+    const supabase = await createClient()
+
+    const { data: student } = await supabase
+      .from('students')
+      .select(`
+        *,
+        campus:campuses(*, universities(*)),
+        program:academic_programs(*)
+      `)
+      .eq('id', studentId)
+      .single()
+
+    let query = supabase
+      .from('opportunities')
+      .select(`
+        *,
+        employer:employers(name, logo_url, verification_level)
+      `)
+      .eq('is_active', true)
+      .order('created_at', { ascending: false })
+
+    if (options?.limit) query = query.limit(options.limit)
+    if (options?.offset) query = query.range(options.offset, options.offset + (options.limit || 20) - 1)
+
+    const { data, error } = await query
+    if (error) throw new Error(`Failed to fetch personalized opportunities: ${error.message}`)
+    return (data || []) as Opportunity[]
+  },
+
+  async getStudentApplications(studentId: string) {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from('opportunity_applications')
+      .select(`
+        *,
+        opportunity:opportunities(
+          *,
+          employer:employers(name, logo_url, verification_level)
+        )
+      `)
+      .eq('student_id', studentId)
+      .order('applied_at', { ascending: false })
+
+    if (error) throw new Error(`Failed to fetch applications: ${error.message}`)
+    return data as (OpportunityApplication & { opportunity: Opportunity })[]
+  },
 }

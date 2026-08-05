@@ -277,11 +277,14 @@ CREATE INDEX idx_hygiene_reports_category_id ON hygiene_reports(category_id);
 
 CREATE TABLE IF NOT EXISTS utility_incidents (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    property_id UUID NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
+    property_id UUID REFERENCES properties(id) ON DELETE CASCADE,
     utility_type_id UUID NOT NULL REFERENCES utility_types(id),
     reported_by UUID NOT NULL REFERENCES profiles(id),
+    title TEXT NOT NULL CHECK (length(trim(title)) > 0),
     description TEXT NOT NULL CHECK (length(trim(description)) > 0),
     severity TEXT NOT NULL DEFAULT 'medium' CHECK (length(trim(severity)) > 0),
+    location_type TEXT NOT NULL DEFAULT 'property' CHECK (length(trim(location_type)) > 0),
+    location_description TEXT,
     resolved_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

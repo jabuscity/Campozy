@@ -19,9 +19,7 @@ export default async function ScoutsPage() {
           <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Scouts
           </h1>
-          <p className="mt-2 text-neutral-500 text-base md:text-lg">
-            Verification scouts ensuring trust and accuracy across Campozy.
-          </p>
+
         </div>
 
         {scouts && scouts.length > 0 ? (
@@ -60,7 +58,7 @@ export default async function ScoutsPage() {
         ) : (
           <div className="text-center py-12 md:py-20 bg-white rounded-3xl border border-neutral-200">
             <Users className="h-10 md:h-12 w-10 md:w-12 text-neutral-300 mx-auto mb-3 md:mb-4" />
-            <p className="text-neutral-500 text-base md:text-lg">No scouts yet.</p>
+            <p className="text-neutral-500 text-base md:text-lg">None yet.</p>
           </div>
         )}
       </div>

@@ -25,9 +25,7 @@ export default async function AmbassadorsTrainingPage() {
           <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Training
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
-            Ambassador training modules and certification paths
-          </p>
+
         </div>
 
         <div className="mb-12">
@@ -80,7 +78,7 @@ export default async function AmbassadorsTrainingPage() {
           </div>
         ) : (
           <div className="text-center py-12 bg-white rounded-3xl border border-neutral-200">
-            <p className="text-neutral-500">No ambassadors yet.</p>
+            <p className="text-neutral-500">None yet.</p>
           </div>
         )}
       </div>

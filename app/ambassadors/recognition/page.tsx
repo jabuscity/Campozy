@@ -19,9 +19,7 @@ export default async function AmbassadorsRecognitionPage() {
           <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Recognition
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
-            Ambassador awards, badges, and community recognition
-          </p>
+
         </div>
 
         {rewards && rewards.length > 0 ? (
@@ -46,7 +44,7 @@ export default async function AmbassadorsRecognitionPage() {
           </div>
         ) : (
           <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-            <p className="text-neutral-500 text-lg">No recognition awards yet.</p>
+            <p className="text-neutral-500 text-lg">None yet.</p>
           </div>
         )}
       </div>

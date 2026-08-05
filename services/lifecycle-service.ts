@@ -17,7 +17,7 @@ export const LifecycleService = {
       .from('alumni_profiles')
       .select(`
         *,
-        profile:profiles(*),
+        profile:profiles!alumni_profiles_id_fkey(*),
         university:universities(*)
       `)
       .eq('id', userId)

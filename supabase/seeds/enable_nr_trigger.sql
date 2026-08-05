@@ -1,0 +1,1 @@
+ALTER TABLE neighborhood_reviews ENABLE TRIGGER trg_neighborhood_review_score;

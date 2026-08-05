@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/client'
 import type { Property, PropertyRoom, Neighborhood, University, Campus, NeighborhoodCampusDistance } from '@/types'
 
 // ============================================================================
@@ -21,23 +21,21 @@ export const HousingService = {
   }) {
     const supabase = await createClient()
 
-    // Get neighborhood IDs connected to this campus
     const { data: distances, error: distError } = await supabase
       .from('neighborhood_campus_distances')
       .select('neighborhood_id')
       .eq('campus_id', campusId)
 
-    if (distError) throw new Error(`Failed to fetch neighborhoods: ${distError.message}`)
-    const neighborhoodIds = distances.map(d => d.neighborhood_id)
+    if (distError || !distances?.length) return []
 
-    if (neighborhoodIds.length === 0) return []
+    const neighborhoodIds = distances.map(d => d.neighborhood_id)
 
     let dbQuery = supabase
       .from('properties')
       .select(`
       *,
       property_types(name),
-      property_rooms(id, room_type, price_per_month, price_per_semester, is_available, capacity),
+      property_rooms(id, room_type, quantity),
       property_media(id, url, media_type, is_primary),
       neighborhoods(id, name, reputation_score)
     `)
@@ -45,23 +43,59 @@ export const HousingService = {
       .eq('is_active', true)
 
     if (options?.sort === 'price_asc') {
-      dbQuery = dbQuery.order('price_per_month', { ascending: true })
+      dbQuery = dbQuery.order('monthly_price', { ascending: true })
     } else if (options?.sort === 'latest') {
       dbQuery = dbQuery.order('created_at', { ascending: false })
     } else {
-      dbQuery = dbQuery.order('reputation_score', { ascending: false })
+      dbQuery = dbQuery.order('campozy_score', { ascending: false })
     }
 
-    // Updated to use reputation_score instead of campozy_score
-    if (options?.minScore) dbQuery = dbQuery.gte('reputation_score', options.minScore)
-
-    // Note: We are bypassing verifiedOnly filter for now until your verification status column names are cross-referenced
+    if (options?.minScore) dbQuery = dbQuery.gte('campozy_score', options.minScore)
     if (options?.limit) dbQuery = dbQuery.limit(options.limit)
     if (options?.offset) dbQuery = dbQuery.range(options.offset, options.offset + (options.limit || 20) - 1)
 
     const { data, error } = await dbQuery
-    if (error) throw new Error(`Failed to fetch properties: ${error.message}`)
-    return data as Property[]
+    if (error) return []
+    return (data || []) as Property[]
+  },
+
+  async getAllProperties(options?: {
+    minScore?: number;
+    maxPrice?: number;
+    propertyType?: string;
+    verifiedOnly?: boolean;
+    limit?: number;
+    offset?: number;
+    sort?: 'highest_score' | 'price_asc' | 'latest';
+  }) {
+    const supabase = await createClient()
+
+    let dbQuery = supabase
+      .from('properties')
+      .select(`
+      *,
+      property_types(name),
+      property_rooms(id, room_type, quantity),
+      property_media(id, url, media_type, is_primary),
+      neighborhoods(id, name, reputation_score)
+    `)
+      .eq('is_active', true)
+
+    if (options?.sort === 'price_asc') {
+      dbQuery = dbQuery.order('monthly_price', { ascending: true })
+    } else if (options?.sort === 'latest') {
+      dbQuery = dbQuery.order('created_at', { ascending: false })
+    } else {
+      dbQuery = dbQuery.order('campozy_score', { ascending: false })
+    }
+
+    if (options?.minScore) dbQuery = dbQuery.gte('campozy_score', options.minScore)
+    if (options?.limit) dbQuery = dbQuery.limit(options.limit)
+    if (options?.offset) dbQuery = dbQuery.range(options.offset, options.offset + (options.limit || 20) - 1)
+
+    const { data, error } = await dbQuery
+    if (error) return []
+    return (data || []) as Property[]
   },
 
 
@@ -87,8 +121,8 @@ export const HousingService = {
     if (universityId) query = query.eq('university_id', universityId)
 
     const { data, error } = await query
-    if (error) throw new Error(`Failed to fetch campuses: ${error.message}`)
-    return data as Campus[]
+    if (error) return []
+    return (data || []) as Campus[]
   },
 
   async getUniversities() {
@@ -99,8 +133,8 @@ export const HousingService = {
       .order('name')
 
     const { data, error } = await query
-    if (error) throw new Error(`Failed to fetch universities: ${error.message}`)
-    return data as unknown as University[]
+    if (error) return []
+    return (data || []) as University[]
   },
 
   async getNeighborhoods() {
@@ -110,8 +144,8 @@ export const HousingService = {
       .select('*, cities(name, country:countries(name))')
       .order('name')
 
-    if (error) throw new Error(`Failed to fetch neighborhoods: ${error.message}`)
-    return data as unknown as import('@/types').Neighborhood[]
+    if (error) return []
+    return (data || []) as import('@/types').Neighborhood[]
   },
 
   // ── Neighborhoods ────────────────────────────────────────────────────────
@@ -155,23 +189,60 @@ export const HousingService = {
 
   // ── Properties ───────────────────────────────────────────────────────────
 
-  async getPropertiesByNeighborhood(neighborhoodId: string) {
+  async getPropertiesByNeighborhood(neighborhoodId: string, options?: {
+    minPrice?: number;
+    maxPrice?: number;
+    minScore?: number;
+    sort?: 'highest_score' | 'price_asc' | 'latest';
+  }) {
     const supabase = await createClient()
-    const { data, error } = await supabase
+    const dbQuery = supabase
       .from('properties')
       .select(`
         *,
         property_types(name),
-        property_rooms(id, room_type, price_per_month, price_per_semester, is_available, capacity),
+        property_rooms(id, room_type, quantity, price_per_semester, price_per_month),
         property_media(id, url, media_type, is_primary),
         neighborhoods(id, name)
       `)
       .eq('neighborhood_id', neighborhoodId)
       .eq('is_active', true)
-      .order('campozy_score', { ascending: false })
+
+    if (options?.minScore) {
+      dbQuery.gte('campozy_score', options.minScore)
+    }
+
+    if (options?.sort === 'price_asc') {
+      dbQuery.order('campozy_score', { ascending: false })
+    } else if (options?.sort === 'latest') {
+      dbQuery.order('created_at', { ascending: false })
+    } else {
+      dbQuery.order('campozy_score', { ascending: false })
+    }
+
+    const { data, error } = await dbQuery
 
     if (error) throw new Error(`Failed to fetch properties: ${error.message}`)
-    return data as Property[]
+    let results = (data || []) as Property[]
+
+    if (options?.minPrice != null || options?.maxPrice != null) {
+      results = results.filter((property) => {
+        const allPrices = (property.rooms || [])
+          .flatMap((room) => [
+            room.price_per_semester,
+            room.price_per_month,
+          ])
+          .filter((price): price is number => typeof price === 'number' && price > 0)
+
+        if (allPrices.length === 0) return true
+
+        const min = options.minPrice ?? -Infinity
+        const max = options.maxPrice ?? Infinity
+        return allPrices.some((price) => price >= min && price <= max)
+      })
+    }
+
+    return results
   },
 
   async getPropertyById(propertyId: string) {
@@ -275,7 +346,15 @@ export const HousingService = {
 
   // ── Saved Properties ─────────────────────────────────────────────────────
 
-  async saveProperty(userId: string, propertyId: string, notes?: string) {
+  async _requireUserId(): Promise<string> {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('Not authenticated')
+    return user.id
+  },
+
+  async saveProperty(propertyId: string, notes?: string) {
+    const userId = await this._requireUserId()
     const supabase = await createClient()
     const { error } = await supabase
       .from('saved_properties')
@@ -283,7 +362,6 @@ export const HousingService = {
 
     if (error) throw new Error(`Failed to save property: ${error.message}`)
 
-    // Log event
     await supabase.from('events').insert({
       actor_id: userId,
       event_type: 'property_saved',
@@ -292,7 +370,8 @@ export const HousingService = {
     })
   },
 
-  async unsaveProperty(userId: string, propertyId: string) {
+  async unsaveProperty(propertyId: string) {
+    const userId = await this._requireUserId()
     const supabase = await createClient()
     await supabase
       .from('saved_properties')
@@ -301,17 +380,19 @@ export const HousingService = {
       .eq('property_id', propertyId)
   },
 
-  async getSavedProperties(userId: string) {
+  async getSavedProperties() {
+    const userId = await this._requireUserId()
     const supabase = await createClient()
     const { data, error } = await supabase
       .from('saved_properties')
       .select(`
+        property_id,
         notes,
         saved_at,
         properties(
           *,
           property_types(name),
-          property_rooms(price_per_month, is_available),
+          property_rooms(quantity),
           property_media(url, is_primary),
           neighborhoods(name)
         )
@@ -323,7 +404,8 @@ export const HousingService = {
     return data
   },
 
-  async isPropertySaved(userId: string, propertyId: string): Promise<boolean> {
+  async isPropertySaved(propertyId: string): Promise<boolean> {
+    const userId = await this._requireUserId()
     const supabase = await createClient()
     const { data } = await supabase
       .from('saved_properties')
@@ -335,22 +417,53 @@ export const HousingService = {
     return !!data
   },
 
+  async getSavedPropertiesForStudent(studentId: string) {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from('saved_properties')
+      .select(`
+        notes,
+        saved_at,
+        properties(
+          *,
+          property_types(name),
+          property_rooms(quantity),
+          property_media(url, is_primary),
+          neighborhoods(name)
+        )
+      `)
+      .eq('user_id', studentId)
+      .order('saved_at', { ascending: false })
+
+    if (error) throw new Error(`Failed to fetch saved properties: ${error.message}`)
+    return data
+  },
+
+  async togglePropertySave(propertyId: string, isCurrentlySaved: boolean) {
+    if (isCurrentlySaved) {
+      await this.unsaveProperty(propertyId)
+    } else {
+      await this.saveProperty(propertyId)
+    }
+  },
+
   // ── Search ───────────────────────────────────────────────────────────────
 
   async searchProperties(query: string, options?: { campusId?: string; limit?: number }) {
     const supabase = await createClient()
 
+    const escaped = query.replace(/[%_]/g, '\\$&')
     const dbQuery = supabase
       .from('properties')
       .select(`
         *,
         property_types(name),
-        property_rooms(price_per_month, is_available),
+                 property_rooms(quantity),
         property_media(url, is_primary),
         neighborhoods(name, city_id)
       `)
       .eq('is_active', true)
-      .or(`name.ilike.%${query}%,address.ilike.%${query}%,description.ilike.%${query}%`)
+      .or(`name.ilike.%${escaped}%,address.ilike.%${escaped}%,description.ilike.%${escaped}%`)
       .order('campozy_score', { ascending: false })
       .limit(options?.limit || 20)
 

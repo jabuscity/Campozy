@@ -1,5 +1,5 @@
-import { createClient } from '@/lib/supabase/server'
-import type { Profile, RoleName, ContactMethod, IdentityDocument } from '@/types'
+import { createClient } from '@/lib/supabase/client'
+import type { Profile, RoleName, ContactMethod, IdentityDocument, PropertyReview, Discussion, ForumPost, SavedProperty, SavedOpportunity, RoommateMatch, RoommateProfile, FriendMatch, FriendProfile, Property, Opportunity } from '@/types'
 
 // ============================================================================
 // IDENTITY SERVICE
@@ -182,5 +182,113 @@ export const IdentityService = {
     }
 
     return data
+  },
+
+  async getUserContributions(userId: string) {
+    const supabase = await createClient()
+
+    const [reviewsResult, discussionsResult, forumPostsResult] = await Promise.all([
+      supabase
+        .from('property_reviews')
+        .select(`
+          *,
+          property:properties(id, name, neighborhood:neighborhoods(name))
+        `)
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(20),
+      supabase
+        .from('discussions')
+        .select(`
+          *,
+          campus:campuses(name),
+          neighborhood:neighborhoods(name)
+        `)
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(20),
+      supabase
+        .from('forum_posts')
+        .select(`
+          *,
+          topic:forum_topics(title, forum:forums(name))
+        `)
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(20),
+    ])
+
+    return {
+      reviews: (reviewsResult.data || []) as Array<PropertyReview & { property?: { id: string; name: string; neighborhood?: { name: string } } }>,
+      discussions: (discussionsResult.data || []) as Array<Discussion & { campus?: { name: string }; neighborhood?: { name: string } }>,
+      forumPosts: (forumPostsResult.data || []) as Array<ForumPost & { topic?: { title: string; forum?: { name: string } } }>,
+    }
+  },
+
+  async getUserSavedItems(userId: string) {
+    const supabase = await createClient()
+
+    const [savedPropertiesResult, savedOpportunitiesResult] = await Promise.all([
+      supabase
+        .from('saved_properties')
+        .select(`
+          *,
+          property:properties(
+            *,
+            neighborhood:neighborhoods(name),
+            property_type:property_types(name)
+          )
+        `)
+        .eq('user_id', userId)
+        .order('saved_at', { ascending: false })
+        .limit(20),
+      supabase
+        .from('saved_opportunities')
+        .select(`
+          *,
+          opportunity:opportunities(
+            *,
+            employer:employers(name)
+          )
+        `)
+        .eq('user_id', userId)
+        .order('saved_at', { ascending: false })
+        .limit(20),
+    ])
+
+    return {
+      properties: (savedPropertiesResult.data || []) as Array<SavedProperty & { property?: Property & { neighborhood?: { name: string }; property_type?: { name: string } } }>,
+      opportunities: (savedOpportunitiesResult.data || []) as Array<SavedOpportunity & { opportunity?: Opportunity & { employer?: { name: string } } }>,
+    }
+  },
+
+  async getUserMatches(userId: string) {
+    const supabase = await createClient()
+
+    const [roommateMatchesResult, friendMatchesResult] = await Promise.all([
+      supabase
+        .from('roommate_matches')
+        .select(`
+          *,
+          profile:roommate_profiles(*)
+        `)
+        .eq('student_id', userId)
+        .order('compatibility_score', { ascending: false })
+        .limit(20),
+      supabase
+        .from('friend_matches')
+        .select(`
+          *,
+          profile:friend_profiles(*)
+        `)
+        .eq('student_id', userId)
+        .order('compatibility_score', { ascending: false })
+        .limit(20),
+    ])
+
+    return {
+      roommates: (roommateMatchesResult.data || []) as Array<RoommateMatch & { profile?: RoommateProfile }>,
+      friends: (friendMatchesResult.data || []) as Array<FriendMatch & { profile?: FriendProfile }>,
+    }
   },
 }

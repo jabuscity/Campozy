@@ -12,9 +12,7 @@ export default async function UniversitiesPage() {
           <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Universities
           </h1>
-          <p className="mt-2 text-neutral-500 text-base md:text-lg">
-            Explore Kenyan universities and their campus ecosystems.
-          </p>
+
         </div>
 
         {universities.length > 0 ? (
@@ -25,7 +23,7 @@ export default async function UniversitiesPage() {
           </div>
         ) : (
             <div className="text-center py-12 md:py-20 bg-white rounded-3xl border border-neutral-200">
-              <p className="text-neutral-500 text-base md:text-lg">No universities mapped yet.</p>
+              <p className="text-neutral-500 text-base md:text-lg">None yet.</p>
             </div>
         )}
       </div>

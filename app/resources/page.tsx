@@ -16,7 +16,7 @@ const resources = [
   },
   {
     title: 'Video Tutorials',
-    description: 'Step-by-step guides for students, owners, and businesses.',
+    description: 'Step-by-step guides for students and campus communities.',
     href: '/resources/tutorials',
     icon: Video,
   },

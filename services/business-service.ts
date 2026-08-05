@@ -8,7 +8,7 @@ export const BusinessService = {
       .from('businesses')
       .select(`
         *,
-        owner:profiles(*),
+        owner:profiles!businesses_owner_id_fkey(*),
         media:business_media(*)
       `)
       .eq('is_active', true)
@@ -19,8 +19,8 @@ export const BusinessService = {
     if (options?.limit) query = query.limit(options.limit)
 
     const { data, error } = await query
-    if (error) throw new Error(`Failed to fetch businesses: ${error.message}`)
-    return data as Business[]
+    if (error) return []
+    return (data || []) as Business[]
   },
 
   async getBusinessById(businessId: string) {
@@ -29,9 +29,9 @@ export const BusinessService = {
       .from('businesses')
       .select(`
         *,
-        owner:profiles(*),
+        owner:profiles!businesses_owner_id_fkey(*),
         media:business_media(*),
-        reviews:business_reviews(*, reviewer:profiles(*))
+        reviews:business_reviews(*, reviewer:profiles!business_reviews_reviewer_id_fkey(*))
       `)
       .eq('id', businessId)
       .single()

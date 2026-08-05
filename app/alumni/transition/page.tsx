@@ -42,9 +42,7 @@ export default async function AlumniTransitionPage() {
           <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Akwet Transition
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
-            Your transition plan from campus to career
-          </p>
+
         </div>
 
         {profile ? (
@@ -155,8 +153,7 @@ export default async function AlumniTransitionPage() {
           </div>
         ) : (
           <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-            <p className="text-neutral-500 text-lg">No transition profile yet.</p>
-            <p className="text-neutral-400 text-sm mt-2">Complete your alumni profile to start your Akwet transition plan.</p>
+            <p className="text-neutral-500 text-lg">Nothing here yet.</p>
             <Link href="/alumni" className="mt-6 inline-flex">
               <span className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
                 Go to Alumni <ArrowRight className="h-4 w-4" />

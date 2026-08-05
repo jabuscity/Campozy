@@ -20,9 +20,7 @@ export default async function ScoutsAuditPage() {
           <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Audit History
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
-            Scout report quality audits and accuracy tracking
-          </p>
+
         </div>
 
         {audits && audits.length > 0 ? (
@@ -55,7 +53,7 @@ export default async function ScoutsAuditPage() {
           </div>
         ) : (
           <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-            <p className="text-neutral-500 text-lg">No audit records yet.</p>
+            <p className="text-neutral-500 text-lg">None yet.</p>
           </div>
         )}
       </div>

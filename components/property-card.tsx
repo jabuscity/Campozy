@@ -75,7 +75,7 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
             <div className="flex items-center gap-1.5 text-neutral-400 text-sm mb-4">
               <MapPin className="h-3.5 w-3.5" />
               <span className="line-clamp-1">
-                {property.neighborhood?.name}
+                {property.neighborhood?.name || property.neighborhoods?.name || 'Unknown area'}
               </span>
             </div>
 

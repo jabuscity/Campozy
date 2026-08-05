@@ -16,9 +16,7 @@ export default async function UniversityReportsPage({ params }: { params: { id: 
           <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Reports
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
-            Campus intelligence and performance metrics
-          </p>
+
         </div>
 
         {reports && reports.length > 0 ? (
@@ -59,7 +57,7 @@ export default async function UniversityReportsPage({ params }: { params: { id: 
           </div>
         ) : (
           <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-            <p className="text-neutral-500 text-lg">No reports available yet.</p>
+            <p className="text-neutral-500 text-lg">None yet.</p>
           </div>
         )}
       </div>

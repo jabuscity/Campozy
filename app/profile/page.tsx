@@ -16,7 +16,6 @@ export default async function ProfilePage() {
       *,
       user_roles(*, roles(*)),
       students(*),
-      owner:owners(*),
       alumni_profiles(*),
       founder_memberships(*, cohort:founder_cohorts(*))
     `)

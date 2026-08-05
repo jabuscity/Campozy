@@ -16,9 +16,7 @@ export default async function EmployersPage() {
           <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Employers
           </h1>
-          <p className="mt-2 text-neutral-500 text-base md:text-lg">
-            Companies and organizations offering opportunities to students.
-          </p>
+
         </div>
 
         {employers && employers.length > 0 ? (
@@ -48,7 +46,7 @@ export default async function EmployersPage() {
         ) : (
           <div className="text-center py-12 md:py-20 bg-white rounded-3xl border border-neutral-200">
             <Building2 className="h-10 md:h-12 w-10 md:w-12 text-neutral-300 mx-auto mb-3 md:mb-4" />
-            <p className="text-neutral-500 text-base md:text-lg">No employers listed yet.</p>
+            <p className="text-neutral-500 text-base md:text-lg">None yet.</p>
           </div>
         )}
       </div>

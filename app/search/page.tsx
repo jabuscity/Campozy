@@ -17,8 +17,9 @@ type SearchResult = {
   friends: { id: string; bio: string | null; campozy_score: number; profile: { full_name: string | null } | null }[]
 }
 
-export default async function SearchPage({ searchParams }: { searchParams: { q?: string } }) {
-  const query = searchParams.q || ''
+export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+  const params = await searchParams
+  const query = params.q || ''
   const supabase = await createClient()
 
   const results: SearchResult = {
@@ -261,32 +262,32 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
                  </h2>
                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                   {results.roommates.map((item) => (
-                    <Link key={item.id} href="/roommates" className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all">
-                      <h3 className="font-bold text-neutral-900">{item.profile?.full_name || 'Student'}</h3>
-                      <p className="text-sm text-neutral-500 line-clamp-2">{item.bio || 'Roommate profile'}</p>
-                      <p className="text-xs text-neutral-400 mt-1">Score: {item.campozy_score}</p>
-                    </Link>
-                  ))}
-                </div>
-              </section>
-            )}
+                     <Link key={item.id} href="/connections" className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all">
+                       <h3 className="font-bold text-neutral-900">{item.profile?.full_name || 'Student'}</h3>
+                       <p className="text-sm text-neutral-500 line-clamp-2">{item.bio || 'Roommate profile'}</p>
+                       <p className="text-xs text-neutral-400 mt-1">Score: {item.campozy_score}</p>
+                     </Link>
+                   ))}
+                 </div>
+               </section>
+             )}
 
-             {results.friends.length > 0 && (
-               <section>
-                 <h2 className="text-lg md:text-xl font-black text-neutral-900 mb-3 md:mb-4 uppercase tracking-tight flex items-center gap-2">
-                   <Users className="h-4 md:h-5 w-4 md:w-5 text-primary" /> Friends
-                 </h2>
-                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-                  {results.friends.map((item) => (
-                    <Link key={item.id} href="/friends" className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all">
-                      <h3 className="font-bold text-neutral-900">{item.profile?.full_name || 'Student'}</h3>
-                      <p className="text-sm text-neutral-500 line-clamp-2">{item.bio || 'Friend profile'}</p>
-                      <p className="text-xs text-neutral-400 mt-1">Score: {item.campozy_score}</p>
-                    </Link>
-                  ))}
-                </div>
-              </section>
-            )}
+              {results.friends.length > 0 && (
+                <section>
+                  <h2 className="text-lg md:text-xl font-black text-neutral-900 mb-3 md:mb-4 uppercase tracking-tight flex items-center gap-2">
+                    <Users className="h-4 md:h-5 w-4 md:w-5 text-primary" /> Friends
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+                   {results.friends.map((item) => (
+                     <Link key={item.id} href="/connections" className="block p-4 rounded-2xl border border-neutral-200 hover:border-primary hover:shadow-md transition-all">
+                       <h3 className="font-bold text-neutral-900">{item.profile?.full_name || 'Student'}</h3>
+                       <p className="text-sm text-neutral-500 line-clamp-2">{item.bio || 'Friend profile'}</p>
+                       <p className="text-xs text-neutral-400 mt-1">Score: {item.campozy_score}</p>
+                     </Link>
+                   ))}
+                 </div>
+               </section>
+             )}
           </div>
         )}
       </div>

@@ -5,9 +5,10 @@ import type { Campus } from '@/types'
 export default async function CampusesPage({
   searchParams,
 }: {
-  searchParams: { university?: string }
+  searchParams: Promise<{ university?: string }>
 }) {
-  const universityId = searchParams.university
+  const params = await searchParams
+  const universityId = params.university
   const campuses = await HousingService.getCampuses(universityId)
 
   return (
@@ -17,9 +18,6 @@ export default async function CampusesPage({
           <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Campuses
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
-            Discover campuses and their surrounding student housing ecosystems.
-          </p>
         </div>
 
         {campuses.length > 0 ? (
@@ -30,7 +28,7 @@ export default async function CampusesPage({
           </div>
         ) : (
           <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-            <p className="text-neutral-500 text-lg">No campuses mapped yet.</p>
+             <p className="text-neutral-500 text-lg">Nothing mapped yet.</p>
           </div>
         )}
       </div>

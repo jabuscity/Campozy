@@ -16,7 +16,7 @@ const config = {
     icon: ShieldX,
   },
   claimed: {
-    label: 'Claimed by Owner',
+    label: 'Claimed',
     className: 'border-primary/20 text-primary bg-primary/5',
     icon: Shield,
   },

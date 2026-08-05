@@ -108,11 +108,12 @@ export const TrustService = {
     // Update helpful count on the review
     if (isHelpful) {
       try {
-        await supabase.rpc('increment', {
-          row_id: reviewId,
-          table_name: 'property_reviews',
-          column_name: 'helpful_count',
-        })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await (supabase as any)
+          .from('property_reviews')
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .update({ helpful_count: (supabase as any).raw('helpful_count + 1') })
+          .eq('id', reviewId)
       } catch {
         // Ignore increment failure
       }

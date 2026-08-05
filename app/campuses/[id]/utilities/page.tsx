@@ -53,9 +53,7 @@ export default async function CampusUtilitiesPage({ params }: { params: { id: st
           <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Utilities
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
-            Utility intelligence for properties near {campus.name}
-          </p>
+
         </div>
 
         {Object.keys(grouped).length > 0 ? (
@@ -82,7 +80,7 @@ export default async function CampusUtilitiesPage({ params }: { params: { id: st
           </div>
         ) : (
           <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-            <p className="text-neutral-500 text-lg">No utility data available yet.</p>
+            <p className="text-neutral-500 text-lg">None yet.</p>
           </div>
         )}
       </div>

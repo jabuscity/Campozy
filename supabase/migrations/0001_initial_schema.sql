@@ -117,7 +117,8 @@ CREATE TYPE notification_type AS ENUM (
     'message',
     'founder',
     'system',
-    'alert'
+    'alert',
+    'utility_report'
 );
 
 CREATE TYPE moderation_action_type AS ENUM (

@@ -59,7 +59,7 @@ export default async function ForumTopicPage({ params }: { params: { id: string;
             </div>
           ) : (
             <div className="text-center py-12 bg-white rounded-3xl border border-neutral-200">
-              <p className="text-neutral-500">No replies yet. Be the first to respond.</p>
+              <p className="text-neutral-500">No replies yet.</p>
             </div>
           )}
         </div>

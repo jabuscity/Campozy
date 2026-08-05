@@ -47,9 +47,7 @@ export default async function CampusReviewsPage({ params }: { params: { id: stri
           <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
             Reviews
           </h1>
-          <p className="mt-2 text-neutral-500 text-lg">
-            Student reviews for properties near {campus.name}
-          </p>
+
         </div>
 
         {reviews.length > 0 ? (
@@ -76,7 +74,7 @@ export default async function CampusReviewsPage({ params }: { params: { id: stri
           </div>
         ) : (
           <div className="text-center py-20 bg-white rounded-3xl border border-neutral-200">
-            <p className="text-neutral-500 text-lg">No reviews available yet.</p>
+            <p className="text-neutral-500 text-lg">None yet.</p>
           </div>
         )}
       </div>

@@ -1,0 +1,1 @@
+SELECT tgname, tgrelid::regclass, pg_get_triggerdef(oid) FROM pg_trigger WHERE tgrelid IN ('discussions'::regclass, 'discussion_replies'::regclass, 'community_posts'::regclass, 'properties'::regclass, 'businesses'::regclass, 'neighborhood_reviews'::regclass, 'utility_incidents'::regclass, 'hygiene_reports'::regclass) ORDER BY tgrelid, tgname;

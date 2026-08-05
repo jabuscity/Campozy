@@ -1,16 +1,48 @@
+'use client'
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { cloneElement, type ReactElement } from "react";
 import { ShieldCheck, Globe } from "lucide-react";
 import { FaInstagram, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 
 export function Footer() {
+  const pathname = usePathname()
+  const showMobileFooter = pathname === '/' || pathname === '/about'
   return (
-    <footer className="bg-neutral-900 text-white pt-24 pb-12 overflow-hidden relative">
+     <footer className="bg-neutral-900 text-white pt-16 pb-16 lg:pb-8 overflow-hidden relative">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-success" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
-        <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
-          <div className="space-y-8 lg:col-span-1">
+        {showMobileFooter && (
+          <div className="md:hidden flex flex-col items-center justify-between gap-8 pt-[10px] pb-4">
+            <div className="bg-white/5 rounded-2xl border border-white/10 p-5 w-full">
+              <div className="flex items-center gap-3 mb-3">
+                <ShieldCheck className="h-5 w-5 text-success" />
+                <span className="text-xs font-black uppercase tracking-widest italic">
+                  Trust First
+                </span>
+              </div>
+              <p className="text-xs text-neutral-400 leading-relaxed font-medium">
+                All data is human-verified and student-curated. We prioritize
+                privacy and safety in every corner of the network.
+              </p>
+              <Link
+                href="/privacy"
+                className="inline-block mt-4 text-xs font-bold text-primary hover:underline uppercase tracking-widest"
+              >
+                Read Privacy Constitution
+              </Link>
+            </div>
+
+            <div className="text-[11px] font-medium text-neutral-500 uppercase tracking-widest text-center">
+              © 2026 Campozy Student Trust Network. All Rights Reserved.
+            </div>
+          </div>
+        )}
+
+        <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 lg:items-start gap-8 mb-12">
+          <div className="space-y-6 lg:col-span-1">
             <Link href="/" className="flex items-center gap-2 group">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-lg transition-transform group-hover:scale-110">
                 <span className="text-xl font-bold italic">C</span>
@@ -31,10 +63,10 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-sm font-black uppercase tracking-[0.2em] mb-8 text-neutral-500">
+            <h4 className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-neutral-500">
               Product
             </h4>
-            <ul className="space-y-4 font-bold text-neutral-300">
+            <ul className="space-y-3 font-medium text-sm text-neutral-300">
               <li>
                 <FooterLink href="/discovery">Housing Portal</FooterLink>
               </li>
@@ -51,10 +83,10 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-sm font-black uppercase tracking-[0.2em] mb-8 text-neutral-500">
+            <h4 className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-neutral-500">
               Trust
             </h4>
-            <ul className="space-y-4 font-bold text-neutral-300">
+            <ul className="space-y-3 font-medium text-sm text-neutral-300">
               <li>
                 <FooterLink href="/scouts">Scout Program</FooterLink>
               </li>
@@ -71,10 +103,10 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-sm font-black uppercase tracking-[0.2em] mb-8 text-neutral-500">
+            <h4 className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-neutral-500">
               Legal
             </h4>
-            <ul className="space-y-4 font-bold text-neutral-300">
+            <ul className="space-y-3 font-medium text-sm text-neutral-300">
               <li>
                 <FooterLink href="/terms">Terms of Service</FooterLink>
               </li>
@@ -89,54 +121,31 @@ export function Footer() {
               </li>
             </ul>
           </div>
+
+          <div className="bg-white/5 rounded-2xl border border-white/10 p-5">
+            <div className="flex items-center gap-3 mb-3">
+              <ShieldCheck className="h-5 w-5 text-success" />
+              <span className="text-xs font-black uppercase tracking-widest italic">
+                Trust First
+              </span>
+            </div>
+            <p className="text-xs text-neutral-400 leading-relaxed font-medium">
+              All data is human-verified and student-curated. We prioritize
+              privacy and safety in every corner of the network.
+            </p>
+          </div>
         </div>
 
-        <div className="hidden md:flex pt-12 border-t border-white/5 flex-col md:flex-row justify-between items-center gap-8">
-          <div className="text-[10px] font-black text-neutral-500 uppercase tracking-[0.3em]">
+        <div className="hidden md:flex pt-8 border-t border-white/5 flex-col md:flex-row justify-between items-center gap-4">
+          <div className="text-[10px] font-medium text-neutral-500 uppercase tracking-[0.3em]">
             © 2026 Campozy Student Trust Network. All Rights Reserved.
           </div>
 
           <div className="flex items-center gap-6 text-[10px] font-black text-neutral-500 uppercase tracking-widest">
-            <Link href="/terms" className="hover:text-white transition-colors">
-              Terms
-            </Link>
-            <Link
-              href="/privacy"
-              className="hover:text-white transition-colors"
-            >
-              Privacy
-            </Link>
-            <Link
-              href="/cookies"
-              className="hover:text-white transition-colors"
-            >
-              Cookies
-            </Link>
             <div className="flex items-center gap-2 text-white">
               <Globe className="h-3 w-3" />
               <span>EN-KE</span>
             </div>
-          </div>
-        </div>
-
-        <div className="bg-white/5 rounded-3xl border border-white/10 p-6 md:p-8">
-          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
-            <div className="flex items-center gap-3">
-              <ShieldCheck className="h-6 w-6 md:h-8 md:w-8 text-success" />
-              <span className="text-base md:text-lg font-black uppercase tracking-widest italic">
-                Trust First
-              </span>
-            </div>
-            <p className="text-xs md:text-sm text-neutral-400 leading-relaxed font-medium flex-1 text-center md:text-left">
-              All data is human-verified and student-curated. We prioritize
-              privacy and safety in every corner of the network.
-            </p>
-            <Link
-              href="/privacy"
-              className="shrink-0 text-xs font-bold text-primary hover:underline uppercase tracking-widest"
-            >
-              Read Privacy Constitution
-            </Link>
           </div>
         </div>
       </div>
@@ -154,9 +163,9 @@ function SocialLink({
   return (
     <Link
       href={href}
-      className="h-10 w-10 rounded-full border border-white/10 flex items-center justify-center text-neutral-400 hover:bg-primary hover:border-primary hover:text-white transition-all"
+      className="h-8 w-8 rounded-full border border-white/10 flex items-center justify-center text-neutral-400 hover:bg-primary hover:border-primary hover:text-white transition-all"
     >
-      {cloneElement(icon, { className: "h-5 w-5" })}
+      {cloneElement(icon, { className: "h-4 w-4" })}
     </Link>
   );
 }
