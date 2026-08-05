@@ -15,7 +15,7 @@ type NavItem = {
 
 const navItems: readonly NavItem[] = [
   { href: '/neighborhoods', label: 'Housing', icon: MapPin, paths: ['/neighborhoods', '/neighborhoods/[id]'] },
-  { href: '/community', label: 'Community', icon: MessageSquare, paths: ['/community', '/founders', '/alumni', '/mentors', '/parents', '/ambassadors', '/scouts'] },
+  { href: '/community', label: 'Community', icon: MessageSquare, paths: ['/community', '/founders', '/alumni', '/mentors', '/parents', '/ambassadors', '/scouts', '/community/events'] },
   { href: '/feed', label: 'Feed', icon: Rss, paths: ['/feed'] },
   { href: '/chat', label: 'Chat', icon: MessageCircle, paths: ['/chat', '/chat/[id]'] },
 ]

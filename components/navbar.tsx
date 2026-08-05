@@ -29,6 +29,7 @@ export async function Navbar() {
     { label: 'Community', items: [
         { href: '/community', label: 'Discussions' },
         { href: '/connections', label: 'Connections' },
+        { href: '/community/events', label: 'Events' },
       ]},
   ]
 

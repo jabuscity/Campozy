@@ -5,7 +5,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { DiscussionCard } from '@/components/ui/discussion-card'
-import { MessageCircle, Users, ArrowRight } from 'lucide-react'
+import { MessageCircle, Users, ArrowRight, CalendarDays } from 'lucide-react'
 import type { Discussion } from '@/types'
 
 interface CommunityMobileTabsProps {
@@ -13,7 +13,7 @@ interface CommunityMobileTabsProps {
 }
 
 export function CommunityMobileTabs({ discussions }: CommunityMobileTabsProps) {
-  const [activeTab, setActiveTab] = useState<'discussions' | 'connections'>('discussions')
+  const [activeTab, setActiveTab] = useState<'discussions' | 'connections' | 'events'>('discussions')
   const trendingDiscussions = (discussions || []).slice(0, 5)
 
   return (
@@ -39,6 +39,17 @@ export function CommunityMobileTabs({ discussions }: CommunityMobileTabsProps) {
           >
             <MessageCircle className="h-4 w-4" />
             Discussions
+          </button>
+          <button
+            onClick={() => setActiveTab('events')}
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-all ${
+              activeTab === 'events'
+                ? 'bg-white text-neutral-900 shadow-sm'
+                : 'text-neutral-500 hover:text-neutral-700'
+            }`}
+          >
+            <CalendarDays className="h-4 w-4" />
+            Events
           </button>
           <button
             onClick={() => setActiveTab('connections')}
@@ -103,6 +114,16 @@ export function CommunityMobileTabs({ discussions }: CommunityMobileTabsProps) {
               </div>
               <ArrowRight className="h-5 w-5 text-neutral-400 flex-shrink-0" />
             </Link>
+          </div>
+        )}
+
+        {activeTab === 'events' && (
+          <div className="space-y-4">
+            <div className="bg-white rounded-2xl border border-neutral-200 p-8 text-center">
+              <CalendarDays className="h-10 w-10 text-neutral-300 mx-auto mb-3" />
+              <h3 className="text-lg font-black text-neutral-900 mb-2">No Events Yet</h3>
+              <p className="text-neutral-500 text-sm mb-4">Stay tuned for upcoming campus events, workshops, and webinars.</p>
+            </div>
           </div>
         )}
       </div>
