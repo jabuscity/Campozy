@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from './ui/button'
-import { MessageSquare, Bell, User } from 'lucide-react'
+import { MessageSquare, Rss, User } from 'lucide-react'
 import { ReportTrigger } from './report-trigger'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -27,9 +27,9 @@ export function NavbarActions({ user }: NavbarActionsProps) {
               <span className="absolute top-2 right-2 h-1.5 w-1.5 rounded-full bg-secondary ring-2 ring-white" />
             </Button>
           </Link>
-          <Link href="/notifications">
+          <Link href="/feed">
             <Button variant="ghost" size="icon" className="text-neutral-500 hidden sm:flex">
-              <Bell className="h-5 w-5" />
+              <Rss className="h-5 w-5" />
             </Button>
           </Link>
           <ReportTrigger />
