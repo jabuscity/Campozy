@@ -4,7 +4,7 @@ import * as React from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { TipCategory, TipSuggestionWithCategory } from '@/services/tip-service'
-import { Plus, X, Check, Trash2, Bell } from 'lucide-react'
+import { Plus, X, Check, Trash2, Bell, BookOpen, FileText, Video, ExternalLink, type LucideIcon } from 'lucide-react'
 
 interface TipsViewProps {
   categories: TipCategory[]
@@ -20,24 +20,28 @@ const STATIC_RESOURCES = [
     description: 'Everything you need to know about finding safe, verified student housing in Kenya.',
     href: '/resources/housing-guide',
     category: 'House Finding',
+    icon: BookOpen,
   },
   {
     title: 'Community Guidelines',
     description: 'How to engage respectfully and safely on Campozy.',
     href: '/resources/community-guidelines',
     category: 'Social',
+    icon: FileText,
   },
   {
     title: 'Video Tutorials',
     description: 'Step-by-step guides for students and campus communities.',
     href: '/resources/tutorials',
     category: 'Academics',
+    icon: Video,
   },
   {
     title: 'External Links',
     description: 'Useful resources from partner institutions and organizations.',
     href: '/resources/external-links',
     category: 'Academics',
+    icon: ExternalLink,
   },
 ]
 
@@ -59,17 +63,19 @@ export function TipsView({
   const pending = pendingSuggestions
   const [adminSuggestions, setAdminSuggestions] = React.useState<TipSuggestionWithCategory[]>([])
 
-  const allTips = [...STATIC_RESOURCES.map(r => ({
+  const allTips: { category: string; title: string; description: string; href: string; icon?: LucideIcon; isStatic: boolean }[] = [...STATIC_RESOURCES.map(r => ({
     category: r.category,
     title: r.title,
     description: r.description,
     href: r.href,
+    icon: r.icon,
     isStatic: true,
   })), ...tips.map(t => ({
     category: t.category?.name || 'General',
     title: t.title,
     description: t.description,
     href: `/tips/${t.id}`,
+    icon: undefined,
     isStatic: false,
   }))]
 
@@ -249,7 +255,7 @@ export function TipsView({
               >
                 <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
                   {isStatic ? (
-                    <BookOpenIcon className="h-5 w-5" />
+                    tip.icon ? <tip.icon className="h-5 w-5" /> : <span />
                   ) : (
                     <span className="text-sm font-bold text-primary">{tip.category?.[0]?.toUpperCase()}</span>
                   )}
@@ -332,25 +338,6 @@ function ArrowLeftIcon(props: React.SVGProps<SVGSVGElement>) {
     >
       <line x1="19" y1="12" x2="5" y2="12" />
       <polyline points="12 19 5 12 12 5" />
-    </svg>
-  )
-}
-
-function BookOpenIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0 3 3h1" />
     </svg>
   )
 }
