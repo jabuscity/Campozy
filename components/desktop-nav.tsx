@@ -67,6 +67,7 @@ export function DesktopNav({ navGroups, housingHref }: DesktopNavProps) {
       })}
       <NavLink href="/chat" active={isChatActive}>Chat</NavLink>
       <NavLink href="/about" active={pathname === '/about'}>About</NavLink>
+      <NavLink href="/tips" active={pathname === '/tips' || pathname.startsWith('/tips')}>Tips &amp; Tricks</NavLink>
     </div>
   )
 }
