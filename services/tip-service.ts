@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { supabaseAdmin } from '@/lib/supabase/admin'
 
 export interface TipCategory {
   id: string
@@ -29,14 +30,19 @@ export interface TipSuggestionWithCategory extends TipSuggestion {
 
 export class TipService {
   static async getCategories(): Promise<TipCategory[]> {
-    const supabase = await createClient()
+    const supabase = supabaseAdmin
     const { data, error } = await supabase
       .from('tip_categories')
       .select('*')
       .order('name')
 
     if (error) {
-      console.error('Failed to fetch tip categories:', error)
+      console.error('Failed to fetch tip categories:', {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+      })
       return []
     }
 
@@ -44,7 +50,7 @@ export class TipService {
   }
 
   static async getApprovedTips(): Promise<TipSuggestionWithCategory[]> {
-    const supabase = await createClient()
+    const supabase = supabaseAdmin
     const { data, error } = await supabase
       .from('tip_suggestions')
       .select(`
@@ -55,7 +61,12 @@ export class TipService {
       .order('created_at', { ascending: false })
 
     if (error) {
-      console.error('Failed to fetch approved tips:', error)
+      console.error('Failed to fetch approved tips:', {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+      })
       return []
     }
 
@@ -75,7 +86,12 @@ export class TipService {
       .order('created_at', { ascending: false })
 
     if (error) {
-      console.error('Failed to fetch user suggestions:', error)
+      console.error('Failed to fetch user suggestions:', {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+      })
       return []
     }
 
