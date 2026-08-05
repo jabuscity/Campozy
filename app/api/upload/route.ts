@@ -16,6 +16,7 @@ const ALLOWED_MIME_TYPES: Record<string, string[]> = {
   claims: ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'],
   scouts: ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'],
   hygiene: ['image/jpeg', 'image/png', 'image/webp'],
+  post_images: ['image/jpeg', 'image/png', 'image/webp'],
 }
 
 const ALLOWED_EXTENSIONS: Record<string, string[]> = {
@@ -30,6 +31,7 @@ const ALLOWED_EXTENSIONS: Record<string, string[]> = {
   claims: ['jpg', 'jpeg', 'png', 'webp', 'pdf'],
   scouts: ['jpg', 'jpeg', 'png', 'webp', 'pdf'],
   hygiene: ['jpg', 'jpeg', 'png', 'webp'],
+  post_images: ['jpg', 'jpeg', 'png', 'webp'],
 }
 
 async function verifyMagicBytes(file: File, expectedMime: string): Promise<boolean> {

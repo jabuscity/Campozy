@@ -595,6 +595,43 @@ export interface DiscussionReply {
   author?: Profile;
 }
 
+export interface CommunityPost {
+  id: string;
+  author_id: string;
+  campus_id: string | null;
+  title: string;
+  content: string;
+  image_url: string | null;
+  created_at: string;
+  updated_at: string;
+  // Relations
+  author?: Profile;
+  campus?: Campus;
+  // Computed
+  vote_count?: number;
+  comment_count?: number;
+  user_vote?: number | null;
+}
+
+export interface PostVote {
+  id: string;
+  post_id: string;
+  user_id: string;
+  vote_type: number;
+  created_at: string;
+}
+
+export interface PostComment {
+  id: string;
+  post_id: string;
+  user_id: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
+  // Relations
+  author?: Profile;
+}
+
 export interface Tip {
   id: string;
   campus_id: string | null;
