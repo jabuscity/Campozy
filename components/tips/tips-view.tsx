@@ -295,23 +295,6 @@ export function TipsView({
           </div>
         )}
 
-        <div className="pt-10 border-t border-neutral-100 text-center">
-          {userId ? (
-            <Link href="/profile" className="text-primary font-bold hover:underline">
-              Go to Profile
-            </Link>
-          ) : (
-            <>
-              <Link href="/login" className="text-primary font-bold hover:underline">
-                Sign In
-              </Link>
-              <span className="text-neutral-400 mx-2">|</span>
-              <Link href="/signup" className="text-primary font-bold hover:underline">
-                Create Account
-              </Link>
-            </>
-          )}
-        </div>
       </div>
 
       {showSuggest && (
