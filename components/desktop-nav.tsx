@@ -35,8 +35,6 @@ export function DesktopNav({ navGroups, housingHref }: DesktopNavProps) {
   const isGroupActive = (items: { href: string }[]) =>
     items.some((item) => pathname === item.href || pathname.startsWith(item.href + '/'))
 
-  const isChatActive = pathname === '/chat' || pathname.startsWith('/chat/')
-
   return (
     <div className="hidden lg:flex items-center gap-1">
       {navGroups.map((group) => {
@@ -65,7 +63,6 @@ export function DesktopNav({ navGroups, housingHref }: DesktopNavProps) {
           />
         )
       })}
-      <NavLink href="/chat" active={isChatActive}>Chat</NavLink>
       <NavLink href="/about" active={pathname === '/about'}>About</NavLink>
       <NavLink href="/opportunities" active={pathname === '/opportunities' || pathname.startsWith('/opportunities')}>Opportunities</NavLink>
       <NavLink href="/tips" active={pathname === '/tips' || pathname.startsWith('/tips')}>Tips &amp; Tricks</NavLink>

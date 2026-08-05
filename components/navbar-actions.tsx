@@ -21,10 +21,12 @@ export function NavbarActions({ user }: NavbarActionsProps) {
     <div className="flex items-center gap-3">
       {user ? (
         <>
-          <Button variant="ghost" size="icon" className="text-neutral-500 relative hidden sm:flex">
-            <MessageSquare className="h-5 w-5" />
-            <span className="absolute top-2 right-2 h-1.5 w-1.5 rounded-full bg-secondary ring-2 ring-white" />
-          </Button>
+          <Link href="/chat">
+            <Button variant="ghost" size="icon" className="text-neutral-500 relative hidden sm:flex">
+              <MessageSquare className="h-5 w-5" />
+              <span className="absolute top-2 right-2 h-1.5 w-1.5 rounded-full bg-secondary ring-2 ring-white" />
+            </Button>
+          </Link>
           <Link href="/notifications">
             <Button variant="ghost" size="icon" className="text-neutral-500 hidden sm:flex">
               <Bell className="h-5 w-5" />
