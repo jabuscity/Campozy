@@ -32,7 +32,6 @@ export async function Navbar() {
       ]},
     { label: 'Opportunities', items: [
         { href: '/opportunities', label: 'Opportunities' },
-        { href: '/resources', label: 'Resources' },
       ]},
   ]
 

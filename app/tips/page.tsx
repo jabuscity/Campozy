@@ -1,5 +1,32 @@
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, BookOpen, FileText, Video, ExternalLink } from 'lucide-react'
+
+const resources = [
+  {
+    title: 'Housing Guide',
+    description: 'Everything you need to know about finding safe, verified student housing in Kenya.',
+    href: '/resources/housing-guide',
+    icon: BookOpen,
+  },
+  {
+    title: 'Community Guidelines',
+    description: 'How to engage respectfully and safely on Campozy.',
+    href: '/resources/community-guidelines',
+    icon: FileText,
+  },
+  {
+    title: 'Video Tutorials',
+    description: 'Step-by-step guides for students and campus communities.',
+    href: '/resources/tutorials',
+    icon: Video,
+  },
+  {
+    title: 'External Links',
+    description: 'Useful resources from partner institutions and organizations.',
+    href: '/resources/external-links',
+    icon: ExternalLink,
+  },
+]
 
 export default function TipsPage() {
   return (
@@ -8,24 +35,29 @@ export default function TipsPage() {
         <ArrowLeft className="h-4 w-4" /> Back to Home
       </Link>
 
-      <div className="w-full max-w-md text-center">
-        <div className="text-6xl mb-6">💡</div>
-        <h1 className="text-3xl font-black text-neutral-900 mb-4 tracking-tight">Tips &amp; Tricks</h1>
-        <p className="text-neutral-500 mb-8">Get the most out of Campozy with these helpful tips.</p>
+      <div className="w-full max-w-md">
+        <div className="text-center mb-10">
+          <div className="text-6xl mb-6">💡</div>
+          <h1 className="text-3xl font-black text-neutral-900 mb-4 tracking-tight">Tips &amp; Tricks</h1>
+          <p className="text-neutral-500">Guides, tutorials, and tools to help you make the most of Campozy.</p>
+        </div>
 
-        <div className="space-y-4 text-left">
-          <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200">
-            <h3 className="font-bold text-neutral-900 mb-1">Verify Your Email</h3>
-            <p className="text-sm text-neutral-600">Verify your student email to unlock full access to the trust network.</p>
-          </div>
-          <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200">
-            <h3 className="font-bold text-neutral-900 mb-1">Explore Neighborhoods</h3>
-            <p className="text-sm text-neutral-600">Browse verified reviews and property details for neighborhoods near your campus.</p>
-          </div>
-          <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200">
-            <h3 className="font-bold text-neutral-900 mb-1">Connect with Peers</h3>
-            <p className="text-sm text-neutral-600">Build your student network by connecting with classmates and alumni.</p>
-          </div>
+        <div className="space-y-4">
+          {resources.map((resource) => (
+            <Link
+              key={resource.href}
+              href={resource.href}
+              className="flex items-center gap-4 p-4 rounded-xl bg-neutral-50 border border-neutral-200 hover:shadow-lg transition-all"
+            >
+              <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+                <resource.icon className="h-5 w-5" />
+              </div>
+              <div className="min-w-0">
+                <h3 className="font-bold text-neutral-900">{resource.title}</h3>
+                <p className="text-sm text-neutral-500 line-clamp-1">{resource.description}</p>
+              </div>
+            </Link>
+          ))}
         </div>
 
         <div className="mt-10 pt-10 border-t border-neutral-100 text-center">
