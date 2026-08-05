@@ -46,6 +46,7 @@ export function OpportunitiesView({
   const [submitError, setSubmitError] = React.useState<string | null>(null)
   const [submitSuccess, setSubmitSuccess] = React.useState(false)
   const [adminSuggestions, setAdminSuggestions] = React.useState<OpportunitySuggestion[]>([])
+  const [selectedFilter, setSelectedFilter] = React.useState<string>('all')
 
   const opportunitiesByType = React.useMemo(() => {
     const grouped: Record<string, Opportunity[]> = {}
@@ -170,6 +171,32 @@ export function OpportunitiesView({
           </div>
         )}
 
+        <div className="mb-6 md:mb-8 flex flex-wrap gap-2">
+          <button
+            onClick={() => setSelectedFilter('all')}
+            className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${
+              selectedFilter === 'all'
+                ? 'bg-primary text-white shadow-lg'
+                : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+            }`}
+          >
+            All
+          </button>
+          {OPPORTUNITY_TYPE_VALUES.map(type => (
+            <button
+              key={type}
+              onClick={() => setSelectedFilter(type)}
+              className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${
+                selectedFilter === type
+                  ? 'bg-primary text-white shadow-lg'
+                  : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+              }`}
+            >
+              {OPPORTUNITY_TYPE_LABELS[type]}
+            </button>
+          ))}
+        </div>
+
         {submitSuccess && (
           <div className="p-4 rounded-xl bg-green-50 border border-green-200 text-center mb-6">
             <p className="text-sm font-medium text-green-800">
@@ -201,9 +228,9 @@ export function OpportunitiesView({
                         </span>
                       </div>
                       <p className="text-sm text-neutral-500 line-clamp-2">{s.description}</p>
-                      <span className="text-xs text-neutral-400 uppercase">
-                        {OPPORTUNITY_TYPE_LABELS[s.type] || 'General'}
-                      </span>
+           <span className="text-xs font-bold text-neutral-400 uppercase">
+              {OPPORTUNITY_TYPE_LABELS[s.type] || 'General'}
+            </span>
                     </div>
                   </div>
                 </div>
@@ -212,7 +239,7 @@ export function OpportunitiesView({
           </div>
         )}
 
-        {OPPORTUNITY_TYPE_VALUES.map(type => {
+        {OPPORTUNITY_TYPE_VALUES.filter(type => selectedFilter === 'all' || selectedFilter === type).map(type => {
           const typeOpportunities = opportunitiesByType[type] || []
           if (typeOpportunities.length === 0) return null
 
