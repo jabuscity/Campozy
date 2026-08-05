@@ -95,3 +95,10 @@ INSERT INTO tip_categories (name, description, icon) VALUES
   ('House Finding', 'Guidance on finding and securing student housing', 'home'),
   ('Spiritual', 'Faith-based resources and campus spiritual life', 'church')
 ON CONFLICT (name) DO NOTHING;
+
+-- Grant table-level privileges (RLS policies handle row-level access)
+-- anon: read categories and approved tips
+GRANT SELECT ON tip_categories TO anon, authenticated;
+GRANT SELECT ON tip_suggestions TO anon, authenticated;
+-- authenticated: create new suggestions, admin update
+GRANT INSERT, UPDATE ON tip_suggestions TO authenticated;
