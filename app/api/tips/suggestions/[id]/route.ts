@@ -15,9 +15,12 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     .select('roles(name)')
     .eq('user_id', user.id)
 
-  const isAdmin = userRoles?.some((ur: { roles: { name: string }[] }) =>
-    ur.roles.some(r => ['admin', 'moderator'].includes(r.name))
-  ) ?? false
+  const isAdmin = userRoles?.some((ur: { roles: { name: string }[] | { name: string } | null }) => {
+      if (Array.isArray(ur.roles)) {
+        return ur.roles.some((r: { name: string }) => ['admin', 'moderator'].includes(r.name))
+      }
+      return ur.roles !== null && ur.roles !== undefined && ['admin', 'moderator'].includes(ur.roles.name)
+    }) ?? false
 
   if (!isAdmin) {
     return NextResponse.json({ error: 'Admin access required.' }, { status: 403 })

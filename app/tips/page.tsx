@@ -20,9 +20,12 @@ export default async function TipsPage() {
       .select('roles(name)')
       .eq('user_id', user.id)
 
-    isAdmin = userRoles?.some((ur: { roles: { name: string }[] }) =>
-      ur.roles.some(r => ['admin', 'moderator'].includes(r.name))
-    ) ?? false
+    isAdmin = userRoles?.some((ur: { roles: { name: string }[] | { name: string } | null }) => {
+      if (Array.isArray(ur.roles)) {
+        return ur.roles.some((r: { name: string }) => ['admin', 'moderator'].includes(r.name))
+      }
+      return ur.roles !== null && ur.roles !== undefined && ['admin', 'moderator'].includes(ur.roles.name)
+    }) ?? false
   }
 
   return (

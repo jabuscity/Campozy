@@ -43,15 +43,20 @@ CREATE INDEX IF NOT EXISTS idx_tip_suggestions_category_id ON tip_suggestions(ca
 ALTER TABLE tip_categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE tip_suggestions ENABLE ROW LEVEL SECURITY;
 
--- Categories are public read-only
+-- Allow both anon and authenticated users to read categories
 DROP POLICY IF EXISTS tip_categories_public_read ON tip_categories;
 CREATE POLICY tip_categories_public_read ON tip_categories FOR SELECT
-  TO authenticated USING (true);
+  TO authenticated, anon USING (true);
 
 -- Users can view their own suggestions
 DROP POLICY IF EXISTS Users_can_view_own_suggestions ON tip_suggestions;
 CREATE POLICY Users_can_view_own_suggestions ON tip_suggestions FOR SELECT
   TO authenticated USING (user_id = auth.uid());
+
+-- Authenticated users can view approved tips (public for anon too)
+DROP POLICY IF EXISTS "Tips public approved read" ON tip_suggestions;
+CREATE POLICY "Tips public approved read" ON tip_suggestions FOR SELECT
+  TO anon, authenticated USING (status = 'approved');
 
 -- Users can create suggestions
 DROP POLICY IF EXISTS Users_can_create_suggestions ON tip_suggestions;
