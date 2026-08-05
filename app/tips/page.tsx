@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ArrowLeft, BookOpen, FileText, Video, ExternalLink } from 'lucide-react'
+import { createClient } from '@/lib/supabase/server'
 
 const resources = [
   {
@@ -28,7 +29,10 @@ const resources = [
   },
 ]
 
-export default function TipsPage() {
+export default async function TipsPage() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
       <Link href="/" className="fixed top-8 left-8 flex items-center gap-2 text-neutral-500 hover:text-neutral-900 transition-colors">
@@ -61,13 +65,21 @@ export default function TipsPage() {
         </div>
 
         <div className="mt-10 pt-10 border-t border-neutral-100 text-center">
-          <Link href="/login" className="text-primary font-bold hover:underline">
-            Sign In
-          </Link>
-          <span className="text-neutral-400 mx-2">|</span>
-          <Link href="/signup" className="text-primary font-bold hover:underline">
-            Create Account
-          </Link>
+          {user ? (
+            <Link href="/profile" className="text-primary font-bold hover:underline">
+              Go to Profile
+            </Link>
+          ) : (
+            <>
+              <Link href="/login" className="text-primary font-bold hover:underline">
+                Sign In
+              </Link>
+              <span className="text-neutral-400 mx-2">|</span>
+              <Link href="/signup" className="text-primary font-bold hover:underline">
+                Create Account
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </div>
