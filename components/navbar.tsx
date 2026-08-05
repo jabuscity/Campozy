@@ -30,9 +30,6 @@ export async function Navbar() {
         { href: '/community', label: 'Discussions' },
         { href: '/connections', label: 'Connections' },
       ]},
-    { label: 'Opportunities', items: [
-        { href: '/opportunities', label: 'Opportunities' },
-      ]},
   ]
 
   return (
