@@ -11,7 +11,7 @@ export type VerificationLevel = 'unverified' | 'claimed' | 'community_verified' 
 export type TrustLevel = 'new' | 'member' | 'contributor' | 'trusted_contributor' | 'campus_expert' | 'community_leader' | 'campozy_fellow';
 export type FounderScope = 'campus' | 'country' | 'global';
 export type OpportunityType = 'job' | 'internship' | 'scholarship' | 'volunteer' | 'event';
-export type NotificationType = 'review' | 'verification' | 'opportunity' | 'message' | 'founder' | 'system' | 'alert' | 'utility_report';
+export type NotificationType = 'review' | 'verification' | 'opportunity' | 'message' | 'founder' | 'system' | 'alert' | 'utility_report' | 'tip_suggestion';
 export type ModerationActionType = 'warning' | 'content_removed' | 'temporary_restriction' | 'account_suspension';
 export type RoleName = 'student' | 'owner' | 'scout' | 'founder' | 'ambassador' | 'mentor' | 'alumni' | 'employer' | 'parent' | 'moderator' | 'admin';
 
