@@ -213,7 +213,7 @@ export function generateLayout(options: LayoutOptions): TilePosition[] {
 
     if (isTop) {
       const heroShape = distribution === 'mobile'
-        ? { colSpan: 4, rowSpan: 2 }
+        ? { colSpan: 4, rowSpan: 1 }
         : { colSpan: 2, rowSpan: 2 }
       const shape = remapTileForColumns(heroShape, cols, distribution)
       const pos = findValidPosition(shape, cols, occupancy, anchor, tilesPerRow)
