@@ -8,8 +8,7 @@ export class FeedService {
       .from('community_posts')
       .select(`
         *,
-        author:profiles!inner(id, full_name, username, avatar_url),
-        campus:campuses(id, name, universities(name))
+        author:profiles!community_posts_author_id_fkey(id, full_name, username, avatar_url)
       `)
       .order('created_at', { ascending: false })
       .limit(50)
@@ -70,7 +69,7 @@ export class FeedService {
       .from('community_posts')
       .select(`
         *,
-        author:profiles!inner(id, full_name, username, avatar_url)
+        author:profiles!community_posts_author_id_fkey(id, full_name, username, avatar_url)
       `)
       .eq('id', postId)
       .single()

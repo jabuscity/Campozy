@@ -2,13 +2,20 @@ import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import { FeedService } from '@/services/feed-service'
 
-export async function GET() {
+export async function GET(request: Request) {
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: { user }, error: userError } = await supabase.auth.getUser()
 
-  const posts = await FeedService.getPosts(user?.id || null)
+  if (userError) {
+    console.error('getUser error:', userError)
+  }
 
-  return NextResponse.json({ posts })
+  const posts = await FeedService.getPosts(user?.id || null).catch((e) => {
+    console.error('getPosts error:', e)
+    return []
+  })
+
+  return NextResponse.json({ posts, userId: user?.id || null, userError: userError?.message || null })
 }
 
 export async function POST(request: Request) {
