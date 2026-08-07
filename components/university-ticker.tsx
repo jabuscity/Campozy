@@ -1,35 +1,34 @@
-'use client';
+'use client'
 
-const UNIVERSITIES = [
-  'University of Nairobi',
-  'Kenyatta University',
-  'Moi University',
-  'JKUAT',
-  'Egerton University',
-  'Maseno University',
-  'MMUST',
-  'Chuka University',
-  'Karatina University',
-  'Laikipia University',
-  'Meru University',
-  'Technical University of Mombasa',
-  'Kibabii University',
-  'Rongo University',
-  'University of Eldoret',
-  'University of Kabianga',
-  'University of Kisii',
-  'University of Embu',
-  'UEAB',
-  'SEKU',
-  'Pwani University',
-  'Dedan Kimathi University',
-  'Technical University of Kenya',
-  'Multimedia University',
-  'Masai Mara University',
-];
+import * as React from 'react'
 
 export function UniversityTicker() {
-  const repeated = [...UNIVERSITIES, ...UNIVERSITIES];
+  const [universities, setUniversities] = React.useState<string[]>([])
+  const [isLoading, setIsLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    fetch('/api/universities')
+      .then(res => res.json())
+      .then(data => {
+        if (data.universities && data.universities.length > 0) {
+          setUniversities(data.universities)
+        }
+        setIsLoading(false)
+      })
+      .catch(() => setIsLoading(false))
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div className="w-full bg-white/80 backdrop-blur-md border-b border-neutral-200 py-3">
+        <div className="flex whitespace-nowrap">
+          <span className="mx-6 text-xs font-bold uppercase tracking-widest text-neutral-400">Loading universities...</span>
+        </div>
+      </div>
+    )
+  }
+
+  const repeated = [...universities, ...universities]
 
   return (
     <div className="w-full bg-white/80 backdrop-blur-md border-b border-neutral-200 py-3 overflow-hidden">
@@ -37,7 +36,7 @@ export function UniversityTicker() {
         <div className="flex whitespace-nowrap animate-ticker">
           {repeated.map((name, i) => (
             <span
-              key={i}
+              key={`${name}-${i}`}
               className="mx-6 text-xs font-bold uppercase tracking-widest text-neutral-400 whitespace-nowrap"
             >
               {name}
