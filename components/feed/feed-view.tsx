@@ -260,7 +260,7 @@ export function FeedView({ initialPosts, currentUser }: FeedViewProps) {
                             <MessageSquare className="h-3 w-3" />
                             {post.comment_count || 0}
                           </span>
-                          <span>{new Date(post.created_at).toLocaleDateString()}</span>
+                          <span>{new Date(post.created_at).toLocaleDateString('en-US')}</span>
                         </div>
                       </div>
                     </div>
@@ -452,7 +452,7 @@ function PostDetailView({
         <div className="flex-1 min-w-0">
           <h3 className="text-xl font-black text-neutral-900 mb-2">{post.title}</h3>
           <p className="text-neutral-500 text-xs mb-2">
-            {post.author?.full_name || post.author?.username || 'Anonymous'} • {new Date(post.created_at).toLocaleDateString()}
+            {post.author?.full_name || post.author?.username || 'Anonymous'} • {new Date(post.created_at).toLocaleDateString('en-US')}
           </p>
           <p className="text-neutral-700 whitespace-pre-wrap mb-4">{post.content}</p>
           {post.image_url && (
@@ -504,7 +504,7 @@ function PostDetailView({
                 </div>
                 <div className="flex-1">
                   <p className="text-xs text-neutral-400 mb-1">
-                    {comment.author?.full_name || comment.author?.username || 'Anonymous'} • {new Date(comment.created_at).toLocaleDateString()}
+                    {comment.author?.full_name || comment.author?.username || 'Anonymous'} • {new Date(comment.created_at).toLocaleDateString('en-US')}
                   </p>
                   <p className="text-sm text-neutral-700">{comment.content}</p>
                 </div>

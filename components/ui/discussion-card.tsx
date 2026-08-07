@@ -54,7 +54,7 @@ export function DiscussionCard({
             <span className="font-medium text-neutral-600">{authorName}</span>
             <span className="flex items-center gap-1">
               <Clock className="h-3 w-3" />
-              {new Date(createdAt).toLocaleDateString()}
+              {new Date(createdAt).toLocaleDateString('en-US')}
             </span>
             <span className="flex items-center gap-1">
               <MessageSquare className="h-3 w-3" />
