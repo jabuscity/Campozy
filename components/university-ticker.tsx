@@ -31,13 +31,13 @@ export function UniversityTicker() {
   const repeated = [...universities, ...universities]
 
   return (
-    <div className="w-full bg-white/80 backdrop-blur-md border-b border-neutral-200 py-3 overflow-hidden">
+    <div className="w-full bg-white/80 backdrop-blur-md border-b border-neutral-200 py-4 md:py-3 overflow-hidden">
       <div className="relative">
         <div className="flex whitespace-nowrap animate-ticker">
           {repeated.map((name, i) => (
             <span
               key={`${name}-${i}`}
-              className="mx-3 sm:mx-6 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-neutral-400 whitespace-nowrap"
+              className="mx-3 md:mx-6 text-[11px] md:text-xs font-bold uppercase tracking-widest text-neutral-400 whitespace-nowrap"
             >
               {name}
             </span>
@@ -58,6 +58,11 @@ export function UniversityTicker() {
         }
         .animate-ticker:hover {
           animation-play-state: paused;
+        }
+        @media (max-width: 768px) {
+          .animate-ticker {
+            animation: ticker 14s linear infinite;
+          }
         }
       `}</style>
     </div>
