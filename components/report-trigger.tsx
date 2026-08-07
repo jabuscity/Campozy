@@ -11,7 +11,7 @@ export function ReportTrigger() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+        className="flex h-10 w-10 items-center justify-center rounded-lg text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 transition-colors"
         aria-label="Report Utility Issue"
       >
         <AlertTriangle className="h-5 w-5" />
