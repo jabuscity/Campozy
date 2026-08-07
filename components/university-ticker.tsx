@@ -2,12 +2,21 @@
 
 import * as React from 'react'
 
-const PIXELS_PER_SECOND = 60
+const PIXELS_PER_SECOND_DESKTOP = 40
+const PIXELS_PER_SECOND_MOBILE = 25
+
+function getPixelsPerSecond() {
+  if (typeof window !== 'undefined') {
+    return window.innerWidth < 768 ? PIXELS_PER_SECOND_MOBILE : PIXELS_PER_SECOND_DESKTOP
+  }
+  return PIXELS_PER_SECOND_DESKTOP
+}
 
 export function UniversityTicker() {
   const [universities, setUniversities] = React.useState<string[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
   const [isPaused, setIsPaused] = React.useState(false)
+  const [pixelsPerSecond, setPixelsPerSecond] = React.useState(getPixelsPerSecond)
   const scrollRef = React.useRef<HTMLDivElement>(null)
   const contentRef = React.useRef<HTMLDivElement>(null)
   const rafRef = React.useRef<number | null>(null)
@@ -27,6 +36,16 @@ export function UniversityTicker() {
   }, [])
 
   React.useEffect(() => {
+    const handleResize = () => {
+      setPixelsPerSecond(getPixelsPerSecond())
+    }
+
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  React.useEffect(() => {
     if (universities.length === 0 || !contentRef.current || !scrollRef.current) return
 
     const content = contentRef.current
@@ -38,7 +57,7 @@ export function UniversityTicker() {
       lastTimeRef.current = timestamp
 
       if (!isPaused) {
-        positionRef.current -= PIXELS_PER_SECOND * delta
+        positionRef.current -= pixelsPerSecond * delta
 
         if (Math.abs(positionRef.current) >= singleSetWidth) {
           positionRef.current += singleSetWidth
@@ -57,7 +76,7 @@ export function UniversityTicker() {
         cancelAnimationFrame(rafRef.current)
       }
     }
-  }, [universities, isPaused])
+  }, [universities, isPaused, pixelsPerSecond])
 
   if (isLoading) {
     return (
@@ -80,16 +99,18 @@ export function UniversityTicker() {
       <div ref={scrollRef} className="relative overflow-hidden">
         <div
           ref={contentRef}
-          className="flex whitespace-nowrap will-change-transform"
+          className="flex whitespace-nowrap will-change-transform items-center"
           style={{ transform: 'translateX(0px)' }}
         >
           {repeated.map((name, i) => (
-            <span
-              key={`${name}-${i}`}
-              className="mx-3 sm:mx-6 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-neutral-400 whitespace-nowrap"
-            >
-              {name}
-            </span>
+            <React.Fragment key={`${name}-${i}`}>
+              {i > 0 && (
+                <span className="text-neutral-300 mx-2 sm:mx-3 text-[10px] sm:text-xs select-none">•</span>
+              )}
+              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-neutral-400 whitespace-nowrap">
+                {name}
+              </span>
+            </React.Fragment>
           ))}
         </div>
       </div>
