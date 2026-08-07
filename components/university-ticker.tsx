@@ -3,7 +3,7 @@
 import * as React from 'react'
 
 const PIXELS_PER_SECOND_DESKTOP = 40
-const PIXELS_PER_SECOND_MOBILE = 25
+const PIXELS_PER_SECOND_MOBILE = 20
 
 function getPixelsPerSecond() {
   if (typeof window !== 'undefined') {
@@ -51,6 +51,9 @@ export function UniversityTicker() {
     const content = contentRef.current
     const singleSetWidth = content.scrollWidth / 2
 
+    lastTimeRef.current = 0
+    positionRef.current = 0
+
     const animate = (timestamp: number) => {
       if (!lastTimeRef.current) lastTimeRef.current = timestamp
       const delta = (timestamp - lastTimeRef.current) / 1000
@@ -92,7 +95,7 @@ export function UniversityTicker() {
 
   return (
     <div
-      className="w-full bg-white/80 backdrop-blur-md border-b border-neutral-200 py-4 md:py-3 overflow-hidden"
+      className="w-full bg-white/80 backdrop-blur-md border-b border-neutral-200 py-3 overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -105,9 +108,9 @@ export function UniversityTicker() {
           {repeated.map((name, i) => (
             <React.Fragment key={`${name}-${i}`}>
               {i > 0 && (
-                <span className="text-neutral-300 mx-2 sm:mx-3 text-[10px] sm:text-xs select-none">•</span>
+                <span className="text-neutral-300 mx-2 sm:mx-3 text-[11px] sm:text-xs select-none">•</span>
               )}
-              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-neutral-400 whitespace-nowrap">
+              <span className="text-[13px] sm:text-xs font-bold uppercase tracking-widest text-neutral-400 whitespace-nowrap">
                 {name}
               </span>
             </React.Fragment>
