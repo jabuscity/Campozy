@@ -10,11 +10,8 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import {
-  Search,
   ShieldCheck,
   Zap,
-  Droplet,
-  School,
   Home,
   MessageSquare,
   ArrowRight,
@@ -25,6 +22,18 @@ import {
 import Image from 'next/image'
 import { OnboardingWizard } from '@/components/onboarding-wizard'
 import { GuestPrompt } from '@/components/guest-prompt'
+import { GlobalSearch } from '@/components/search/global-search'
+
+function getCategoryPill(categoryName: string) {
+  const colors: Record<string, string> = {
+    'General': 'bg-neutral-100 text-neutral-700',
+    'Academics': 'bg-blue-100 text-blue-700',
+    'Hostels': 'bg-green-100 text-green-700',
+    'Campus Life': 'bg-purple-100 text-purple-700',
+    'Careers': 'bg-orange-100 text-orange-700',
+  }
+  return colors[categoryName] || 'bg-neutral-100 text-neutral-600'
+}
 
 export default async function HomePage({ searchParams }: { searchParams: Promise<{ start_onboarding?: string }> | { start_onboarding?: string } }) {
   const params = await searchParams
@@ -274,6 +283,11 @@ function LoggedInFeed({ student, topProperties, trendingDiscussions, topOpportun
                     <MessageSquare className="h-5 w-5 text-primary" />
                   </div>
                   <div className="flex-grow min-w-0">
+                    {discussion.category?.name && (
+                      <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-tight mb-1 ${getCategoryPill(discussion.category.name)}`}>
+                        {discussion.category.name}
+                      </span>
+                    )}
                     <h3 className="font-bold text-neutral-900 truncate">{discussion.title}</h3>
                     <p className="text-sm text-neutral-500 line-clamp-2 mt-1">{discussion.content}</p>
                     <div className="flex items-center gap-3 mt-2">
@@ -340,7 +354,8 @@ function LoggedInFeed({ student, topProperties, trendingDiscussions, topOpportun
       )}
 
       <section className="mb-8 md:mb-12 hidden lg:block">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-5">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl md:text-2xl font-black text-neutral-900 tracking-tight">Trending Discussions</h2>
           <Link href="/community">
             <Button variant="ghost" className="text-primary font-bold text-sm">
               See all <ArrowRight className="h-4 w-4 ml-1" />
@@ -359,6 +374,11 @@ function LoggedInFeed({ student, topProperties, trendingDiscussions, topOpportun
                   <MessageSquare className="h-5 w-5 text-primary" />
                 </div>
                 <div className="flex-grow min-w-0">
+                  {discussion.category?.name && (
+                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-tight mb-1 ${getCategoryPill(discussion.category.name)}`}>
+                      {discussion.category.name}
+                    </span>
+                  )}
                   <h3 className="font-bold text-neutral-900 truncate">{discussion.title}</h3>
                   <p className="text-sm text-neutral-500 line-clamp-2 mt-1">{discussion.content}</p>
                   <div className="flex items-center gap-3 mt-2">
@@ -457,54 +477,14 @@ function LoggedOutFeed({
           </div>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-neutral-900 tracking-tight leading-[1.1] mb-4">
-            Decide with <span className="text-primary">Confidence.</span>
+            Decide with <span className="text-primary italic">Confidence.</span>
           </h1>
           <p className="text-lg md:text-xl text-neutral-600 leading-relaxed mb-8 max-w-2xl mx-auto">
             Verified student residences. Real utility updates. Zero guesswork.
             The trust network built for students, by students.
           </p>
 
-          <div className="max-w-3xl mx-auto mb-6 md:mb-8">
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
-              <input
-                className="w-full h-11 pl-10 pr-16 md:pr-24 rounded-full bg-white border border-neutral-200 text-base placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                placeholder="Search hostels, universities, campuses..."
-              />
-              <Link href="/housing">
-                <Button className="absolute right-1 top-1/2 -translate-y-1/2 h-9 px-3 md:px-5 rounded-full font-bold text-xs md:text-sm shadow-sm shadow-primary/20 hover:shadow-md transition-all">
-                  Search
-                </Button>
-              </Link>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-1.5 md:gap-2">
-            <Link href="/housing">
-              <button className="flex items-center gap-1.5 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-primary text-white font-bold text-xs md:text-sm transition-all hover:shadow-lg active:scale-95">
-                <Home className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                <span className="md:inline">Hostels</span>
-              </button>
-            </Link>
-            <Link href="/campuses">
-              <button className="flex items-center gap-1.5 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 font-bold text-xs md:text-sm transition-all active:scale-95">
-                <School className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                <span className="md:inline">Universities</span>
-              </button>
-            </Link>
-            <Link href="/community">
-              <button className="flex items-center gap-1.5 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 font-bold text-xs md:text-sm transition-all active:scale-95">
-                <MessageSquare className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                <span className="md:inline">Discussions</span>
-              </button>
-            </Link>
-            <Link href="/opportunities">
-              <button className="flex items-center gap-1.5 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 font-bold text-xs md:text-sm transition-all active:scale-95">
-                <Droplet className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                <span className="md:inline">Opportunities</span>
-              </button>
-            </Link>
-          </div>
+          <GlobalSearch />
         </div>
       </section>
 
@@ -578,6 +558,11 @@ function LoggedOutFeed({
                     <MessageSquare className="h-5 w-5 text-primary" />
                   </div>
                   <div className="flex-grow min-w-0">
+                    {discussion.category?.name && (
+                      <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-tight mb-1 ${getCategoryPill(discussion.category.name)}`}>
+                        {discussion.category.name}
+                      </span>
+                    )}
                     <h3 className="font-bold text-neutral-900 truncate">{discussion.title}</h3>
                     <p className="text-sm text-neutral-500 line-clamp-2 mt-1">{discussion.content}</p>
                     <div className="flex items-center gap-3 mt-2">
@@ -664,6 +649,11 @@ function LoggedOutFeed({
                   <MessageSquare className="h-5 w-5 text-primary" />
                 </div>
                 <div className="flex-grow min-w-0">
+                  {discussion.category?.name && (
+                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-tight mb-1 ${getCategoryPill(discussion.category.name)}`}>
+                      {discussion.category.name}
+                    </span>
+                  )}
                   <h3 className="font-bold text-neutral-900 truncate">{discussion.title}</h3>
                   <p className="text-sm text-neutral-500 line-clamp-2 mt-1">{discussion.content}</p>
                   <div className="flex items-center gap-3 mt-2">

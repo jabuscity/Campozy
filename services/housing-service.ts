@@ -174,12 +174,7 @@ export const HousingService = {
     const supabase = await createClient()
     const { data, error } = await supabase
       .from('neighborhoods')
-      .select(`
-        *,
-        cities(name, countries(name)),
-        neighborhood_landmarks(*),
-        neighborhood_campus_distances(*, campuses(name, universities(name)))
-      `)
+      .select('*, cities(name, country:countries(name)), neighborhood_campus_distances(*, campuses(name, universities(name)))')
       .eq('id', neighborhoodId)
       .single()
 
@@ -196,12 +191,12 @@ export const HousingService = {
     sort?: 'highest_score' | 'price_asc' | 'latest';
   }) {
     const supabase = await createClient()
-    const dbQuery = supabase
+    let dbQuery = supabase
       .from('properties')
       .select(`
         *,
         property_types(name),
-        property_rooms(id, room_type, quantity, price_per_semester, price_per_month),
+        rooms:property_rooms(id, room_type, quantity),
         property_media(id, url, media_type, is_primary),
         neighborhoods(id, name)
       `)
@@ -209,15 +204,15 @@ export const HousingService = {
       .eq('is_active', true)
 
     if (options?.minScore) {
-      dbQuery.gte('campozy_score', options.minScore)
+      dbQuery = dbQuery.gte('campozy_score', options.minScore)
     }
 
     if (options?.sort === 'price_asc') {
-      dbQuery.order('campozy_score', { ascending: false })
+      dbQuery = dbQuery.order('monthly_price', { ascending: true })
     } else if (options?.sort === 'latest') {
-      dbQuery.order('created_at', { ascending: false })
+      dbQuery = dbQuery.order('created_at', { ascending: false })
     } else {
-      dbQuery.order('campozy_score', { ascending: false })
+      dbQuery = dbQuery.order('campozy_score', { ascending: false })
     }
 
     const { data, error } = await dbQuery
@@ -227,18 +222,13 @@ export const HousingService = {
 
     if (options?.minPrice != null || options?.maxPrice != null) {
       results = results.filter((property) => {
-        const allPrices = (property.rooms || [])
-          .flatMap((room) => [
-            room.price_per_semester,
-            room.price_per_month,
-          ])
-          .filter((price): price is number => typeof price === 'number' && price > 0)
+        const price = property.monthly_price
 
-        if (allPrices.length === 0) return true
+        if (price == null || price <= 0) return true
 
         const min = options.minPrice ?? -Infinity
         const max = options.maxPrice ?? Infinity
-        return allPrices.some((price) => price >= min && price <= max)
+        return price >= min && price <= max
       })
     }
 
@@ -472,3 +462,4 @@ export const HousingService = {
     return data as Property[]
   },
 }
+

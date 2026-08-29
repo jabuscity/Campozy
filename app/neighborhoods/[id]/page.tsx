@@ -15,17 +15,17 @@ export default async function NeighborhoodPage({
   params,
   searchParams,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
   searchParams: Promise<{ minPrice?: string; maxPrice?: string; minScore?: string; sort?: string }>
 }) {
+  const { id } = await params
   const sp = await searchParams
   const minPrice = sp.minPrice ? Number(sp.minPrice) : undefined
   const maxPrice = sp.maxPrice ? Number(sp.maxPrice) : undefined
   const minScore = sp.minScore ? Number(sp.minScore) : undefined
   const sortBy = (sp.sort as 'highest_score' | 'price_asc' | 'latest') || 'highest_score'
 
-  const neighborhoods = await HousingService.getNeighborhoods()
-  const neighborhood = neighborhoods.find(n => n.id === params.id) || null
+  const neighborhood = await HousingService.getNeighborhoodById(id)
 
   if (!neighborhood) {
     return (
@@ -130,7 +130,7 @@ export default async function NeighborhoodPage({
                 <div className="flex items-center gap-3 text-sm">
                   <MapPin className="h-4 w-4 text-neutral-400" />
                   <span className="text-neutral-600">
-                    {neighborhood.cities?.name || ''} {neighborhood.cities?.countries?.name || ''}
+                    {neighborhood.cities?.name || ''} {neighborhood.cities?.country?.name || ''}
                   </span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">

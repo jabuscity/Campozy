@@ -29,15 +29,21 @@ export async function POST(request: Request) {
   const body = await request.json()
   const { title, content, imageUrl } = body
 
-  if (!title || !content) {
-    return NextResponse.json({ error: 'Title and content are required.' }, { status: 400 })
+  if (!content) {
+    return NextResponse.json({ error: 'Content is required.' }, { status: 400 })
   }
 
-  const result = await FeedService.createPost(user.id, title, content, imageUrl || null)
+  const result = await FeedService.createPost(user.id, title || null, content, imageUrl || null)
 
   if (result.error) {
     return NextResponse.json({ error: result.error }, { status: 500 })
   }
 
-  return NextResponse.json({ success: true })
+  const created = await FeedService.getPostById(result.id!, user.id).catch(() => null)
+
+  if (!created) {
+    return NextResponse.json({ success: true })
+  }
+
+  return NextResponse.json({ success: true, post: created })
 }

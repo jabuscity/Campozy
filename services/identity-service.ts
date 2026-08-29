@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
-import type { Profile, RoleName, ContactMethod, IdentityDocument, PropertyReview, Discussion, ForumPost, SavedProperty, SavedOpportunity, RoommateMatch, RoommateProfile, FriendMatch, FriendProfile, Property, Opportunity } from '@/types'
+import type { Profile, RoleName, ContactMethod, IdentityDocument, PropertyReview, Discussion, ForumPost, SavedProperty, SavedOpportunity, RoommateMatch, RoommateProfile, FriendMatch, FriendProfile, Property, Opportunity, CommunityPost } from '@/types'
 
 // ============================================================================
 // IDENTITY SERVICE
@@ -187,7 +187,7 @@ export const IdentityService = {
   async getUserContributions(userId: string) {
     const supabase = await createClient()
 
-    const [reviewsResult, discussionsResult, forumPostsResult] = await Promise.all([
+    const [reviewsResult, discussionsResult, forumPostsResult, feedPostsResult] = await Promise.all([
       supabase
         .from('property_reviews')
         .select(`
@@ -216,12 +216,43 @@ export const IdentityService = {
         .eq('user_id', userId)
         .order('created_at', { ascending: false })
         .limit(20),
+      supabase
+        .from('community_posts')
+        .select(`
+          *,
+          author:profiles!community_posts_author_id_fkey(id, full_name, username, avatar_url)
+        `)
+        .eq('author_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(50),
     ])
+
+    const feedPosts = (feedPostsResult.data || []) as CommunityPost[]
+    const feedPostIds = feedPosts.map(p => p.id)
+
+    const [feedVotesResult, feedCommentsResult] = await Promise.all([
+      supabase.from('post_votes').select('post_id, vote_type').in('post_id', feedPostIds),
+      supabase.from('post_comments').select('post_id, id').in('post_id', feedPostIds),
+    ])
+
+    const feedPostsWithStats = feedPosts.map(post => {
+      const postVotes = (feedVotesResult.data || []).filter(v => v.post_id === post.id) as { vote_type: number }[]
+      const upvotes = postVotes.filter(v => v.vote_type === 1).length
+      const downvotes = postVotes.filter(v => v.vote_type === -1).length
+      return {
+        ...post,
+        upvotes,
+        downvotes,
+        vote_count: upvotes - downvotes,
+        comment_count: (feedCommentsResult.data || []).filter(c => c.post_id === post.id).length,
+      }
+    })
 
     return {
       reviews: (reviewsResult.data || []) as Array<PropertyReview & { property?: { id: string; name: string; neighborhood?: { name: string } } }>,
       discussions: (discussionsResult.data || []) as Array<Discussion & { campus?: { name: string }; neighborhood?: { name: string } }>,
       forumPosts: (forumPostsResult.data || []) as Array<ForumPost & { topic?: { title: string; forum?: { name: string } } }>,
+      feedPosts: feedPostsWithStats,
     }
   },
 

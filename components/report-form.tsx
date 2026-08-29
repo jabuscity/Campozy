@@ -153,7 +153,6 @@ function SeveritySlider({ value, onChange }: SeveritySliderProps) {
 
 export function ReportForm({ onSuccess, onCancel }: ReportFormProps) {
   const router = useRouter()
-  const [step, setStep] = React.useState(1)
   const [locationType, setLocationType] = React.useState<'property' | 'campus' | 'other'>('property')
   const [selectedPropertyId, setSelectedPropertyId] = React.useState('')
   const [selectedCampusId, setSelectedCampusId] = React.useState('')
@@ -173,7 +172,6 @@ export function ReportForm({ onSuccess, onCancel }: ReportFormProps) {
   const [detectingLocation, setDetectingLocation] = React.useState(false)
 
   const reset = React.useCallback(() => {
-    setStep(1)
     setLocationType('property')
     setSelectedPropertyId('')
     setSelectedCampusId('')
@@ -191,11 +189,6 @@ export function ReportForm({ onSuccess, onCancel }: ReportFormProps) {
     setCampuses([])
     setLoading(true)
   }, [])
-
-  const canGoNextStep1 = !!utilityType
-  const canGoNextStep2 = locationType === 'property' ? !!selectedPropertyId
-    : locationType === 'campus' ? !!selectedCampusId
-    : !!locationDescription
 
   React.useEffect(() => {
     let cancelled = false
@@ -699,174 +692,55 @@ export function ReportForm({ onSuccess, onCancel }: ReportFormProps) {
           )}
         </div>
       ) : (
-        <>
-          {/* Desktop step indicator */}
-          <div className="hidden md:flex items-center justify-between mb-4">
-            <span className="text-[10px] font-black text-neutral-400 uppercase tracking-widest">Step {step} of 3</span>
-            <div className="flex items-center gap-1.5">
-              <div className={`h-1.5 w-6 rounded-full transition-all ${step >= 1 ? 'bg-primary' : 'bg-neutral-200'}`} />
-              <div className={`h-1.5 w-6 rounded-full transition-all ${step >= 2 ? 'bg-primary' : 'bg-neutral-200'}`} />
-              <div className={`h-1.5 w-6 rounded-full transition-all ${step >= 3 ? 'bg-primary' : 'bg-neutral-200'}`} />
-            </div>
+        <div className="space-y-6">
+          <div>
+            <label className="block text-xs font-black text-neutral-900 uppercase tracking-widest mb-3">
+              Select Issue Type
+            </label>
+            {renderUtilityTypeSection()}
           </div>
 
-          {/* Mobile: single scrollable page */}
-          <div className="md:hidden space-y-6">
-            <div>
-              <label className="block text-xs font-black text-neutral-900 uppercase tracking-widest mb-3">
-                Select Issue Type
-              </label>
-              {renderUtilityTypeSection()}
-            </div>
-
-            <div>
-              <label className="block text-xs font-black text-neutral-900 uppercase tracking-widest mb-3">
-                WHAT ARE YOU REPORTING?
-              </label>
-              {renderLocationSection()}
-            </div>
-
-            <div>
-              <label className="block text-xs font-black text-neutral-900 uppercase tracking-widest mb-4">
-                Severity
-              </label>
-              <SeveritySlider value={severity} onChange={setSeverity} />
-            </div>
-
-            <div>
-              <label className="block text-xs font-black text-neutral-900 uppercase tracking-widest mb-3">
-                Description
-              </label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Describe the utility issue..."
-                className="w-full px-4 py-3 rounded-xl border border-neutral-200 bg-neutral-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none h-24 overflow-y-auto"
-                required
-              />
-            </div>
-
-            {error && (
-              <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm font-medium">
-                {error}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={submitting}
-              className="w-full h-12 rounded-xl bg-primary text-white font-bold text-sm uppercase tracking-tight hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {submitting ? 'Submitting...' : 'Submit Report'}
-            </button>
+          <div>
+            <label className="block text-xs font-black text-neutral-900 uppercase tracking-widest mb-3">
+              WHAT ARE YOU REPORTING?
+            </label>
+            {renderLocationSection()}
           </div>
 
-          {/* Desktop: 3-step wizard */}
-          <div className="hidden md:block">
-            {step === 1 && (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-xs font-black text-neutral-900 uppercase tracking-widest mb-3">
-                    Select Issue Type
-                  </label>
-                  {renderUtilityTypeSection()}
-                </div>
-
-                {error && (
-                  <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm font-medium">
-                    {error}
-                  </div>
-                )}
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (canGoNextStep1) setStep(2)
-                  }}
-                  disabled={!canGoNextStep1}
-                  className="w-full h-12 rounded-xl bg-primary text-white font-bold text-sm uppercase tracking-tight hover:bg-primary/90 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  Next
-                </button>
-              </div>
-            )}
-
-            {step === 2 && (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-xs font-black text-neutral-900 uppercase tracking-widest mb-3">
-                    WHAT ARE YOU REPORTING?
-                  </label>
-                  {renderLocationSection()}
-                </div>
-
-                {error && (
-                  <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm font-medium">
-                    {error}
-                  </div>
-                )}
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (canGoNextStep2) setStep(3)
-                  }}
-                  disabled={!canGoNextStep2}
-                  className="w-full h-12 rounded-xl bg-primary text-white font-bold text-sm uppercase tracking-tight hover:bg-primary/90 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  Next
-                </button>
-              </div>
-            )}
-
-            {step === 3 && (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-xs font-black text-neutral-900 uppercase tracking-widest mb-4">
-                    Severity
-                  </label>
-                  <SeveritySlider value={severity} onChange={setSeverity} />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-black text-neutral-900 uppercase tracking-widest mb-3">
-                    Description
-                  </label>
-                  <textarea
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Describe the utility issue..."
-                    className="w-full px-4 py-3 rounded-xl border border-neutral-200 bg-neutral-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none h-24 overflow-y-auto"
-                    required
-                  />
-                </div>
-
-                {error && (
-                  <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm font-medium">
-                    {error}
-                  </div>
-                )}
-
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setStep(2)}
-                    className="flex-1 h-12 rounded-xl border border-neutral-200 bg-white text-neutral-700 font-bold text-sm uppercase tracking-tight hover:bg-neutral-50 transition-colors"
-                  >
-                    Back
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="flex-[2] h-12 rounded-xl bg-primary text-white font-bold text-sm uppercase tracking-tight hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {submitting ? 'Submitting...' : 'Submit Report'}
-                  </button>
-                </div>
-              </div>
-            )}
+          <div>
+            <label className="block text-xs font-black text-neutral-900 uppercase tracking-widest mb-4">
+              Severity
+            </label>
+            <SeveritySlider value={severity} onChange={setSeverity} />
           </div>
-        </>
+
+          <div>
+            <label className="block text-xs font-black text-neutral-900 uppercase tracking-widest mb-3">
+              Description
+            </label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Describe the utility issue..."
+              className="w-full px-4 py-3 rounded-xl border border-neutral-200 bg-neutral-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none h-24 overflow-y-auto"
+              required
+            />
+          </div>
+
+          {error && (
+            <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm font-medium">
+              {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={submitting}
+            className="w-full h-12 rounded-xl bg-red-600 text-white font-bold text-sm uppercase tracking-tight hover:bg-red-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {submitting ? 'Submitting...' : 'Submit Report'}
+          </button>
+        </div>
       )}
     </form>
   )

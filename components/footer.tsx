@@ -10,13 +10,26 @@ export function Footer() {
   const pathname = usePathname()
   const showMobileFooter = pathname === '/' || pathname === '/about'
   return (
-     <footer className="bg-neutral-900 text-white pt-16 pb-16 lg:pb-8 overflow-hidden relative">
+     <footer className="bg-neutral-900 text-white pt-12 pb-12 lg:pb-6 overflow-hidden relative">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-success" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
         {showMobileFooter && (
-          <div className="md:hidden flex flex-col items-center justify-between gap-8 pt-[10px] pb-4">
-            <div className="bg-white/5 rounded-2xl border border-white/10 p-5 w-full">
+          <div className="md:hidden flex flex-col items-start justify-between gap-6 pt-[10px] pb-4">
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-white">
+                <span className="text-lg font-bold italic">C</span>
+              </div>
+              <span className="text-xl font-black tracking-tight text-white italic">
+                Campozy
+              </span>
+            </div>
+            <p className="text-xs text-neutral-400 leading-relaxed font-medium text-left">
+              Mapping student trust across Africa. Housing, community, and
+              opportunity intelligence for the next generation of leaders.
+            </p>
+
+            <div className="bg-white/5 rounded-2xl border border-white/10 p-4 w-full">
               <div className="flex items-center gap-3 mb-3">
                 <ShieldCheck className="h-5 w-5 text-success" />
                 <span className="text-xs font-black uppercase tracking-widest italic">
@@ -41,8 +54,8 @@ export function Footer() {
           </div>
         )}
 
-        <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 lg:items-start gap-8 mb-12">
-          <div className="space-y-6 lg:col-span-1">
+        <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 lg:items-start gap-6 mb-6">
+          <div className="space-y-4 lg:col-span-1">
             <Link href="/" className="flex items-center gap-2 group">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-lg transition-transform group-hover:scale-110">
                 <span className="text-xl font-bold italic">C</span>
@@ -63,7 +76,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-neutral-500">
+            <h4 className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-neutral-500">
               Product
             </h4>
             <ul className="space-y-3 font-medium text-sm text-neutral-300">
@@ -83,7 +96,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-neutral-500">
+            <h4 className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-neutral-500">
               Trust
             </h4>
             <ul className="space-y-3 font-medium text-sm text-neutral-300">
@@ -103,7 +116,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-neutral-500">
+            <h4 className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-neutral-500">
               Legal
             </h4>
             <ul className="space-y-3 font-medium text-sm text-neutral-300">
@@ -122,7 +135,7 @@ export function Footer() {
             </ul>
           </div>
 
-          <div className="bg-white/5 rounded-2xl border border-white/10 p-5">
+          <div className="bg-white/5 rounded-2xl border border-white/10 p-4">
             <div className="flex items-center gap-3 mb-3">
               <ShieldCheck className="h-5 w-5 text-success" />
               <span className="text-xs font-black uppercase tracking-widest italic">
@@ -136,7 +149,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="hidden md:flex pt-8 border-t border-white/5 flex-col md:flex-row justify-between items-center gap-4">
+        <div className="hidden md:flex pt-6 border-t border-white/5 flex-col md:flex-row justify-between items-center gap-3">
           <div className="text-[10px] font-medium text-neutral-500 uppercase tracking-[0.3em]">
             © 2026 Campozy Student Trust Network. All Rights Reserved.
           </div>

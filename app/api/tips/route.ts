@@ -25,13 +25,13 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json()
-  const { categoryId, title, description } = body
+  const { categoryId, title, description, customCategoryName } = body
 
   if (!categoryId || !title || !description) {
     return NextResponse.json({ error: 'All fields are required.' }, { status: 400 })
   }
 
-  const result = await TipService.createSuggestion(user.id, categoryId, title, description)
+  const result = await TipService.createSuggestion(user.id, categoryId, title, description, customCategoryName)
 
   if (result.error) {
     return NextResponse.json({ error: result.error }, { status: 500 })

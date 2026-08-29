@@ -26,16 +26,28 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json()
-  const { type, title, description } = body
+  const { type, title, description, link, location, isRemote, compensation, requirements, deadline } = body
 
   if (!type || !title || !description) {
     return NextResponse.json({ error: 'All fields are required.' }, { status: 400 })
   }
 
-  const result = await OpportunitySuggestionService.createSuggestion(user.id, type, title, description)
+  const result = await OpportunitySuggestionService.createSuggestion(
+    user.id,
+    type,
+    title,
+    description,
+    link,
+    location || null,
+    Boolean(isRemote),
+    compensation || null,
+    Array.isArray(requirements) ? requirements : [],
+    deadline || null
+  )
 
   if (result.error) {
-    return NextResponse.json({ error: result.error }, { status: 500 })
+    console.error('Opportunity suggestion error:', result.error)
+    return NextResponse.json({ error: 'Failed to submit suggestion.' }, { status: 500 })
   }
 
   return NextResponse.json({ success: true })

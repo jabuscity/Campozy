@@ -20,9 +20,7 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
     property.media?.find((m) => m.is_primary) || property.media?.[0];
   const placeholder =
     "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=800";
-  const minPrice = property.rooms?.length
-    ? Math.min(...property.rooms.map((r) => r.price_per_month || 0))
-    : 0;
+  const minPrice = property.monthly_price || 0;
 
   return (
     <motion.div

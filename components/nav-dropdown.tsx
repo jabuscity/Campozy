@@ -3,14 +3,16 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { ChevronDown } from 'lucide-react'
+import { NotificationBadge } from '@/components/ui/notification-badge'
 
 interface NavDropdownProps {
   label: string
   items: { href: string; label: string }[]
   active?: boolean
+  count?: number
 }
 
-export function NavDropdown({ label, items, active }: NavDropdownProps) {
+export function NavDropdown({ label, items, active, count }: NavDropdownProps) {
   const [open, setOpen] = React.useState(false)
   const ref = React.useRef<HTMLDivElement>(null)
 
@@ -35,13 +37,14 @@ export function NavDropdown({ label, items, active }: NavDropdownProps) {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className={`flex items-center gap-1 px-4 py-2 text-sm font-bold uppercase tracking-tighter transition-all ${
+        className={`relative flex items-center gap-1 px-4 py-2 text-base font-bold capitalize tracking-tighter transition-all ${
           active
             ? 'text-primary border-b-2 border-primary'
             : 'text-neutral-500 hover:text-primary'
         }`}
       >
         {label}
+        <NotificationBadge count={count} />
         <ChevronDown
           className={`h-3.5 w-3.5 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
         />

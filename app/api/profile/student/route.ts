@@ -23,7 +23,8 @@ export async function POST(request: Request) {
     .eq('id', user.id)
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Student profile update error:', error)
+    return NextResponse.json({ error: 'Failed to update profile.' }, { status: 500 })
   }
 
   return NextResponse.json({ success: true })

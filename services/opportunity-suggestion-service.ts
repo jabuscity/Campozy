@@ -7,6 +7,12 @@ export interface OpportunitySuggestion {
   type: string
   title: string
   description: string
+  link: string | null
+  location: string | null
+  is_remote: boolean
+  compensation: string | null
+  requirements: unknown[]
+  deadline: string | null
   status: 'pending' | 'approved' | 'rejected'
   rejection_reason: string | null
   reviewed_by: string | null
@@ -29,7 +35,13 @@ export class OpportunitySuggestionService {
     userId: string,
     type: string,
     title: string,
-    description: string
+    description: string,
+    link: string | null = null,
+    location: string | null = null,
+    isRemote: boolean = false,
+    compensation: string | null = null,
+    requirements: unknown[] = [],
+    deadline: string | null = null
   ): Promise<{ error?: string }> {
     const supabase = await createClient()
     const { error } = await supabase
@@ -39,6 +51,12 @@ export class OpportunitySuggestionService {
         type,
         title,
         description,
+        link,
+        location,
+        is_remote: isRemote,
+        compensation,
+        requirements,
+        deadline,
       })
 
     if (error) {

@@ -1,88 +1,202 @@
 'use client'
 
 import * as React from 'react'
+import imageCompression from 'browser-image-compression'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, Upload, X, Send, ThumbsUp, ThumbsDown, MessageSquare, CalendarDays, Zap } from 'lucide-react'
-import type { CommunityPost, PostComment, Profile } from '@/types'
+import { Upload, X, ThumbsUp, Zap } from 'lucide-react'
+import type { CommunityPost, Profile } from '@/types'
 
 interface FeedViewProps {
   initialPosts: CommunityPost[]
   currentUser: Profile | null
+  stats: {
+    totalPosts: number
+    totalComments: number
+    positiveVotes: number
+    negativeVotes: number
+  }
+  isPremium: boolean
+}
+
+function FeedPostCard({
+  post,
+  onVote,
+  isReplying,
+  replyText,
+  replyError,
+  replyPosted,
+  onReplyTextChange,
+  onStartReply,
+  onCancelReply,
+  onSubmitReply,
+  sendingReply,
+}: {
+  post: CommunityPost
+  onVote: (postId: string) => void
+  isReplying: boolean
+  replyText: string
+  replyError: string | null
+  replyPosted: boolean
+  onReplyTextChange: (text: string) => void
+  onStartReply: () => void
+  onCancelReply: () => void
+  onSubmitReply: () => void
+  sendingReply: boolean
+}) {
+  const authorName = post.author?.full_name || post.author?.username || 'Anonymous'
+  const dateStr = new Date(post.created_at).toLocaleDateString('en-US')
+  const upvotes = post.upvotes || 0
+
+  if (post.image_url) {
+    return (
+      <div className="relative rounded-2xl overflow-hidden aspect-[4/3] md:aspect-[16/9] bg-neutral-900 transition-shadow duration-300 hover:shadow-lg hover:shadow-blue-500/20">
+        <img
+          src={post.image_url}
+          alt="Post"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 text-white">
+          <div className="flex items-center gap-2 mb-2">
+            {post.author?.avatar_url ? (
+              <img src={post.author.avatar_url} alt={authorName} className="h-7 w-7 rounded-full object-cover border border-white/30 flex-shrink-0" />
+            ) : (
+              <div className="h-7 w-7 rounded-full bg-white/20 flex items-center justify-center text-white flex-shrink-0">
+                <Zap className="h-3.5 w-3.5" />
+              </div>
+            )}
+            <div>
+              <p className="text-xs font-bold leading-tight">{authorName}</p>
+              <p className="text-[11px] text-white/70 leading-tight">{dateStr}</p>
+            </div>
+          </div>
+          {post.content && (
+            <p className="text-sm text-white/90 whitespace-pre-wrap leading-relaxed line-clamp-3 mb-3">{post.content}</p>
+          )}
+          <div className="flex items-center gap-4 text-xs text-white/80">
+            <button
+              type="button"
+              onClick={() => onVote(post.id)}
+              className="inline-flex items-center gap-1 text-white/70 transition-colors hover:text-white"
+            >
+              <ThumbsUp className={`h-4 w-4 ${post.user_vote === 1 ? 'fill-current text-blue-300' : ''}`} />
+              {upvotes}
+            </button>
+            <button
+              type="button"
+              onClick={onStartReply}
+              className="text-white/70 transition-colors hover:text-white"
+            >
+              Reply
+            </button>
+          </div>
+          {isReplying && (
+            <form onSubmit={e => { e.preventDefault(); onSubmitReply() }} className="mt-3 space-y-2">
+              {replyError && <p className="text-xs text-red-300">{replyError}</p>}
+              <textarea
+                value={replyText}
+                onChange={e => onReplyTextChange(e.target.value)}
+                placeholder="Write a reply..."
+                className="w-full min-h-[80px] rounded-xl border border-white/20 bg-black/40 p-3 text-sm text-white placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-white/30 resize-none"
+              />
+              <div className="flex items-center justify-end gap-2">
+                <button type="button" onClick={onCancelReply} disabled={sendingReply || replyPosted} className="text-xs text-white/70 hover:text-white">Cancel</button>
+                <button type="submit" disabled={sendingReply || replyPosted || !replyText.trim()} className="text-xs font-bold bg-white text-black px-3 py-1.5 rounded-lg hover:bg-white/90 disabled:opacity-50">
+                  {sendingReply ? 'Posting...' : replyPosted ? 'Posted!' : 'Reply'}
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="bg-white rounded-2xl border border-neutral-200 p-4 md:p-5 transition-all duration-300 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md hover:shadow-blue-200/60">
+      <div className="flex items-start gap-2.5 mb-2">
+        {post.author?.avatar_url ? (
+          <img src={post.author.avatar_url} alt={authorName} className="h-7 w-7 rounded-full object-cover border border-neutral-200 flex-shrink-0" />
+        ) : (
+          <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+            <Zap className="h-3.5 w-3.5" />
+          </div>
+        )}
+        <div className="flex-1 min-w-0">
+          <p className="text-xs font-bold text-neutral-900">
+            {authorName}
+          </p>
+          <p className="text-[11px] text-neutral-400">{dateStr}</p>
+        </div>
+      </div>
+      <p className="text-sm text-neutral-900 whitespace-pre-wrap mb-3 leading-relaxed">{post.content}</p>
+      <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-500 mb-2">
+        <button
+          type="button"
+          onClick={() => onVote(post.id)}
+          className="inline-flex items-center gap-1 text-neutral-400 transition-colors hover:text-blue-600"
+        >
+          <ThumbsUp className={`h-4 w-4 ${post.user_vote === 1 ? 'fill-current text-blue-600' : ''}`} />
+          {upvotes}
+        </button>
+        <button
+          type="button"
+          onClick={onStartReply}
+          className="text-neutral-400 transition-colors hover:text-blue-600"
+        >
+          Reply
+        </button>
+      </div>
+      {isReplying && (
+        <form onSubmit={e => { e.preventDefault(); onSubmitReply() }} className="mt-2 space-y-2">
+          {replyError && <p className="text-xs text-red-600">{replyError}</p>}
+          <textarea
+            value={replyText}
+            onChange={e => onReplyTextChange(e.target.value)}
+            placeholder="Write a reply..."
+            className="w-full min-h-[80px] rounded-xl border border-neutral-200 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
+          />
+          <div className="flex items-center justify-end gap-2">
+            <button type="button" onClick={onCancelReply} disabled={sendingReply || replyPosted} className="text-xs text-neutral-500 hover:text-neutral-900">Cancel</button>
+            <button type="submit" disabled={sendingReply || replyPosted || !replyText.trim()} className="text-xs font-bold bg-neutral-900 text-white px-3 py-1.5 rounded-lg hover:bg-neutral-800 disabled:opacity-50">
+              {sendingReply ? 'Posting...' : replyPosted ? 'Posted!' : 'Reply'}
+            </button>
+          </div>
+        </form>
+      )}
+    </div>
+  )
 }
 
 export function FeedView({ initialPosts, currentUser }: FeedViewProps) {
   const [posts, setPosts] = React.useState<CommunityPost[]>(initialPosts || [])
-  const [selectedPost, setSelectedPost] = React.useState<CommunityPost | null>(null)
-  const [comments, setComments] = React.useState<PostComment[]>([])
-  const [postDetailCache, setPostDetailCache] = React.useState<Record<string, { post: CommunityPost; comments: PostComment[] }>>({})
-
-  // Create post form state
-  const [showCreateForm, setShowCreateForm] = React.useState(false)
-  const [postTitle, setPostTitle] = React.useState('')
   const [postContent, setPostContent] = React.useState('')
   const [postImage, setPostImage] = React.useState<File | null>(null)
   const [postImageUrl, setPostImageUrl] = React.useState<string | null>(null)
   const [submittingPost, setSubmittingPost] = React.useState(false)
   const [postError, setPostError] = React.useState<string | null>(null)
 
-  // Comment state
-  const [commentText, setCommentText] = React.useState('')
-  const [submittingComment, setSubmittingComment] = React.useState(false)
-  const [commentError, setCommentError] = React.useState<string | null>(null)
-
-  const fileInputRef = React.useRef<HTMLInputElement>(null)
-
-  const loadPostDetail = React.useCallback(async (post: CommunityPost) => {
-    if (postDetailCache[post.id]) {
-      setSelectedPost(postDetailCache[post.id].post)
-      setComments(postDetailCache[post.id].comments)
-      return
-    }
-
-    try {
-      const res = await fetch(`/api/feed/posts/${post.id}`)
-      const data = await res.json()
-      if (res.ok) {
-        setPostDetailCache(prev => ({
-          ...prev,
-          [post.id]: { post: data.post, comments: data.comments || [] }
-        }))
-        setSelectedPost(data.post)
-        setComments(data.comments || [])
-      }
-    } catch {
-      setSelectedPost(post)
-      setComments([])
-    }
-  }, [postDetailCache])
-
   async function handleCreatePost(e: React.FormEvent) {
     e.preventDefault()
-    if (!currentUser || !postTitle.trim() || !postContent.trim()) return
+    if (!currentUser || !postContent.trim()) return
 
     setSubmittingPost(true)
     setPostError(null)
 
     try {
-      const body: { title: string; content: string; imageUrl?: string } = { title: postTitle, content: postContent }
+      const body: { content: string; imageUrl?: string; title?: string | null } = { content: postContent }
 
       if (postImage) {
         const formData = new FormData()
         formData.append('file', postImage)
         formData.append('bucket', 'post_images')
-
-        const uploadRes = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData,
-        })
-
+        const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData })
         const uploadData = await uploadRes.json()
         if (!uploadRes.ok) {
           setPostError(uploadData.error || 'Image upload failed.')
           setSubmittingPost(false)
           return
         }
-
         body.imageUrl = uploadData.url
       }
 
@@ -91,18 +205,23 @@ export function FeedView({ initialPosts, currentUser }: FeedViewProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
-
       const data = await res.json()
       if (!res.ok) {
         setPostError(data.error || 'Failed to create post.')
       } else {
-        setPostTitle('')
+        if (postImageUrl) URL.revokeObjectURL(postImageUrl)
         setPostContent('')
         setPostImage(null)
         setPostImageUrl(null)
-        setShowCreateForm(false)
-        setSelectedPost(null)
-        window.location.reload()
+        if (data.post) {
+          setPosts(prev => [data.post, ...prev])
+        } else {
+          const freshRes = await fetch('/api/feed/posts')
+          const freshData = await freshRes.json()
+          if (freshRes.ok && freshData.posts) {
+            setPosts(freshData.posts)
+          }
+        }
       }
     } catch {
       setPostError('Something went wrong. Please try again.')
@@ -111,427 +230,232 @@ export function FeedView({ initialPosts, currentUser }: FeedViewProps) {
     }
   }
 
-  async function handleVote(voteType: 1 | -1) {
-    if (!selectedPost) return
-    const res = await fetch(`/api/feed/posts/${selectedPost.id}/vote`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ voteType }),
-    })
+  async function handleVote(postId: string) {
+    const originalPost = posts.find(p => p.id === postId)
 
-    if (res.ok) {
-      setPosts(prev => prev.map(p => {
-        if (p.id !== selectedPost.id) return p
+    setPosts(prev =>
+      prev.map(p => {
+        if (p.id !== postId) return p
         const currentVote = p.user_vote
+        let newUpvotes = p.upvotes || 0
+        let newDownvotes = p.downvotes || 0
         let newVoteCount = p.vote_count || 0
-        let newUserVote: number | null = voteType
-
-        if (currentVote === voteType) {
-          newVoteCount -= voteType
+        let newUserVote: number | null = null
+        if (currentVote === 1) {
+          newUpvotes -= 1
+          newVoteCount -= 1
           newUserVote = null
         } else {
-          if (currentVote) newVoteCount -= currentVote
-          newVoteCount += voteType
+          newUpvotes += 1
+          newUserVote = 1
+          if (currentVote === -1) {
+            newDownvotes -= 1
+            newVoteCount += 1
+          }
+          newVoteCount += 1
         }
+        return { ...p, upvotes: newUpvotes, downvotes: newDownvotes, vote_count: newVoteCount, user_vote: newUserVote }
+      }),
+    )
 
-        return { ...p, vote_count: newVoteCount, user_vote: newUserVote }
-      }))
+    try {
+      const res = await fetch(`/api/feed/posts/${postId}/vote`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ voteType: 1 }),
+      })
 
-      if (selectedPost) {
-        const currentVote = selectedPost.user_vote
-        let newVoteCount = selectedPost.vote_count || 0
-        let newUserVote: number | null = voteType
-
-        if (currentVote === voteType) {
-          newVoteCount -= voteType
-          newUserVote = null
-        } else {
-          if (currentVote) newVoteCount -= currentVote
-          newVoteCount += voteType
-        }
-
-        setSelectedPost({ ...selectedPost, vote_count: newVoteCount, user_vote: newUserVote })
+      if (!res.ok && originalPost) {
+        setPosts(prev => prev.map(p => p.id === postId ? originalPost : p))
+      }
+    } catch {
+      if (originalPost) {
+        setPosts(prev => prev.map(p => p.id === postId ? originalPost : p))
       }
     }
   }
 
-  async function handleAddComment(e: React.FormEvent) {
-    e.preventDefault()
-    if (!selectedPost || !currentUser || !commentText.trim()) return
+  const [activeReplyId, setActiveReplyId] = React.useState<string | null>(null)
+  const [replyText, setReplyText] = React.useState('')
+  const [sendingReply, setSendingReply] = React.useState(false)
+  const [replyPosted, setReplyPosted] = React.useState(false)
+  const [replyError, setReplyError] = React.useState<string | null>(null)
 
-    setSubmittingComment(true)
-    setCommentError(null)
-
+  async function handleSubmitReply(postId: string) {
+    if (!replyText.trim()) return
+    setSendingReply(true)
+    setReplyError(null)
     try {
-      const res = await fetch(`/api/feed/posts/${selectedPost.id}/comments`, {
+      const res = await fetch(`/api/feed/posts/${postId}/comments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: commentText.trim() }),
+        body: JSON.stringify({ content: replyText.trim() }),
       })
-
-      const data = await res.json()
-      if (!res.ok) {
-        setCommentError(data.error || 'Failed to add comment.')
+      if (res.ok) {
+        setPosts(prev => prev.map(p => p.id === postId ? { ...p, comment_count: (p.comment_count || 0) + 1 } : p))
+        setReplyPosted(true)
+        setTimeout(() => {
+          setReplyText('')
+          setActiveReplyId(null)
+          setReplyPosted(false)
+          setReplyError(null)
+        }, 800)
       } else {
-        const newComment = {
-          id: crypto.randomUUID(),
-          post_id: selectedPost.id,
-          user_id: currentUser.id,
-          content: commentText.trim(),
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          author: currentUser,
-        }
-        setComments(prev => [...prev, newComment as PostComment])
-        setCommentText('')
-        setSelectedPost(prev => prev ? { ...prev, comment_count: (prev.comment_count || 0) + 1 } : prev)
-        setPosts(prev => prev.map(p => {
-          if (p.id !== selectedPost.id) return p
-          return { ...p, comment_count: (p.comment_count || 0) + 1 }
-        }))
+        const data = await res.json().catch(() => ({}))
+        setReplyError(data.error || 'Failed to post reply.')
       }
-    } catch {
-      setCommentError('Something went wrong. Please try again.')
     } finally {
-      setSubmittingComment(false)
+      setSendingReply(false)
     }
   }
 
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
-    if (file) {
-      setPostImage(file)
-      const url = URL.createObjectURL(file)
-      setPostImageUrl(url)
+    if (!file) return
+
+    const compressed = async () => {
+      try {
+        const compressedFile = await imageCompression(file, {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true,
+        })
+        setPostImage(compressedFile)
+        setPostImageUrl(URL.createObjectURL(compressedFile))
+      } catch {
+        setPostImage(file)
+        setPostImageUrl(URL.createObjectURL(file))
+      }
     }
+    compressed()
   }
 
   function clearImage() {
+    if (postImageUrl) URL.revokeObjectURL(postImageUrl)
     setPostImage(null)
     setPostImageUrl(null)
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
-  return (
-    <div className="min-h-screen bg-neutral-50">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-        <div className="mb-6 md:mb-8">
-          <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
-            Your Feed
-          </h1>
-          <p className="text-neutral-600 mt-2">
-            Discussions, reports, opportunities, and updates from your campus.
-          </p>
-        </div>
+  const fileInputRef = React.useRef<HTMLInputElement>(null)
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Left pane: post list */}
-          <div className="lg:col-span-4">
-            <div className="lg:sticky lg:top-8 space-y-3">
-              {posts.length === 0 ? (
-                <div className="text-center py-12 bg-white rounded-2xl border border-neutral-200">
-                  <Zap className="h-8 w-8 text-neutral-300 mx-auto mb-3" />
-                  <p className="text-neutral-500 text-sm">No posts yet</p>
+   return (
+    <div className="min-h-screen bg-neutral-50">
+      <div className="mx-auto max-w-2xl px-4 sm:px-6 py-6 md:py-10">
+        <p className="text-neutral-600 font-bold mb-5">What&apos;s on your mind?</p>
+        <div className="bg-secondary/10 rounded-2xl border border-secondary/20 overflow-hidden mb-5 px-3 md:px-4 pt-3 md:pt-4 pb-2">
+          <form onSubmit={handleCreatePost}>
+            {postError && <p className="text-xs font-medium text-red-600 px-3 pt-3">{postError}</p>}
+
+            {postImageUrl ? (
+              <div className="relative">
+                <img
+                  src={postImageUrl}
+                  alt="Post preview"
+                  className="w-full aspect-[4/3] object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                {currentUser && (
+                  <div className="absolute inset-x-0 top-0 p-3 flex items-center gap-2">
+                    {currentUser.avatar_url ? (
+                      <img src={currentUser.avatar_url} alt={currentUser.full_name || currentUser.username || 'Anonymous'} className="h-7 w-7 rounded-full object-cover border border-white/30 flex-shrink-0" />
+                    ) : (
+                      <div className="h-7 w-7 rounded-full bg-white/20 flex items-center justify-center text-white flex-shrink-0">
+                        <Zap className="h-3.5 w-3.5" />
+                      </div>
+                    )}
+                    <p className="text-xs font-bold text-white">
+                      {currentUser.full_name || currentUser.username || 'Anonymous'}
+                    </p>
+                  </div>
+                )}
+                <div className="absolute inset-x-0 bottom-0 p-3">
+                  <textarea
+                    value={postContent}
+                    onChange={e => setPostContent(e.target.value)}
+                    placeholder="Write something about this photo..."
+                    rows={2}
+                    required
+                    className="w-full bg-transparent text-white placeholder:text-white/60 text-sm font-medium focus:outline-none resize-none mb-2"
+                  />
                 </div>
-              ) : (
-                posts.map((post) => (
-                  <button
-                    key={post.id}
-                    onClick={() => loadPostDetail(post)}
-                    className={`w-full text-left bg-white border rounded-xl p-4 hover:shadow-md transition-all ${
-                      selectedPost?.id === post.id
-                        ? 'border-primary shadow-md'
-                        : 'border-neutral-200'
-                    }`}
-                  >
-                    <div className="flex items-start gap-3">
+                <button
+                  type="button"
+                  onClick={clearImage}
+                  className="absolute top-2 right-2 h-6 w-6 rounded-full bg-black/40 text-white flex items-center justify-center hover:bg-black/60"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {currentUser && (
+                  <div className="flex items-center gap-2.5">
+                    {currentUser.avatar_url ? (
+                      <img src={currentUser.avatar_url} alt={currentUser.full_name || currentUser.username || 'Anonymous'} className="h-8 w-8 rounded-full object-cover border border-neutral-200 flex-shrink-0" />
+                    ) : (
                       <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
                         <Zap className="h-4 w-4" />
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-neutral-900 text-sm line-clamp-1 mb-1">{post.title}</h3>
-                        <p className="text-xs text-neutral-500 line-clamp-2 mb-2">{post.content}</p>
-                        <div className="flex items-center gap-4 text-xs text-neutral-400">
-                          <span className="inline-flex items-center gap-1">
-                            <ThumbsUp className="h-3 w-3" />
-                            {post.vote_count || 0}
-                          </span>
-                          <span className="inline-flex items-center gap-1">
-                            <MessageSquare className="h-3 w-3" />
-                            {post.comment_count || 0}
-                          </span>
-                          <span>{new Date(post.created_at).toLocaleDateString('en-US')}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </button>
-                ))
-              )}
-            </div>
-          </div>
-
-          {/* Right pane: post detail or create form */}
-          <div className="lg:col-span-8">
-            {selectedPost ? (
-              <PostDetailView
-                post={selectedPost}
-                comments={comments}
-                currentUser={currentUser}
-                onVote={handleVote}
-                onAddComment={handleAddComment}
-                commentText={commentText}
-                setCommentText={setCommentText}
-                submittingComment={submittingComment}
-                commentError={commentError}
-                onBack={() => setSelectedPost(null)}
-              />
-            ) : (
-              <div className="space-y-4">
-                {/* Create post form */}
-                <div className="bg-white rounded-2xl border border-neutral-200 p-4 md:p-6">
-                  {currentUser ? (
-                    showCreateForm ? (
-                      <form onSubmit={handleCreatePost} className="space-y-4">
-                        {postError && (
-                          <p className="text-xs font-medium text-red-600">{postError}</p>
-                        )}
-                        <input
-                          type="text"
-                          value={postTitle}
-                          onChange={(e) => setPostTitle(e.target.value)}
-                          placeholder="Title"
-                          required
-                          className="w-full px-3 h-10 rounded-xl border border-neutral-200 bg-neutral-50 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-                        />
-                        <textarea
-                          value={postContent}
-                          onChange={(e) => setPostContent(e.target.value)}
-                          placeholder="What's on your mind?"
-                          rows={5}
-                          required
-                          className="w-full px-3 rounded-xl border border-neutral-200 bg-neutral-50 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all resize-none"
-                        />
-                        {postImageUrl && (
-                          <div className="relative">
-                            <img
-                              src={postImageUrl}
-                              alt="Post preview"
-                              className="max-h-48 w-full object-cover rounded-xl border border-neutral-200"
-                            />
-                            <button
-                              type="button"
-                              onClick={clearImage}
-                              className="absolute top-2 right-2 h-6 w-6 rounded-full bg-neutral-800/50 text-white flex items-center justify-center hover:bg-neutral-800"
-                            >
-                              <X className="h-3 w-3" />
-                            </button>
-                          </div>
-                        )}
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <label className="cursor-pointer flex items-center gap-2 text-sm font-medium text-neutral-600 hover:text-neutral-900">
-                              <Upload className="h-4 w-4" />
-                              <span>Add Image</span>
-                              <input
-                                type="file"
-                                ref={fileInputRef}
-                                accept="image/*"
-                                onChange={handleImageChange}
-                                className="hidden"
-                              />
-                            </label>
-                          </div>
-                          <div className="flex gap-2">
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => setShowCreateForm(false)}
-                            >
-                              Cancel
-                            </Button>
-                            <Button type="submit" size="sm" className="font-bold" disabled={submittingPost}>
-                              {submittingPost ? 'Posting...' : 'Post'}
-                            </Button>
-                          </div>
-                        </div>
-                      </form>
-                    ) : (
-                      <button
-                        onClick={() => setShowCreateForm(true)}
-                        className="w-full text-left flex items-center gap-3 text-neutral-400 hover:text-neutral-700 transition-colors"
-                      >
-                        <div className="h-10 w-10 rounded-full bg-neutral-100 flex items-center justify-center">
-                          <Upload className="h-5 w-5" />
-                        </div>
-                        <span className="font-medium">Share an update... (text, image, or both)</span>
-                      </button>
-                    )
-                  ) : (
-                    <div className="text-center py-8 text-neutral-500">
-                      <p className="text-sm">Sign in to post on the feed.</p>
-                    </div>
-                  )}
-                </div>
-
-                {/* Stats summary when no post selected */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="bg-white rounded-xl border border-neutral-200 p-4 text-center">
-                    <div className="text-2xl font-black text-primary">{posts.length}</div>
-                    <div className="text-xs text-neutral-500">Posts</div>
+                    )}
+                    <p className="text-sm font-bold text-neutral-900">
+                      {currentUser.full_name || currentUser.username || 'Anonymous'}
+                    </p>
                   </div>
-                  <div className="bg-white rounded-xl border border-neutral-200 p-4 text-center">
-                    <div className="text-2xl font-black text-primary">
-                      {posts.reduce((sum, p) => sum + (p.comment_count || 0), 0)}
-                    </div>
-                    <div className="text-xs text-neutral-500">Comments</div>
-                  </div>
-                  <div className="bg-white rounded-xl border border-neutral-200 p-4 text-center">
-                    <div className="text-2xl font-black text-primary">
-                      {posts.reduce((sum, p) => sum + Math.abs(p.vote_count || 0), 0)}
-                    </div>
-                    <div className="text-xs text-neutral-500">Votes</div>
-                  </div>
-                  <div className="bg-white rounded-xl border border-neutral-200 p-4 text-center">
-                    <div className="text-2xl font-black text-primary">
-                      {currentUser ? 'Active' : 'Guest'}
-                    </div>
-                    <div className="text-xs text-neutral-500">Status</div>
-                  </div>
-                </div>
+                )}
+                <textarea
+                  value={postContent}
+                  onChange={e => setPostContent(e.target.value)}
+                  placeholder="Share your thoughts..."
+                  rows={2}
+                  required
+                  className="w-full px-3 py-2 rounded-xl border border-neutral-200 bg-neutral-50 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all resize-none"
+                />
               </div>
             )}
+
+            <div className="flex items-center justify-between px-3 py-2 border-t border-neutral-100 -mt-0.5">
+              <label className="cursor-pointer flex items-center gap-1.5 text-neutral-500 hover:text-neutral-900 transition-colors">
+                <Upload className="h-4 w-4" />
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+              </label>
+              <Button type="submit" size="sm" className="font-bold" disabled={submittingPost}>
+                {submittingPost ? 'Posting...' : 'Post'}
+              </Button>
+            </div>
+          </form>
+        </div>
+
+        {posts.length === 0 ? (
+          <div className="text-center py-10 bg-white rounded-2xl border border-neutral-200">
+            <Zap className="h-8 w-8 text-neutral-300 mx-auto mb-3" />
+            <p className="text-neutral-500 text-sm">No posts yet. Be the first to share something!</p>
           </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-interface PostDetailViewProps {
-  post: CommunityPost
-  comments: PostComment[]
-  currentUser: Profile | null
-  onVote: (voteType: 1 | -1) => void
-  onAddComment: (e: React.FormEvent) => void
-  commentText: string
-  setCommentText: (value: string) => void
-  submittingComment: boolean
-  commentError: string | null
-  onBack: () => void
-}
-
-function PostDetailView({
-  post,
-  comments,
-  currentUser,
-  onVote,
-  onAddComment,
-  commentText,
-  setCommentText,
-  submittingComment,
-  commentError,
-  onBack,
-}: PostDetailViewProps) {
-  return (
-    <div className="bg-white rounded-2xl border border-neutral-200 p-4 md:p-6">
-      <div className="flex items-center gap-3 mb-4">
-        <button
-          onClick={onBack}
-          className="text-neutral-400 hover:text-neutral-700 transition-colors"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </button>
-        <h2 className="text-lg font-black text-neutral-900">Post Detail</h2>
-      </div>
-
-      <div className="flex items-start gap-4 mb-6">
-        <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
-          <CalendarDays className="h-5 w-5" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <h3 className="text-xl font-black text-neutral-900 mb-2">{post.title}</h3>
-          <p className="text-neutral-500 text-xs mb-2">
-            {post.author?.full_name || post.author?.username || 'Anonymous'} • {new Date(post.created_at).toLocaleDateString('en-US')}
-          </p>
-          <p className="text-neutral-700 whitespace-pre-wrap mb-4">{post.content}</p>
-          {post.image_url && (
-            <img
-              src={post.image_url}
-              alt={post.title}
-              className="max-h-80 w-full object-cover rounded-xl border border-neutral-200 mb-4"
-            />
-          )}
-          <div className="flex items-center gap-6">
-            <button
-              onClick={() => onVote(1)}
-              className={`flex items-center gap-2 text-neutral-600 hover:text-primary transition-colors ${
-                post.user_vote === 1 ? 'text-primary' : ''
-              }`}
-            >
-              <ThumbsUp className={`h-5 w-5 ${post.user_vote === 1 ? 'fill-current' : ''}`} />
-              <span className="font-bold">{post.vote_count || 0}</span>
-            </button>
-            <button
-              onClick={() => onVote(-1)}
-              className={`flex items-center gap-2 text-neutral-600 hover:text-red-500 transition-colors ${
-                post.user_vote === -1 ? 'text-red-500' : ''
-              }`}
-            >
-              <ThumbsDown className={`h-5 w-5 ${post.user_vote === -1 ? 'fill-current' : ''}`} />
-            </button>
-            <span className="text-xs text-neutral-400">
-              {post.comment_count || 0} comments
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div className="border-t border-neutral-200 pt-4">
-        <h4 className="text-sm font-black text-neutral-900 uppercase tracking-widest mb-3">
-          Comments
-        </h4>
-        {comments.length === 0 ? (
-          <p className="text-neutral-500 text-sm">No comments yet. Be the first to comment!</p>
         ) : (
-          <div className="space-y-3 mb-4">
-            {comments.map((comment) => (
-              <div key={comment.id} className="flex items-start gap-3">
-                <div className="h-7 w-7 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-500 flex-shrink-0">
-                  <span className="text-xs font-bold">
-                    {(comment.author?.full_name || comment.author?.username || '?').charAt(0).toUpperCase()}
-                  </span>
-                </div>
-                <div className="flex-1">
-                  <p className="text-xs text-neutral-400 mb-1">
-                    {comment.author?.full_name || comment.author?.username || 'Anonymous'} • {new Date(comment.created_at).toLocaleDateString('en-US')}
-                  </p>
-                  <p className="text-sm text-neutral-700">{comment.content}</p>
-                </div>
-              </div>
+          <div className="space-y-3">
+            {posts.map(post => (
+              <FeedPostCard
+                key={post.id}
+                post={post}
+                onVote={handleVote}
+                isReplying={activeReplyId === post.id}
+                replyText={replyText}
+                replyError={replyError}
+                replyPosted={replyPosted}
+                onReplyTextChange={setReplyText}
+                onStartReply={() => setActiveReplyId(post.id)}
+                onCancelReply={() => { setActiveReplyId(null); setReplyText(''); setReplyError(null); setReplyPosted(false) }}
+                onSubmitReply={() => handleSubmitReply(post.id)}
+                sendingReply={sendingReply}
+              />
             ))}
           </div>
-        )}
-
-        {currentUser ? (
-          <form onSubmit={onAddComment} className="flex gap-2">
-            <input
-              type="text"
-              value={commentText}
-              onChange={(e) => setCommentText(e.target.value)}
-              placeholder="Add a comment..."
-              className="flex-1 px-3 h-9 rounded-xl border border-neutral-200 bg-neutral-50 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-              required
-            />
-            <Button type="submit" size="sm" className="font-bold" disabled={submittingComment}>
-              {submittingComment ? '...' : <Send className="h-4 w-4" />}
-            </Button>
-          </form>
-        ) : (
-          <p className="text-xs text-neutral-400">Sign in to comment.</p>
-        )}
-        {commentError && (
-          <p className="text-xs font-medium text-red-600 mt-1">{commentError}</p>
         )}
       </div>
     </div>

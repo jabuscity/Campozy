@@ -47,10 +47,10 @@ export function NeighborhoodCard({ neighborhood, propertyCount, span, isTop }: N
               </span>
             )}
             {typeof propertyCount === 'number' && (
-              <span className={`inline-flex items-center justify-center rounded-full border font-black flex-shrink-0 ${
+              <span className={`inline-flex items-center justify-center rounded-full border-2 border-white font-black flex-shrink-0 ${
                 isTop
-                  ? 'h-7 px-2.5 text-xs border-white/70 text-white/80'
-                  : 'h-5 px-1.5 sm:h-6 sm:px-2 text-[9px] sm:text-[10px] border-white/60 text-white/70'
+                  ? 'h-8 w-8 sm:h-9 sm:w-9 text-xs text-white'
+                  : 'h-6 w-6 sm:h-7 sm:w-7 text-[10px] sm:text-xs text-white'
               }`}>
                 {propertyCount}
               </span>

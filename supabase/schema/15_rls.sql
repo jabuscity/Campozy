@@ -237,24 +237,46 @@ CREATE POLICY "discussion_replies_delete" ON discussion_replies FOR DELETE TO au
 -- community_posts
 ALTER TABLE community_posts ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "community_posts_select" ON community_posts;
-CREATE POLICY "community_posts_select" ON community_posts FOR SELECT TO authenticated USING (author_id = auth.uid());
+CREATE POLICY "community_posts_select" ON community_posts FOR SELECT TO authenticated USING (true);
 DROP POLICY IF EXISTS "community_posts_insert" ON community_posts;
-CREATE POLICY "community_posts_insert" ON community_posts FOR INSERT TO authenticated WITH CHECK (author_id = auth.uid());
+CREATE POLICY "community_posts_insert" ON community_posts FOR INSERT TO authenticated WITH CHECK (true);
 DROP POLICY IF EXISTS "community_posts_update" ON community_posts;
-CREATE POLICY "community_posts_update" ON community_posts FOR UPDATE TO authenticated USING (author_id = auth.uid()) WITH CHECK (author_id = auth.uid());
+CREATE POLICY "community_posts_update" ON community_posts FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
 DROP POLICY IF EXISTS "community_posts_delete" ON community_posts;
-CREATE POLICY "community_posts_delete" ON community_posts FOR DELETE TO authenticated USING (author_id = auth.uid());
+CREATE POLICY "community_posts_delete" ON community_posts FOR DELETE TO authenticated USING (true);
 
 -- community_comments
 ALTER TABLE community_comments ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "community_comments_select" ON community_comments;
-CREATE POLICY "community_comments_select" ON community_comments FOR SELECT TO authenticated USING (author_id = auth.uid());
+CREATE POLICY "community_comments_select" ON community_comments FOR SELECT TO authenticated USING (true);
 DROP POLICY IF EXISTS "community_comments_insert" ON community_comments;
-CREATE POLICY "community_comments_insert" ON community_comments FOR INSERT TO authenticated WITH CHECK (author_id = auth.uid());
+CREATE POLICY "community_comments_insert" ON community_comments FOR INSERT TO authenticated WITH CHECK (true);
 DROP POLICY IF EXISTS "community_comments_update" ON community_comments;
-CREATE POLICY "community_comments_update" ON community_comments FOR UPDATE TO authenticated USING (author_id = auth.uid()) WITH CHECK (author_id = auth.uid());
+CREATE POLICY "community_comments_update" ON community_comments FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
 DROP POLICY IF EXISTS "community_comments_delete" ON community_comments;
-CREATE POLICY "community_comments_delete" ON community_comments FOR DELETE TO authenticated USING (author_id = auth.uid());
+CREATE POLICY "community_comments_delete" ON community_comments FOR DELETE TO authenticated USING (true);
+
+-- post_votes
+ALTER TABLE post_votes ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "post_votes_select" ON post_votes;
+CREATE POLICY "post_votes_select" ON post_votes FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "post_votes_insert" ON post_votes;
+CREATE POLICY "post_votes_insert" ON post_votes FOR INSERT TO authenticated WITH CHECK (user_id = auth.uid());
+DROP POLICY IF EXISTS "post_votes_update" ON post_votes;
+CREATE POLICY "post_votes_update" ON post_votes FOR UPDATE TO authenticated USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());
+DROP POLICY IF EXISTS "post_votes_delete" ON post_votes;
+CREATE POLICY "post_votes_delete" ON post_votes FOR DELETE TO authenticated USING (user_id = auth.uid());
+
+-- post_comments
+ALTER TABLE post_comments ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "post_comments_select" ON post_comments;
+CREATE POLICY "post_comments_select" ON post_comments FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "post_comments_insert" ON post_comments;
+CREATE POLICY "post_comments_insert" ON post_comments FOR INSERT TO authenticated WITH CHECK (user_id = auth.uid());
+DROP POLICY IF EXISTS "post_comments_update" ON post_comments;
+CREATE POLICY "post_comments_update" ON post_comments FOR UPDATE TO authenticated USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());
+DROP POLICY IF EXISTS "post_comments_delete" ON post_comments;
+CREATE POLICY "post_comments_delete" ON post_comments FOR DELETE TO authenticated USING (user_id = auth.uid());
 
 -- property_reviews
 ALTER TABLE property_reviews ENABLE ROW LEVEL SECURITY;

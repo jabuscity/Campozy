@@ -3,6 +3,7 @@ import { CommunityService } from '@/services/community-service'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { MessageSquare, ArrowLeft, Plus } from 'lucide-react'
+import ReplyListClient from '@/components/community/reply-list-client'
 
 export default async function PropertyDiscussionPage({ params }: { params: { id: string } }) {
   const property = await HousingService.getPropertyById(params.id)
@@ -45,11 +46,7 @@ export default async function PropertyDiscussionPage({ params }: { params: { id:
         {discussions.length > 0 ? (
           <div className="space-y-4">
             {discussions.map((discussion) => (
-              <Link
-                key={discussion.id}
-                href={`/community?discussion=${discussion.id}`}
-                className="block bg-white rounded-3xl border border-neutral-200 p-6 hover:shadow-md transition-all"
-              >
+              <div key={discussion.id} className="bg-white rounded-3xl border border-neutral-200 p-6">
                 <div className="flex items-start gap-4">
                   <div className="h-10 w-10 rounded-full bg-neutral-100 border border-neutral-200 flex items-center justify-center text-sm font-bold text-neutral-600 shrink-0">
                     {discussion.author?.full_name?.[0] || 'U'}
@@ -68,9 +65,14 @@ export default async function PropertyDiscussionPage({ params }: { params: { id:
                         </span>
                       )}
                     </div>
+
+                    <div className="mt-4">
+                      {/* Replies */}
+                      <ReplyListClient discussionId={discussion.id} />
+                    </div>
                   </div>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         ) : (

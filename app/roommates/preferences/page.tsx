@@ -43,7 +43,7 @@ export default function RoommatePreferencesPage() {
               <CheckCircle2 className="h-12 w-12 text-success mx-auto mb-4" />
               <h2 className="text-2xl font-black text-neutral-900 mb-2">Preferences Saved!</h2>
               <p className="text-neutral-600 mb-6">We&apos;ll use these to find your ideal roommate matches.</p>
-              <Link href="/connections"><Button>Find Connections</Button></Link>
+               <Link href="/chat"><Button>Find Connections</Button></Link>
             </div>
           ) : (
             <div className="bg-white rounded-2xl border border-neutral-200 p-6">

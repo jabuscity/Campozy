@@ -1,8 +1,11 @@
 'use client'
 
+import * as React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { NavDropdown } from './nav-dropdown'
+import { useNotificationCounts } from '@/hooks/use-notification-counts'
+import { NotificationBadge } from '@/components/ui/notification-badge'
 
 interface NavGroup {
   label: string
@@ -14,23 +17,9 @@ interface DesktopNavProps {
   housingHref?: string | null
 }
 
-function NavLink({ href, children, active }: { href: string; children: React.ReactNode; active?: boolean }) {
-  return (
-    <Link
-      href={href}
-      className={`px-4 py-2 text-sm font-bold uppercase tracking-tighter transition-all ${
-        active
-          ? 'text-primary border-b-2 border-primary'
-          : 'text-neutral-500 hover:text-primary'
-      }`}
-    >
-      {children}
-    </Link>
-  )
-}
-
 export function DesktopNav({ navGroups, housingHref }: DesktopNavProps) {
   const pathname = usePathname()
+  const counts = useNotificationCounts()
 
   const isGroupActive = (items: { href: string }[]) =>
     items.some((item) => pathname === item.href || pathname.startsWith(item.href + '/'))
@@ -41,16 +30,37 @@ export function DesktopNav({ navGroups, housingHref }: DesktopNavProps) {
         if (group.label === 'Housing' && housingHref) {
           const isActive = pathname === housingHref || pathname.startsWith(housingHref + '/')
           return (
+              <Link
+                key="housing"
+                href={housingHref}
+                className={`relative px-4 py-2 text-base font-bold capitalize tracking-tighter transition-all ${
+                  isActive
+                    ? 'text-primary border-b-2 border-primary'
+                    : 'text-neutral-500 hover:text-primary'
+                }`}
+              >
+                Housing
+                <NotificationBadge count={counts.housing} />
+              </Link>
+          )
+        }
+        if (group.label === 'Discussions' && group.items.length > 0) {
+          const href = '/community'
+          const isActive =
+            pathname === '/community' ||
+            (pathname.startsWith('/community/') && !pathname.startsWith('/community/events'))
+          return (
             <Link
-              key="housing"
-              href={housingHref}
-              className={`px-4 py-2 text-sm font-bold uppercase tracking-tighter transition-all ${
+              key="discussions"
+              href={href}
+              className={`relative px-4 py-2 text-base font-bold capitalize tracking-tighter transition-all ${
                 isActive
                   ? 'text-primary border-b-2 border-primary'
                   : 'text-neutral-500 hover:text-primary'
               }`}
             >
-              Housing
+              Discussions
+              <NotificationBadge count={counts.discussions} />
             </Link>
           )
         }
@@ -60,12 +70,32 @@ export function DesktopNav({ navGroups, housingHref }: DesktopNavProps) {
             label={group.label}
             items={group.items}
             active={isGroupActive(group.items)}
+            count={group.label === 'Discussions' ? counts.discussions : undefined}
           />
         )
       })}
-      <NavLink href="/about" active={pathname === '/about'}>About</NavLink>
-      <NavLink href="/opportunities" active={pathname === '/opportunities' || pathname.startsWith('/opportunities')}>Opportunities</NavLink>
-      <NavLink href="/tips" active={pathname === '/tips' || pathname.startsWith('/tips')}>Tips &amp; Tricks</NavLink>
+      <Link
+        href="/opportunities"
+        className={`relative px-4 py-2 text-base font-bold capitalize tracking-tighter transition-all ${
+          pathname === '/opportunities' || pathname.startsWith('/opportunities')
+            ? 'text-primary border-b-2 border-primary'
+            : 'text-neutral-500 hover:text-primary'
+        }`}
+      >
+        Opportunities
+        <NotificationBadge count={counts.opportunities + counts.tips} />
+      </Link>
+      <Link
+        href="/tips"
+        className={`relative px-4 py-2 text-base font-bold capitalize tracking-tighter transition-all ${
+          pathname === '/tips' || pathname.startsWith('/tips')
+            ? 'text-primary border-b-2 border-primary'
+            : 'text-neutral-500 hover:text-primary'
+        }`}
+      >
+        Tips &amp; Tricks
+        <NotificationBadge count={counts.tips} />
+      </Link>
     </div>
   )
 }

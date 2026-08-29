@@ -54,6 +54,8 @@ export class FeedService {
 
       return {
         ...post,
+        upvotes,
+        downvotes,
         vote_count: upvotes - downvotes,
         comment_count: (comments || []).filter(c => c.post_id === post.id).length,
         user_vote: currentUserId
@@ -112,10 +114,66 @@ export class FeedService {
 
     return {
       ...post,
+      upvotes,
+      downvotes,
       vote_count: upvotes - downvotes,
       comment_count: commentCount || 0,
       user_vote: userVote,
     }
+  }
+
+  static async getUserPosts(userId: string): Promise<CommunityPost[]> {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from('community_posts')
+      .select(`
+        *,
+        author:profiles!community_posts_author_id_fkey(id, full_name, username, avatar_url)
+      `)
+      .eq('author_id', userId)
+      .order('created_at', { ascending: false })
+      .limit(50)
+
+    if (error) {
+      console.error('Failed to fetch user feed posts:', {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+      })
+      return []
+    }
+
+    const posts = data as CommunityPost[]
+
+    if (!posts.length) return []
+
+    const postIds = posts.map(p => p.id)
+
+    const { data: votes } = await supabase
+      .from('post_votes')
+      .select('post_id, vote_type')
+      .in('post_id', postIds)
+
+    const { data: comments } = await supabase
+      .from('post_comments')
+      .select('post_id, id')
+      .in('post_id', postIds)
+
+    return posts.map(post => {
+      const postVotes = (votes || []).filter(v => v.post_id === post.id) as { vote_type: number }[]
+      const upvotes = postVotes.filter(v => v.vote_type === 1).length
+      const downvotes = postVotes.filter(v => v.vote_type === -1).length
+
+      return {
+        ...post,
+        upvotes,
+        downvotes,
+        vote_count: upvotes - downvotes,
+        comment_count: (comments || []).filter(c => c.post_id === post.id).length,
+        user_vote: null,
+      }
+    })
   }
 
   static async getComments(postId: string): Promise<PostComment[]> {
@@ -142,9 +200,9 @@ export class FeedService {
     return data as PostComment[]
   }
 
-  static async createPost(userId: string, title: string, content: string, imageUrl?: string | null) {
+  static async createPost(userId: string, title: string | null, content: string, imageUrl?: string | null) {
     const supabase = await createClient()
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('community_posts')
       .insert({
         author_id: userId,
@@ -152,6 +210,8 @@ export class FeedService {
         content,
         image_url: imageUrl || null,
       })
+      .select('id')
+      .single()
 
     if (error) {
       console.error('Failed to create post:', {
@@ -163,7 +223,7 @@ export class FeedService {
       return { error: 'Failed to create post.' }
     }
 
-    return {}
+    return { id: data.id }
   }
 
   static async addComment(postId: string, userId: string, content: string) {

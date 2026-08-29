@@ -131,6 +131,11 @@ INSERT INTO discussion_categories (name, description) VALUES
   ('Academics', 'Academic advice and resources'),
   ('Hostels', 'Hostel life and housing discussions'),
   ('Campus Life', 'Student life and events'),
+  ('Relationships', 'Relationships and social connections'),
+  ('Faith', 'Faith-based resources and campus spiritual life'),
+  ('Events', 'Campus events and meetups'),
+  ('Marketplace', 'Buy, sell, and trade with students'),
+  ('Technology', 'Tech talk, gadgets, and digital tips'),
   ('Careers', 'Jobs, internships, and career advice')
 ON CONFLICT (name) DO NOTHING;
 

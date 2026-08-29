@@ -18,6 +18,12 @@ Remote columns/tables added to match existing TypeScript types and frontend quer
 | 8 | countries | iso_code | ALTER TABLE ADD COLUMN IF NOT EXISTS |
 | 9 | high_schools | table creation | CREATE TABLE IF NOT EXISTS + index |
 
+## RLS Policy Change: community_posts Public Read (2026-08-10)
+
+| Step | Table | Policy Change | Resolution |
+|------|-------|---------------|------------|
+| 1 | community_posts | `community_posts_select` changed from `author_id = auth.uid()` to `USING (true)` | Migration `0015_feed_posts_voting_comments.sql:10-12` — allows all authenticated users to read all community posts to support the public social feed |
+
 ## Validation
 
 | Check | Status |

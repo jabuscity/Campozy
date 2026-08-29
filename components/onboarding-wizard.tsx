@@ -5,7 +5,7 @@ import { Modal } from '@/components/ui/modal'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
-import { Sparkles, GraduationCap, Heart, UserPlus, CheckCircle2 } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 
 type Step = 'welcome' | 'profile' | 'preferences' | 'account'
 
@@ -23,7 +23,7 @@ interface OnboardingWizardProps {
   onClose: () => void
 }
 
-export function OnboardingWizard({ isOpen, onClose }: OnboardingWizardProps) {
+function OnboardingWizardContent({ onClose }: { onClose: () => void }) {
   const router = useRouter()
   const [step, setStep] = React.useState<Step>('welcome')
   const [saving, setSaving] = React.useState(false)
@@ -31,7 +31,7 @@ export function OnboardingWizard({ isOpen, onClose }: OnboardingWizardProps) {
   const [campuses, setCampuses] = React.useState<{ id: string; name: string }[]>([])
   const [programs, setPrograms] = React.useState<{ id: string; name: string }[]>([])
   const [highSchools, setHighSchools] = React.useState<{ id: string; name: string }[]>([])
-  const [loadingOptions, setLoadingOptions] = React.useState(false)
+  const [loadingOptions, setLoadingOptions] = React.useState(true)
 
   const [form, setForm] = React.useState({
     full_name: '',
@@ -51,32 +51,7 @@ export function OnboardingWizard({ isOpen, onClose }: OnboardingWizardProps) {
   })
 
   React.useEffect(() => {
-    if (!isOpen) return
-    setStep('welcome')
-    setError(null)
-    setSaving(false)
-    setForm({
-      full_name: '',
-      date_of_birth: '',
-      campus_id: '',
-      former_school_id: '',
-      program_id: '',
-      personality: '',
-      fun_activities: '',
-      religious_inclination: '',
-      study_type: '',
-      username: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      terms: false,
-    })
-  }, [isOpen])
-
-  React.useEffect(() => {
-    if (!isOpen) return
     let cancelled = false
-    setLoadingOptions(true)
     const supabase = createClient()
     Promise.all([
       supabase.from('campuses').select('id, name').order('name').then((r) => r.data || []),
@@ -93,7 +68,7 @@ export function OnboardingWizard({ isOpen, onClose }: OnboardingWizardProps) {
       if (!cancelled) setLoadingOptions(false)
     })
     return () => { cancelled = true }
-  }, [isOpen])
+  }, [])
 
   const update = (patch: Record<string, unknown>) => setForm({ ...form, ...patch })
 
@@ -186,7 +161,7 @@ export function OnboardingWizard({ isOpen, onClose }: OnboardingWizardProps) {
   const currentStepIndex = steps.findIndex((s) => s.key === step)
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="">
+    <Modal isOpen={true} onClose={onClose} title="">
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           {steps.map((s, idx) => (
@@ -420,6 +395,14 @@ export function OnboardingWizard({ isOpen, onClose }: OnboardingWizardProps) {
           </div>
         </div>
       </div>
+    </Modal>
+  )
+}
+
+export function OnboardingWizard({ isOpen, onClose }: OnboardingWizardProps) {
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} title="">
+      {isOpen && <OnboardingWizardContent key={isOpen ? 'open' : 'closed'} onClose={onClose} />}
     </Modal>
   )
 }

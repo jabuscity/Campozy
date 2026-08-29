@@ -1,5 +1,5 @@
 import { HousingService } from '@/services/housing-service'
-import { BentoGrid } from '@/components/bento-grid'
+import { NeighborhoodsClient } from './neighborhoods-client'
 import type { Neighborhood, NeighborhoodCampusDistance } from '@/types'
 
 export default async function NeighborhoodsPage({
@@ -44,7 +44,7 @@ export default async function NeighborhoodsPage({
           propertyCount: 0,
         }
       }
-    })
+    }),
   )
 
   const sorted = [...neighborhoodsWithCounts].sort((a, b) => {
@@ -56,22 +56,7 @@ export default async function NeighborhoodsPage({
   return (
     <div className="bg-neutral-50 min-h-screen">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-        <div className="mb-8 md:mb-10">
-          <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
-            Neighborhoods
-          </h1>
-          {campusId && (
-            <p className="text-neutral-600 mt-2">Neighborhoods near your campus</p>
-          )}
-        </div>
-
-        {sorted.length > 0 ? (
-          <BentoGrid neighborhoods={sorted.map(({ neighborhood, propertyCount }) => ({ neighborhood, propertyCount }))} />
-        ) : (
-          <div className="text-center py-12 md:py-20 bg-white rounded-3xl border border-neutral-200">
-            <p className="text-neutral-500 text-base md:text-lg">None yet.</p>
-          </div>
-        )}
+        <NeighborhoodsClient neighborhoods={sorted.map(({ neighborhood, propertyCount }) => ({ neighborhood, propertyCount }))} />
       </div>
     </div>
   )

@@ -16,6 +16,7 @@ export function UniversityTicker() {
   const [universities, setUniversities] = React.useState<string[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
   const [isPaused, setIsPaused] = React.useState(false)
+  const isPausedRef = React.useRef(isPaused)
   const [pixelsPerSecond, setPixelsPerSecond] = React.useState(getPixelsPerSecond)
   const scrollRef = React.useRef<HTMLDivElement>(null)
   const contentRef = React.useRef<HTMLDivElement>(null)
@@ -46,6 +47,10 @@ export function UniversityTicker() {
   }, [])
 
   React.useEffect(() => {
+    isPausedRef.current = isPaused
+  }, [isPaused])
+
+  React.useEffect(() => {
     if (universities.length === 0 || !contentRef.current || !scrollRef.current) return
 
     const content = contentRef.current
@@ -59,7 +64,7 @@ export function UniversityTicker() {
       const delta = (timestamp - lastTimeRef.current) / 1000
       lastTimeRef.current = timestamp
 
-      if (!isPaused) {
+      if (!isPausedRef.current) {
         positionRef.current -= pixelsPerSecond * delta
 
         if (Math.abs(positionRef.current) >= singleSetWidth) {
@@ -79,7 +84,7 @@ export function UniversityTicker() {
         cancelAnimationFrame(rafRef.current)
       }
     }
-  }, [universities, isPaused, pixelsPerSecond])
+  }, [universities, pixelsPerSecond])
 
   if (isLoading) {
     return (

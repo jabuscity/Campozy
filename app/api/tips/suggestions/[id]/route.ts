@@ -28,14 +28,14 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
   const { id } = await params
   const body = await request.json()
-  const { action, rejectionReason } = body
+  const { action, rejectionReason, categoryId, customCategoryName } = body
 
   if (action === 'approve') {
-    const result = await TipService.approveSuggestion(id, user.id)
+    const result = await TipService.approveSuggestion(id, user.id, categoryId, customCategoryName)
     if (result.error) {
       return NextResponse.json({ error: result.error }, { status: 500 })
     }
-    return NextResponse.json({ success: true })
+    return NextResponse.json({ success: true, category: result.category })
   }
 
   if (action === 'reject') {

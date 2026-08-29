@@ -111,3 +111,20 @@ export async function getPendingRequests(userId: string): Promise<FriendConnecti
 
   return (data || []) as FriendConnection[]
 }
+
+export async function getAcceptedConnections(userId: string): Promise<FriendConnection[]> {
+  const supabase = createClient()
+
+  const { data, error } = await supabase
+    .from('friend_connections')
+    .select('*')
+    .or(`user_a.eq.${userId},user_b.eq.${userId}`)
+    .eq('is_active', true)
+
+  if (error) {
+    console.error('Failed to fetch accepted connections:', error)
+    return []
+  }
+
+  return (data || []) as FriendConnection[]
+}

@@ -1,21 +1,28 @@
 'use client'
 
 import * as React from 'react'
-import { User, ShieldCheck, GraduationCap, Mail, Phone, MapPin, Edit3, Save, X, Camera, MessageSquare, Heart, Users, Star } from 'lucide-react'
+import { User, ShieldCheck, GraduationCap, Mail, Phone, MapPin, Edit3, Save, X, Camera, AlertTriangle, ListChecks } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Modal } from '@/components/ui/modal'
 import { updateProfile, signOut } from '@/app/actions/auth-actions'
 import { updateAvatar } from '@/app/actions/profile-actions'
-import { IdentityService } from '@/services/identity-service'
+import { ReportForm } from '@/components/report-form'
+import { PostsTab, type PostsData } from '@/components/profile/posts-tab'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import Link from 'next/link'
-import type { PropertyReview, Discussion, ForumPost, SavedProperty, SavedOpportunity, RoommateMatch, FriendMatch, Opportunity, RoommateProfile, FriendProfile } from '@/types'
 
-type Tab = 'overview' | 'contributions' | 'saved' | 'matches'
+type Tab = 'overview' | 'posts' | 'reports'
 
-export function ProfileDashboard({ profile, userId }: { profile: Record<string, unknown>; userId: string }) {
+export function ProfileDashboard({
+  profile,
+  userId,
+  posts,
+}: {
+  profile: Record<string, unknown>
+  userId: string
+  posts?: PostsData
+}) {
   const router = useRouter()
   const [editingField, setEditingField] = React.useState<string | null>(null)
   const [tempValue, setTempValue] = React.useState('')
@@ -23,10 +30,6 @@ export function ProfileDashboard({ profile, userId }: { profile: Record<string, 
   const [avatarMessage, setAvatarMessage] = React.useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const [isUploading, setIsUploading] = React.useState(false)
   const [activeTab, setActiveTab] = React.useState<Tab>('overview')
-  const [contributions, setContributions] = React.useState<{ reviews: PropertyReview[]; discussions: Discussion[]; forumPosts: ForumPost[] }>({ reviews: [], discussions: [], forumPosts: [] })
-  const [savedItems, setSavedItems] = React.useState<{ properties: SavedProperty[]; opportunities: SavedOpportunity[] }>({ properties: [], opportunities: [] })
-  const [matches, setMatches] = React.useState<{ roommates: RoommateMatch[]; friends: FriendMatch[] }>({ roommates: [], friends: [] })
-  const [loadingData, setLoadingData] = React.useState(false)
   const [isStudentModalOpen, setIsStudentModalOpen] = React.useState(false)
   const [isPasswordModalOpen, setIsPasswordModalOpen] = React.useState(false)
   const [studentOptions, setStudentOptions] = React.useState<{ campuses: unknown[]; programs: unknown[]; highSchools: unknown[] } | null>(null)
@@ -267,36 +270,10 @@ export function ProfileDashboard({ profile, userId }: { profile: Record<string, 
 
   const inputClass = "w-full px-4 h-12 rounded-xl border border-neutral-200 bg-neutral-50 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
 
-  React.useEffect(() => {
-    async function loadTabData() {
-      if (activeTab === 'overview') return
-      setLoadingData(true)
-      try {
-        if (activeTab === 'contributions') {
-          const data = await IdentityService.getUserContributions(userId)
-          setContributions(data)
-        } else if (activeTab === 'saved') {
-          const data = await IdentityService.getUserSavedItems(userId)
-          setSavedItems(data)
-        } else if (activeTab === 'matches') {
-          const data = await IdentityService.getUserMatches(userId)
-          setMatches(data)
-        }
-      } catch (error) {
-        console.error('Error loading tab data:', error)
-      } finally {
-        setLoadingData(false)
-      }
-    }
-
-    loadTabData()
-  }, [activeTab, userId])
-
   const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
     { key: 'overview', label: 'Overview', icon: <User className="h-4 w-4" /> },
-    { key: 'contributions', label: 'Contributions', icon: <MessageSquare className="h-4 w-4" /> },
-    { key: 'saved', label: 'Saved', icon: <Heart className="h-4 w-4" /> },
-    { key: 'matches', label: 'Matches', icon: <Users className="h-4 w-4" /> },
+    { key: 'posts', label: 'Posts', icon: <ListChecks className="h-4 w-4" /> },
+    { key: 'reports', label: 'Report', icon: <AlertTriangle className="h-4 w-4" /> },
   ]
 
   return (
@@ -311,22 +288,26 @@ export function ProfileDashboard({ profile, userId }: { profile: Record<string, 
         </div>
       )}
 
-      <nav className="flex flex-wrap gap-1 md:flex-nowrap p-2 max-w-2xl mx-auto">
-        {tabs.map((tab) => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
-            className={`flex items-center gap-1.5 md:gap-2 px-2 py-1 md:px-3 md:py-1.5 rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
-              activeTab === tab.key
-                ? 'bg-primary text-white shadow-sm'
-                : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50'
-            }`}
-          >
-            {tab.icon}
-            {tab.label}
-          </button>
-        ))}
-      </nav>
+      <div className="flex justify-center">
+        <nav className="flex flex-wrap md:inline-flex md:flex-nowrap justify-center gap-1 p-1 bg-blue-100 rounded-3xl">
+          {tabs.map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`flex items-center gap-2 px-3 py-2.5 md:px-6 md:py-2.5 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${
+                activeTab === tab.key
+                  ? tab.key === 'reports'
+                    ? 'bg-red-500 text-white shadow-sm hover:bg-red-600'
+                    : 'bg-primary text-white shadow-sm hover:bg-primary/90'
+                  : 'text-neutral-500 hover:text-neutral-700'
+              }`}
+            >
+              {tab.icon}
+              {tab.label}
+            </button>
+          ))}
+        </nav>
+      </div>
 
       <div className="max-w-2xl mx-auto pt-6 md:pt-8 pb-4">
         {activeTab === 'overview' && (
@@ -837,218 +818,27 @@ export function ProfileDashboard({ profile, userId }: { profile: Record<string, 
             </Modal>
           </div>
         )}
-
-        {activeTab === 'contributions' && (
-          <div>
-            <h3 className="text-xl font-black text-neutral-900 uppercase tracking-tight mb-6">
-              Your Contributions
-            </h3>
-            {loadingData ? (
-              <div className="text-center py-12">
-                <p className="text-neutral-500">Loading contributions...</p>
-              </div>
-            ) : (
-              <div className="space-y-6">
-                {contributions.reviews.length > 0 && (
-                  <div>
-                    <h4 className="text-sm font-black text-neutral-900 uppercase tracking-widest mb-3">Property Reviews</h4>
-                    <div className="space-y-3">
-                      {(contributions.reviews as Array<PropertyReview & { property?: { id: string; name: string; neighborhood?: { name: string } } }>).slice(0, 5).map((review) => (
-                        <Link key={review.id} href={`/property/${review.property_id}`} className="block p-4 rounded-xl bg-neutral-50 border border-neutral-200 hover:border-primary transition-colors">
-                          <div className="flex items-center justify-between mb-1">
-                            <p className="font-bold text-neutral-900">{review.property?.name || 'Property'}</p>
-                            <span className="text-xs text-neutral-400">{new Date(review.created_at).toLocaleDateString()}</span>
-                          </div>
-                          <p className="text-sm text-neutral-600 line-clamp-2">{review.content || 'No content'}</p>
-                          <div className="flex items-center gap-1 mt-2">
-                            <Star className="h-3 w-3 text-warning fill-current" />
-                            <span className="text-xs font-bold text-neutral-700">{review.overall_rating}/5</span>
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {contributions.discussions.length > 0 && (
-                  <div>
-                    <h4 className="text-sm font-black text-neutral-900 uppercase tracking-widest mb-3">Discussions</h4>
-                    <div className="space-y-3">
-                      {(contributions.discussions as Array<Discussion & { campus?: { name: string }; neighborhood?: { name: string } }>).slice(0, 5).map((discussion) => (
-                        <Link key={discussion.id} href={`/community`} className="block p-4 rounded-xl bg-neutral-50 border border-neutral-200 hover:border-primary transition-colors">
-                          <div className="flex items-center justify-between mb-1">
-                            <p className="font-bold text-neutral-900">{discussion.title}</p>
-                            <span className="text-xs text-neutral-400">{new Date(discussion.created_at).toLocaleDateString()}</span>
-                          </div>
-                          <p className="text-sm text-neutral-600 line-clamp-2">{discussion.content}</p>
-                          <div className="flex items-center gap-2 mt-2 text-xs text-neutral-500">
-                            {discussion.campus?.name && <span>{discussion.campus.name}</span>}
-                            {discussion.neighborhood?.name && <span>â€¢ {discussion.neighborhood.name}</span>}
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {contributions.forumPosts.length > 0 && (
-                  <div>
-                    <h4 className="text-sm font-black text-neutral-900 uppercase tracking-widest mb-3">Forum Posts</h4>
-                    <div className="space-y-3">
-                      {contributions.forumPosts.slice(0, 5).map((post) => (
-                        <Link key={post.id} href={`/forums/${post.topic?.forum?.name || '#'}`} className="block p-4 rounded-xl bg-neutral-50 border border-neutral-200 hover:border-primary transition-colors">
-                          <div className="flex items-center justify-between mb-1">
-                            <p className="font-bold text-neutral-900">{post.topic?.title || 'Forum Post'}</p>
-                            <span className="text-xs text-neutral-400">{new Date(post.created_at).toLocaleDateString()}</span>
-                          </div>
-                          <p className="text-sm text-neutral-600 line-clamp-2">{post.content}</p>
-                          {post.topic?.forum?.name && (
-                            <p className="text-xs text-neutral-500 mt-2">{post.topic.forum.name}</p>
-                          )}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {contributions.reviews.length === 0 && contributions.discussions.length === 0 && contributions.forumPosts.length === 0 && (
-                  <div className="text-center py-12 bg-neutral-50 rounded-2xl border border-neutral-200">
-                    <MessageSquare className="h-10 w-10 text-neutral-300 mx-auto mb-3" />
-                    <p className="text-neutral-500">No contributions yet.</p>
-                    <p className="text-sm text-neutral-400 mt-1">Start reviewing properties and joining discussions.</p>
-                  </div>
-                )}
-              </div>
-            )}
+        {activeTab === 'posts' && posts && (
+          <div className="max-w-2xl mx-auto pt-6 md:pt-8 pb-4">
+            <div className="mb-6">
+              <h3 className="text-xl font-black text-neutral-900 uppercase tracking-tight">
+                Posts
+              </h3>
+              <p className="text-sm text-neutral-500 mt-1">Your tips, opportunities, and community activity.</p>
+            </div>
+            <PostsTab data={posts} />
           </div>
         )}
 
-        {activeTab === 'saved' && (
-          <div>
-            <h3 className="text-xl font-black text-neutral-900 uppercase tracking-tight mb-6">
-              Saved Items
-            </h3>
-            {loadingData ? (
-              <div className="text-center py-12">
-                <p className="text-neutral-500">Loading saved items...</p>
-              </div>
-            ) : (
-              <div className="space-y-6">
-                {savedItems.properties.length > 0 && (
-                  <div>
-                    <h4 className="text-sm font-black text-neutral-900 uppercase tracking-widest mb-3">Saved Properties</h4>
-                    <div className="space-y-3">
-                      {savedItems.properties.slice(0, 5).map((item) => (
-                        <Link key={item.property_id} href={`/property/${item.property_id}`} className="block p-4 rounded-xl bg-neutral-50 border border-neutral-200 hover:border-primary transition-colors">
-                          <div className="flex items-center justify-between mb-1">
-                            <p className="font-bold text-neutral-900">{item.property?.name || 'Property'}</p>
-                            <span className="text-xs text-neutral-400">{new Date(item.saved_at).toLocaleDateString()}</span>
-                          </div>
-                          <p className="text-sm text-neutral-600 line-clamp-2">{item.property?.address || ''}</p>
-                          <div className="flex items-center gap-2 mt-2 text-xs text-neutral-500">
-                            {item.property?.neighborhood?.name && <span>{item.property.neighborhood.name}</span>}
-                            {item.property?.property_type?.name && <span>â€¢ {item.property.property_type.name}</span>}
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {savedItems.opportunities.length > 0 && (
-                  <div>
-                    <h4 className="text-sm font-black text-neutral-900 uppercase tracking-widest mb-3">Saved Opportunities</h4>
-                    <div className="space-y-3">
-                      {(savedItems.opportunities as Array<SavedOpportunity & { opportunity?: Opportunity & { employer?: { name: string } } }>).slice(0, 5).map((item) => (
-                        <Link key={item.opportunity_id} href={`/opportunities/${item.opportunity_id}`} className="block p-4 rounded-xl bg-neutral-50 border border-neutral-200 hover:border-primary transition-colors">
-                          <div className="flex items-center justify-between mb-1">
-                            <p className="font-bold text-neutral-900">{item.opportunity?.title || 'Opportunity'}</p>
-                            <span className="text-xs text-neutral-400">{new Date(item.saved_at).toLocaleDateString()}</span>
-                          </div>
-                          <p className="text-sm text-neutral-600 line-clamp-2">{item.opportunity?.description || ''}</p>
-                          {item.opportunity?.employer?.name && (
-                            <p className="text-xs text-neutral-500 mt-2">{item.opportunity.employer.name}</p>
-                          )}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {savedItems.properties.length === 0 && savedItems.opportunities.length === 0 && (
-                  <div className="text-center py-12 bg-neutral-50 rounded-2xl border border-neutral-200">
-                    <Heart className="h-10 w-10 text-neutral-300 mx-auto mb-3" />
-                    <p className="text-neutral-500">No saved items yet.</p>
-                    <p className="text-sm text-neutral-400 mt-1">Save properties and opportunities to find them here.</p>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        )}
-
-        {activeTab === 'matches' && (
-          <div>
-            <h3 className="text-xl font-black text-neutral-900 uppercase tracking-tight mb-6">
-              Your Matches
-            </h3>
-            {loadingData ? (
-              <div className="text-center py-12">
-                <p className="text-neutral-500">Loading matches...</p>
-              </div>
-            ) : (
-              <div className="space-y-6">
-                {matches.roommates.length > 0 && (
-                  <div>
-                    <h4 className="text-sm font-black text-neutral-900 uppercase tracking-widest mb-3">Roommate Matches</h4>
-                    <div className="space-y-3">
-                      {(matches.roommates as Array<RoommateMatch & { profile?: RoommateProfile }>).slice(0, 5).map((match) => (
-                        <Link key={match.id} href={`/roommates`} className="block p-4 rounded-xl bg-neutral-50 border border-neutral-200 hover:border-primary transition-colors">
-                          <div className="flex items-center justify-between mb-1">
-                            <p className="font-bold text-neutral-900">Roommate Match</p>
-                            <span className="text-xs font-bold text-primary">{Math.round(match.compatibility_score)}% match</span>
-                          </div>
-                          {match.profile && (
-                            <p className="text-sm text-neutral-600">
-                              Year {match.profile.year_of_study || 'N/A'} â€¢ Budget: {match.profile.budget_range ? `KSh ${match.profile.budget_range[0].toLocaleString()} - ${match.profile.budget_range[1].toLocaleString()}` : 'Not set'}
-                            </p>
-                          )}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {matches.friends.length > 0 && (
-                  <div>
-                    <h4 className="text-sm font-black text-neutral-900 uppercase tracking-widest mb-3">Friend Matches</h4>
-                    <div className="space-y-3">
-                      {(matches.friends as Array<FriendMatch & { profile?: FriendProfile }>).slice(0, 5).map((match) => (
-                        <Link key={match.id} href={`/connections`} className="block p-4 rounded-xl bg-neutral-50 border border-neutral-200 hover:border-primary transition-colors">
-                          <div className="flex items-center justify-between mb-1">
-                            <p className="font-bold text-neutral-900">Friend Match</p>
-                            <span className="text-xs font-bold text-primary">{Math.round(match.compatibility_score)}% match</span>
-                          </div>
-                          {match.profile && (
-                            <p className="text-sm text-neutral-600">
-                              {match.profile.bio?.slice(0, 100) || 'No bio'}
-                            </p>
-                          )}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {matches.roommates.length === 0 && matches.friends.length === 0 && (
-                  <div className="text-center py-12 bg-neutral-50 rounded-2xl border border-neutral-200">
-                    <Users className="h-10 w-10 text-neutral-300 mx-auto mb-3" />
-                    <p className="text-neutral-500">No matches yet.</p>
-                    <p className="text-sm text-neutral-400 mt-1">Complete your preferences to start matching.</p>
-                  </div>
-                )}
-              </div>
-            )}
+        {activeTab === 'reports' && (
+          <div className="max-w-2xl mx-auto pt-6 md:pt-8 pb-4">
+            <div className="mb-6">
+              <h3 className="text-xl font-black text-neutral-900 uppercase tracking-tight">
+                Reports
+              </h3>
+              <p className="text-sm text-neutral-500 mt-1">Submit and track utility reports.</p>
+            </div>
+            <ReportForm onCancel={() => setActiveTab('overview')} />
           </div>
         )}
       </div>

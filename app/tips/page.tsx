@@ -29,12 +29,14 @@ export default async function TipsPage() {
   }
 
   return (
-    <TipsView
-      categories={categories}
-      approvedTips={approvedTips}
-      pendingSuggestions={pendingSuggestions}
-      isAdmin={isAdmin}
-      userId={user?.id || null}
-    />
+    <div className="bg-white min-h-screen">
+      <TipsView
+        categories={categories}
+        approvedTips={approvedTips}
+        pendingSuggestions={pendingSuggestions}
+        isAdmin={isAdmin}
+        userId={user?.id || null}
+      />
+    </div>
   )
 }

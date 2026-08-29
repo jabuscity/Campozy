@@ -59,7 +59,7 @@ export default function FriendConnectionsPage() {
               <UserPlus className="h-12 w-12 text-neutral-300 mx-auto mb-4" />
               <h2 className="text-2xl font-black text-neutral-900 mb-2">No Connections Yet</h2>
               <p className="text-neutral-600 mb-6">Start connecting with people to see them here.</p>
-              <Link href="/connections"><Button>Find Friends</Button></Link>
+               <Link href="/chat"><Button>Find Friends</Button></Link>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -92,6 +92,21 @@ export interface DiscussionCategory {
   created_at: string;
 }
 
+export interface CommunityEvent {
+  id: string;
+  title: string;
+  description: string;
+  event_type: string;
+  location: string | null;
+  start_time: string;
+  end_time: string | null;
+  campus_id: string | null;
+  organizer_id: string;
+  max_attendees: number | null;
+  is_public: boolean;
+  created_at: string;
+}
+
 // ---------------------------------------------------------------------------
 // Identity Domain
 // ---------------------------------------------------------------------------
@@ -309,6 +324,7 @@ export interface Property {
   total_rooms: number | null;
   floors: number | null;
   year_built: number | null;
+  monthly_price: number | null;
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -580,6 +596,10 @@ export interface Discussion {
   category?: DiscussionCategory;
   campus?: Campus;
   replies?: DiscussionReply[];
+  // Computed vote fields
+  upvotes?: number;
+  downvotes?: number;
+  user_vote?: number | null;
 }
 
 export interface DiscussionReply {
@@ -611,6 +631,8 @@ export interface CommunityPost {
   vote_count?: number;
   comment_count?: number;
   user_vote?: number | null;
+  upvotes?: number;
+  downvotes?: number;
 }
 
 export interface PostVote {
