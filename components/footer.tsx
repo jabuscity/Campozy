@@ -10,11 +10,12 @@ import Image from "next/image";
 export function Footer() {
   const pathname = usePathname()
   const showMobileFooter = pathname === '/' || pathname === '/about'
-  return (
+   return (
      <footer className="bg-neutral-900 text-white pt-12 pb-12 lg:pb-6 overflow-hidden relative">
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-success" />
+       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-success" />
+       <div className="absolute left-8 lg:left-16 top-0 bottom-0 w-16 opacity-[0.08] bg-blue-200/30 bg-[url('/patterns/beadmosaic.png')] bg-center mix-blend-screen grayscale bg-[length:120px] lg:bg-[length:160px]" />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
+       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
         {showMobileFooter && (
           <div className="md:hidden flex flex-col items-start justify-between gap-4 pt-0 pb-4">
             <div className="flex items-center gap-2">
@@ -54,9 +55,8 @@ export function Footer() {
         )}
 
         <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 lg:items-start gap-6 mb-6">
-          <div className="space-y-4 lg:col-span-1 relative">
-            <div className="absolute -left-4 top-0 bottom-0 w-28 opacity-[0.10] bg-blue-200/20 bg-[url('/patterns/beadmosaic.png')] bg-center mix-blend-screen grayscale bg-[length:180px] lg:bg-[length:220px]" />
-            <Link href="/" className="flex items-center gap-2 group relative">
+          <div className="space-y-4 lg:col-span-1">
+            <Link href="/" className="flex items-center gap-2 group">
             <Image src="/logo.png" alt="Campozy" width={4096} height={3264} className="h-11 w-auto" />
             <span className="text-2xl font-black tracking-tighter">
               Campozy
