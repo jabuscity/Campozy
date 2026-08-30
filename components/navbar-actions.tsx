@@ -10,15 +10,18 @@ import type { User as SupabaseUser } from '@supabase/supabase-js'
 import { UserAuthPopup } from './user-auth-popup'
 import { useNotificationCounts } from '@/hooks/use-notification-counts'
 import { NotificationBadge } from '@/components/ui/notification-badge'
+import { Avatar } from '@/components/ui/avatar'
 
 interface NavbarActionsProps {
   user: SupabaseUser | null
+  avatarUrl: string | null
 }
 
-export function NavbarActions({ user }: NavbarActionsProps) {
+export function NavbarActions({ user, avatarUrl }: NavbarActionsProps) {
   const router = useRouter()
   const pathname = usePathname()
   const [authOpen, setAuthOpen] = useState(false)
+  const [authMode, setAuthMode] = useState<'choice' | 'login' | 'signup'>('login')
   const counts = useNotificationCounts()
   const isEventsActive = pathname === '/community/events' || pathname.startsWith('/community/events')
   const isChatActive = pathname === '/chat' || pathname.startsWith('/chat')
@@ -51,18 +54,19 @@ export function NavbarActions({ user }: NavbarActionsProps) {
             <button
               onClick={() => router.push('/profile')}
               aria-label="Profile"
-              className={`relative inline-flex items-center justify-center h-10 w-10 rounded-full transition-all cursor-pointer !text-neutral-500 hover:!bg-primary/10 !hover:text-primary ${isProfileActive ? '!text-primary !bg-primary/10' : ''}`}
+              className={`relative inline-flex items-center justify-center h-10 w-10 rounded-full overflow-hidden transition-all cursor-pointer !text-neutral-500 hover:!bg-primary/10 !hover:text-primary ${isProfileActive ? '!text-primary !bg-primary/10' : ''}`}
             >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="pointer-events-none">
-              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
-          </button>
+              {user ? (
+                <Avatar src={avatarUrl} alt={user.email ?? 'Profile'} fallback={(user.email ?? '?')[0]?.toUpperCase() ?? '?'} className="h-10 w-10" />
+              ) : (
+                <User className="h-5 w-5 text-neutral-600" />
+              )}
+            </button>
         </>
       ) : (
         <>
           <button
-            onClick={() => setAuthOpen(true)}
+            onClick={() => { setAuthMode('login'); setAuthOpen(true) }}
             className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-neutral-100 border border-neutral-200 hover:bg-neutral-200 transition-colors lg:hidden"
             aria-label="Account"
           >
@@ -72,14 +76,14 @@ export function NavbarActions({ user }: NavbarActionsProps) {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => setAuthOpen(true)}
+            onClick={() => { setAuthMode('login'); setAuthOpen(true) }}
             className="hidden sm:inline-flex font-bold px-6"
           >
             Sign In
           </Button>
         </>
       )}
-      <UserAuthPopup user={user} open={authOpen} onClose={() => setAuthOpen(false)} />
+      <UserAuthPopup user={user} open={authOpen} onClose={() => setAuthOpen(false)} mode={authMode} onModeChange={setAuthMode} />
     </div>
   )
 }

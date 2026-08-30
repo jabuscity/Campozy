@@ -83,7 +83,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     <div className="min-h-screen bg-neutral-50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         <div className="mb-8 md:mb-10">
-          <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
+          <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight uppercase">
             Search
           </h1>
           <p className="mt-2 text-neutral-500 text-base md:text-lg">

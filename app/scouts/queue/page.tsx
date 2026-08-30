@@ -20,7 +20,7 @@ export default async function ScoutsQueuePage() {
     <div className="min-h-screen bg-neutral-50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-10">
-          <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
+          <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase">
             Verification Queue
           </h1>
           <p className="mt-2 text-neutral-500 text-lg">

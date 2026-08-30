@@ -9,12 +9,12 @@ export default function NotFound() {
          <div className="h-40 w-40 bg-primary/5 rounded-full flex items-center justify-center animate-pulse">
             <MapPin className="h-20 w-20 text-primary opacity-20" />
          </div>
-         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-9xl font-black text-neutral-900 leading-none italic select-none">
+         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-9xl font-black text-neutral-900 leading-none select-none">
             404
          </div>
       </div>
 
-      <h1 className="text-4xl font-black text-neutral-900 mb-4 tracking-tight uppercase italic">You&apos;re Off the Map.</h1>
+      <h1 className="text-4xl font-black text-neutral-900 mb-4 tracking-tight uppercase">You&apos;re Off the Map.</h1>
       <p className="text-neutral-500 text-lg max-w-md mx-auto mb-10 leading-relaxed font-medium">
         The page you&apos;re looking for doesn&apos;t exist or has been moved to a new campus. Let&apos;s get you back to familiar territory.
       </p>

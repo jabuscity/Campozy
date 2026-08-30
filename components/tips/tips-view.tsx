@@ -617,7 +617,7 @@ function SuggestForm({
       <div className="absolute inset-0 bg-neutral-900/50 backdrop-blur-sm" onClick={onClose} />
       <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-neutral-200">
         <div className="flex items-center justify-between p-4 border-b border-neutral-100">
-          <h2 className="text-lg font-black text-neutral-900 uppercase italic">Suggest a Tip</h2>
+          <h2 className="text-lg font-black text-neutral-900 uppercase">Suggest a Tip</h2>
           <button
             onClick={onClose}
             className="inline-flex h-8 w-8 items-center justify-center rounded-full hover:bg-neutral-100 text-neutral-500"

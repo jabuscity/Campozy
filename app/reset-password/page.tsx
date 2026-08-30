@@ -58,7 +58,7 @@ function ResetPasswordForm() {
     <div className="w-full max-w-md">
       <div className="text-center mb-10">
         <div className="h-16 w-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-primary/20">
-          <span className="text-3xl font-black text-white italic">C</span>
+          <span className="text-3xl font-black text-white">C</span>
         </div>
         <h1 className="text-3xl font-black text-neutral-900 mb-2 tracking-tight">Set New Password</h1>
         <p className="text-neutral-500">Choose a strong password for your account.</p>

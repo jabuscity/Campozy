@@ -1,13 +1,11 @@
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { ShieldCheck, ArrowLeft, CheckCircle2 } from 'lucide-react'
+import { ShieldCheck, CheckCircle2, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { login } from '@/app/actions/auth-actions'
-import { PasswordInput } from '@/components/ui/password-input'
+import { ClientAuthPopup } from './auth-popup'
 
 interface LoginPageProps {
-  searchParams: Promise<{ verified?: string; error?: string }>
+  searchParams: Promise<{ verified?: string; error?: string; justLoggedOut?: string; next?: string }>
 }
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
@@ -20,30 +18,26 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const params = await searchParams
   const verified = params.verified === '1'
   const error = params.error
+  const justLoggedOut = params.justLoggedOut === '1'
+  const next = params.next || '/'
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
-      <Link href="/" className="fixed top-8 left-8 flex items-center gap-2 text-neutral-500 hover:text-neutral-900 transition-colors">
-        <ArrowLeft className="h-4 w-4" /> Back to Home
-      </Link>
-
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4 relative">
+      {justLoggedOut && (
+        <Link href="/" className="absolute top-4 right-4 inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-neutral-100 text-neutral-500 transition-colors" aria-label="Close">
+          <X className="h-5 w-5" />
+        </Link>
+      )}
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
-          <div className="h-16 w-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-primary/20">
-            <span className="text-3xl font-black text-white italic">C</span>
+          <div className="flex justify-center mb-6">
+            <img src="/logo.svg" alt="Campozy" width={120} height={40} className="h-16 w-auto object-contain" />
           </div>
           <h1 className="text-3xl font-black text-neutral-900 mb-2 tracking-tight">Welcome Back</h1>
           <p className="text-neutral-500">Sign in to your student trust network.</p>
         </div>
 
-        {verified && user && (
-          <div className="mb-6 p-4 rounded-xl bg-green-50 border border-green-200 flex items-center gap-3">
-            <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
-            <p className="text-sm font-medium text-green-800">Email verified successfully. Sign in below.</p>
-          </div>
-        )}
-
-        {verified && !user && (
+        {verified && (
           <div className="mb-6 p-4 rounded-xl bg-blue-50 border border-blue-200 flex items-center gap-3">
             <CheckCircle2 className="h-5 w-5 text-blue-600 flex-shrink-0" />
             <p className="text-sm font-medium text-blue-800">Account created. Check your email to verify, then sign in.</p>
@@ -56,48 +50,8 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           </div>
         )}
 
-        <form className="space-y-6" action={login}>
-          <div>
-            <label className="block text-sm font-bold text-neutral-700 mb-2 uppercase tracking-wide">
-              Student Email
-            </label>
-            <input
-              name="email"
-              type="email"
-              required
-              placeholder="e.g. name@university.ac"
-              className="w-full px-5 h-14 rounded-xl border border-neutral-200 bg-neutral-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-medium"
-            />
-          </div>
-
-          <div>
-            <div className="flex justify-between items-center mb-2">
-              <label className="block text-sm font-bold text-neutral-700 uppercase tracking-wide">
-                Password
-              </label>
-              <Link href="/forgot-password" className="text-xs font-bold text-primary hover:underline">Forgot?</Link>
-            </div>
-            <PasswordInput
-                name="password"
-                autoComplete="current-password"
-                required
-                placeholder="••••••••"
-                className="w-full px-5 h-14 rounded-xl border border-neutral-200 bg-neutral-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-medium"
-              />
-          </div>
-
-          <Button type="submit" size="lg" className="w-full text-lg font-bold">
-            Sign In
-          </Button>
-        </form>
-
-        <div className="mt-10 pt-10 border-t border-neutral-100 text-center">
-          <p className="text-neutral-500 mb-6 font-medium">Don&apos;t have an account yet?</p>
-          <Link href="/signup">
-            <Button variant="outline" size="lg" className="w-full border-2 border-neutral-200 hover:border-primary transition-all">
-              Create Student Profile
-            </Button>
-          </Link>
+        <div className="flex justify-center">
+          <ClientAuthPopup justLoggedOut={justLoggedOut} next={next} />
         </div>
 
         <div className="mt-12 flex items-center justify-center gap-2 text-neutral-400">

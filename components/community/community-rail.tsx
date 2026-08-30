@@ -159,7 +159,7 @@ export default function CommunityRail({
                       <span className="text-xs font-black text-neutral-400 mt-0.5 w-4 text-center shrink-0">{idx + 1}</span>
                       <div className="min-w-0">
                         <p className="text-sm font-medium line-clamp-2">{event.title}</p>
-                        <p className="text-[11px] text-neutral-500 line-clamp-1">{eventTypeLabel(event.event_type)} • {new Date(event.start_time).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</p>
+                         <p className="text-[11px] text-neutral-500 line-clamp-1">{eventTypeLabel(event.event_type)} • {new Date(event.start_time).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
                       </div>
                     </Link>
                   )

@@ -4,26 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
-export async function login(formData: FormData): Promise<void> {
-  const supabase = await createClient()
-
-  const email = formData.get('email') as string
-  const password = formData.get('password') as string
-
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  })
-
-  if (error) {
-    redirect('/login?error=invalid')
-  }
-
-  revalidatePath('/', 'layout')
-  redirect('/')
-}
-
-export async function signup(formData: FormData): Promise<void> {
+async function doSignup(formData: FormData): Promise<{ userId: string | null; error: string | null }> {
   const supabase = await createClient()
 
   const email = formData.get('email') as string
@@ -44,7 +25,7 @@ export async function signup(formData: FormData): Promise<void> {
   })
 
   if (error || !data.user) {
-    redirect('/signup?error=create_failed')
+    return { userId: null, error: error?.message || 'Signup failed' }
   }
 
   const userId = data.user.id
@@ -78,15 +59,55 @@ export async function signup(formData: FormData): Promise<void> {
     .update({ is_onboarded: false })
     .eq('id', userId)
 
+  return { userId, error: null }
+}
+
+export async function login(formData: FormData): Promise<void> {
+  const supabase = await createClient()
+
+  const email = formData.get('email') as string
+  const password = formData.get('password') as string
+  const next = (formData.get('next') as string | null) || '/'
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  })
+
+  if (error) {
+    redirect('/login?error=invalid&next=' + encodeURIComponent(next))
+  }
+
+  revalidatePath('/', 'layout')
+  redirect(next)
+}
+
+export async function signup(formData: FormData): Promise<void> {
+  const { error } = await doSignup(formData)
+
+  if (error) {
+    redirect('/signup?error=create_failed')
+  }
+
   revalidatePath('/', 'layout')
   redirect('/login?verified=1')
+}
+
+export async function signupAjax(formData: FormData): Promise<{ success: boolean; error?: string }> {
+  const { error } = await doSignup(formData)
+
+  if (error) {
+    return { success: false, error }
+  }
+
+  return { success: true }
 }
 
 export async function signOut() {
   const supabase = await createClient()
   await supabase.auth.signOut()
   revalidatePath('/', 'layout')
-  redirect('/login')
+  redirect('/')
 }
 
 export async function forgotPassword(formData: FormData): Promise<{ error?: string }> {

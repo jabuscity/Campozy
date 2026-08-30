@@ -25,7 +25,7 @@ export default function SignupFormPage() {
         </Link>
 
         <h1 className="text-2xl font-black text-neutral-900 tracking-tight leading-tight mb-1">
-          Create Your <span className="text-primary italic">Profile</span>
+          Create Your <span className="text-primary">Profile</span>
         </h1>
         <p className="text-sm text-neutral-600 mb-5">Join the student trust network.</p>
       </div>
@@ -35,7 +35,7 @@ export default function SignupFormPage() {
 
         <div className="space-y-3">
           <div className="space-y-2">
-            <label className="block text-sm font-black text-neutral-900 uppercase tracking-widest italic">Full Name</label>
+            <label className="block text-sm font-black text-neutral-900 uppercase tracking-widest">Full Name</label>
             <input
               name="fullName"
               type="text"

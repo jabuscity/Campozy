@@ -544,7 +544,7 @@ function AddOpportunityForm({
       <div className="absolute inset-0 bg-neutral-900/50 backdrop-blur-sm" onClick={onClose} />
       <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-neutral-200 max-h-[calc(100vh-2rem)] flex flex-col">
         <div className="flex items-center justify-between p-4 border-b border-neutral-100 shrink-0">
-          <h2 className="text-lg font-black text-neutral-900 uppercase italic">Add Opportunity</h2>
+          <h2 className="text-lg font-black text-neutral-900 uppercase">Add Opportunity</h2>
           <button
             onClick={onClose}
             className="inline-flex h-8 w-8 items-center justify-center rounded-full hover:bg-neutral-100 text-neutral-500"

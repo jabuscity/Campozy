@@ -28,7 +28,7 @@ export default async function ApplicationsPage() {
           <Link href="/opportunities" className="inline-flex items-center gap-2 text-neutral-500 hover:text-neutral-900 transition-colors mb-4">
             <ArrowLeft className="h-4 w-4" /> Back to Opportunities
           </Link>
-          <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
+          <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight uppercase">
             My Applications
           </h1>
           <p className="text-neutral-600 mt-2">

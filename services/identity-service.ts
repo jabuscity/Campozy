@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/server'
 import type { Profile, RoleName, ContactMethod, IdentityDocument, PropertyReview, Discussion, ForumPost, SavedProperty, SavedOpportunity, RoommateMatch, RoommateProfile, FriendMatch, FriendProfile, Property, Opportunity, CommunityPost } from '@/types'
 
 // ============================================================================

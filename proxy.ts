@@ -1,19 +1,41 @@
-import { type NextRequest } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
 
+const PUBLIC_PATHS = [
+  '/',
+  '/login',
+  '/signup',
+  '/signup/form',
+  '/forgot-password',
+  '/reset-password',
+  '/about',
+  '/auth/callback',
+]
+
 export async function proxy(request: NextRequest) {
-  return await updateSession(request)
+  const { response, user } = await updateSession(request)
+  const pathname = request.nextUrl.pathname
+
+  if (pathname.startsWith('/api/')) {
+    return response
+  }
+
+  const isPublicPath = PUBLIC_PATHS.some(
+    (path) => pathname === path || pathname.startsWith(path + '/')
+  )
+
+  if (!user && !isPublicPath) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+    url.searchParams.set('next', pathname)
+    return NextResponse.redirect(url)
+  }
+
+  return response
 }
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * Feel free to modify this pattern to include more paths.
-     */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|logo.png|logo.svg|logo.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }

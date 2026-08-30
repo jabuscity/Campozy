@@ -312,8 +312,24 @@ export function ProfileDashboard({
       <div className="max-w-2xl mx-auto pt-6 md:pt-8 pb-4">
         {activeTab === 'overview' && (
           <div>
-            <div className="bg-white rounded-3xl border border-neutral-200 p-8 text-center mb-6">
-              <div className="h-24 w-24 rounded-full bg-neutral-100 border border-neutral-200 flex items-center justify-center mx-auto mb-4 overflow-hidden relative cursor-pointer group" onClick={handleAvatarClick}>
+            <div className="relative overflow-hidden rounded-3xl mb-6 aspect-square bg-neutral-200 md:bg-white md:border md:border-neutral-200 md:p-8 md:text-center md:mb-6 md:aspect-auto md:min-h-0">
+              {avatarUrl ? (
+                <Image src={avatarUrl} alt="Avatar" fill className="object-cover md:hidden" unoptimized priority />
+              ) : (
+                <div className="absolute inset-0 bg-neutral-300 md:hidden" />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent md:hidden" />
+
+              <button
+                type="button"
+                onClick={handleAvatarClick}
+                className="absolute top-3 right-3 z-20 inline-flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors md:hidden"
+                aria-label="Change profile picture"
+              >
+                <Edit3 className="h-4 w-4" />
+              </button>
+
+              <div className="hidden md:flex h-24 w-24 rounded-full bg-neutral-100 border border-neutral-200 items-center justify-center mx-auto mb-4 overflow-hidden relative cursor-pointer group" onClick={handleAvatarClick}>
                 {avatarUrl ? (
                   <Image src={avatarUrl} alt="Avatar" fill className="object-cover" unoptimized priority />
                 ) : (
@@ -330,40 +346,43 @@ export function ProfileDashboard({
                   className="hidden"
                 />
               </div>
-              {isUploading && (
-                <p className="text-xs text-neutral-500 mb-2">Uploading...</p>
-              )}
-              {avatarMessage && (
-                <p className={`text-xs mb-2 ${avatarMessage.type === 'success' ? 'text-green-600' : 'text-red-600'}`}>
-                  {avatarMessage.text}
-                </p>
-              )}
-              <h2 className="text-2xl font-black text-neutral-900">
-                {fullName || 'User'}
-              </h2>
-              <p className="text-neutral-500 text-sm mt-1">@{username || userId.slice(0, 8)}</p>
 
-              {roleNames.length > 0 && (
-                <div className="flex flex-wrap items-center justify-center gap-2 mt-3">
-                  {roleNames.map(role => (
-                    <span key={role} className="text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-md bg-primary/10 text-primary">
-                      {role}
-                    </span>
-                  ))}
+              <div className="absolute bottom-0 left-0 right-0 z-10 pt-16 pb-6 text-center md:relative md:p-0">
+                {isUploading && (
+                  <p className="text-xs text-white/80 mb-2 md:text-neutral-500 md:mb-2 hidden md:block">Uploading...</p>
+                )}
+                {avatarMessage && (
+                  <p className={`text-xs mb-2 md:text-neutral-500 md:mb-2 hidden md:block ${avatarMessage.type === 'success' ? 'text-green-400 md:text-green-600' : 'text-red-400 md:text-red-600'}`}>
+                    {avatarMessage.text}
+                  </p>
+                )}
+                <h2 className="text-2xl font-black text-white md:text-neutral-900">
+                  {fullName || 'User'}
+                </h2>
+                <p className="text-white/80 text-sm mt-1 md:text-neutral-500">@{username || userId.slice(0, 8)}</p>
+
+                {roleNames.length > 0 && (
+                  <div className="flex flex-wrap items-center justify-center gap-2 mt-3">
+                    {roleNames.map(role => (
+                      <span key={role} className="text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-md bg-white/20 text-white md:bg-primary/10 md:text-primary">
+                        {role}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                <div className="flex items-center justify-center gap-2 mt-4 text-sm text-white/90 md:text-neutral-500">
+                  <ShieldCheck className="h-4 w-4 text-white md:text-secondary" />
+                  <span>{isVerified ? 'Verified' : 'Unverified'}</span>
                 </div>
-              )}
 
-              <div className="flex items-center justify-center gap-2 mt-4 text-sm text-neutral-500">
-                <ShieldCheck className="h-4 w-4 text-secondary" />
-                <span>{isVerified ? 'Verified' : 'Unverified'}</span>
+                {(campus || university) && (
+                  <div className="flex items-center justify-center gap-2 mt-2 text-sm text-white/80 md:text-neutral-500">
+                    <MapPin className="h-4 w-4 text-white/70 md:text-neutral-400" />
+                    <span>{String(campus?.name || '')}{String(campus?.name && university?.name ? ' · ' : '')}{String(university?.name || '')}</span>
+                  </div>
+                )}
               </div>
-
-              {(campus || university) && (
-                <div className="flex items-center justify-center gap-2 mt-2 text-sm text-neutral-500">
-                  <MapPin className="h-4 w-4 text-neutral-400" />
-                  <span>{String(campus?.name || '')}{String(campus?.name && university?.name ? ' "  ' : '')}{String(university?.name || '')}</span>
-                </div>
-              )}
             </div>
 
             <div className="flex items-center justify-between mb-6">

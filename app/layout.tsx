@@ -16,13 +16,18 @@ export const metadata: Metadata = {
   description: 'The definitive student trust network for Africa. Housing intelligence, verified scores, and campus communities built by students for students.',
   keywords: ['student housing', 'hostels africa', 'university accommodation', 'verified reviews', 'student community'],
   authors: [{ name: 'Campozy Team' }],
+  icons: {
+    icon: '/logo.svg',
+    shortcut: '/logo.svg',
+    apple: '/logo.svg',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_KE',
     url: 'https://campozy.com',
     siteName: 'Campozy',
     images: [{
-      url: '/og-image.jpg',
+      url: '/logo.svg',
       width: 1200,
       height: 630,
       alt: 'Campozy Trust Network'
@@ -32,7 +37,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Campozy | Student Trust Network',
     description: 'Transforming student life in Africa through trust and intelligence.',
-    images: ['/og-image.jpg'],
+    images: ['/logo.svg'],
   }
 }
 

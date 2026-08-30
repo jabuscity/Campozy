@@ -58,7 +58,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-3xl pointer-events-none" />
         <div className="absolute bottom-4 left-4 right-4 sm:bottom-10 sm:left-10 sm:right-auto text-white">
-          <h1 className="text-2xl sm:text-4xl lg:text-6xl font-black mb-2 sm:mb-4 tracking-tight uppercase italic">{property.name}</h1>
+          <h1 className="text-2xl sm:text-4xl lg:text-6xl font-black mb-2 sm:mb-4 tracking-tight uppercase">{property.name}</h1>
           <div className="flex flex-wrap items-center gap-2 sm:gap-4">
              <div className="flex items-center gap-1.5 text-base sm:text-lg font-medium opacity-90">
                <MapPin className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -79,7 +79,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         <div className="lg:col-span-2 space-y-8 md:space-y-12">
           {/* Overview */}
           <section>
-            <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-4 md:mb-6 uppercase tracking-tight italic">Hostel Overview</h2>
+            <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-4 md:mb-6 uppercase tracking-tight">Hostel Overview</h2>
             <p className="text-neutral-600 text-lg leading-relaxed">
               {property.description || "No description provided for this verified property. However, it holds a Campozy official score based on student intelligence."}
             </p>
@@ -87,7 +87,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
 
           {/* Utility Intelligence Matrix */}
           <section className="bg-neutral-50 rounded-3xl p-4 md:p-8 border border-neutral-100">
-            <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-4 md:mb-6 uppercase tracking-tight italic">Utility Intelligence</h2>
+            <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-4 md:mb-6 uppercase tracking-tight">Utility Intelligence</h2>
             <UtilityMatrix
               items={[
                 { label: 'electricity', value: `${Math.round((scoreDimensions?.electricity || 0) * 20)}% uptime. Backup generator available.`, status: (scoreDimensions?.electricity || 0) >= 4 ? 'good' : (scoreDimensions?.electricity || 0) >= 3 ? 'warning' : 'bad' },
@@ -100,7 +100,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
 
           {/* Additional Trust Scores */}
           <section className="bg-neutral-50 rounded-3xl p-4 md:p-8 border border-neutral-100">
-            <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-4 md:mb-6 uppercase tracking-tight italic">Additional Scores</h2>
+            <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-4 md:mb-6 uppercase tracking-tight">Additional Scores</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
                <ScoreItem label="Hygiene & Sanitation" score={scoreDimensions?.hygiene || 0} icon={<Trash2 />} color="text-red-400" />
                <ScoreItem label="Management Responsiveness" score={scoreDimensions?.management || 0} icon={<MessageSquare />} color="text-purple-400" />
@@ -109,7 +109,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
 
           {/* Rooms Section */}
           <section>
-            <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-6 md:mb-8 uppercase tracking-tight italic">Available Units</h2>
+            <h2 className="text-xl md:text-2xl font-black text-neutral-900 mb-6 md:mb-8 uppercase tracking-tight">Available Units</h2>
             <div className="space-y-3 md:space-y-4">
                {property.rooms?.map(room => (
                  <div key={room.id} className="flex items-center justify-between p-4 md:p-6 rounded-2xl border border-neutral-200 hover:border-primary transition-colors hover:shadow-lg bg-white">
@@ -139,7 +139,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
               <div className="absolute top-0 right-0 h-40 w-40 bg-primary/10 blur-3xl -z-1" />
               <div className="text-center">
                  <CampozyScore score={property.campozy_score} size="lg" className="mb-6" />
-                 <h3 className="text-3xl font-black italic uppercase tracking-tighter mb-4">Official Score</h3>
+                 <h3 className="text-3xl font-black uppercase tracking-tighter mb-4">Official Score</h3>
                  <p className="text-neutral-400 mb-8 font-medium">
                     This score is calculated based on 10 dimensions of verified student data from this semester.
                  </p>

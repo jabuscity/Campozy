@@ -22,7 +22,7 @@ export function OppsClient({
     <div className="min-h-screen bg-neutral-50">
       <div className="hidden md:block bg-white border-b border-neutral-200 py-6">
         <div className="px-4 sm:px-6">
-          <h1 className="text-3xl font-black text-neutral-900 tracking-tight uppercase italic">Opportunities</h1>
+          <h1 className="text-3xl font-black text-neutral-900 tracking-tight uppercase">Opportunities</h1>
           <p className="text-neutral-600 mt-1 text-sm">
             Discover internships, jobs, scholarships, and more.
           </p>

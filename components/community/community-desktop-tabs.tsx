@@ -71,12 +71,46 @@ const EVENT_TYPE_LABELS: Record<string, string> = {
   sports: 'Sports',
 }
 
+const EVENT_TYPE_COLORS: Record<string, { bg: string; text: string }> = {
+  academic: { bg: 'bg-blue-100', text: 'text-blue-700' },
+  career: { bg: 'bg-green-100', text: 'text-green-700' },
+  social: { bg: 'bg-purple-100', text: 'text-purple-700' },
+  sports: { bg: 'bg-orange-100', text: 'text-orange-700' },
+}
+
+const EVENT_TYPE_CARD_CLASSES: Record<string, string> = {
+  academic: 'bg-blue-50',
+  career: 'bg-green-50',
+  social: 'bg-purple-50',
+  sports: 'bg-orange-50',
+}
+
+const EVENT_TYPE_CARD_HOVER_CLASSES: Record<string, string> = {
+  academic: 'hover:border-blue-300 hover:bg-blue-100',
+  career: 'hover:border-green-300 hover:bg-green-100',
+  social: 'hover:border-purple-300 hover:bg-purple-100',
+  sports: 'hover:border-orange-300 hover:bg-orange-100',
+}
+
 function eventTypeLabel(type: string) {
   return EVENT_TYPE_LABELS[type] || type.replace(/[-_]/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase())
 }
 
+function eventTypePillClasses(type: string) {
+  const colors = EVENT_TYPE_COLORS[type] || { bg: 'bg-neutral-100', text: 'text-neutral-700' }
+  return `inline-flex items-center gap-1.5 rounded-full border border-blue-300 px-3 py-1 text-xs font-bold uppercase tracking-tight ${colors.bg} ${colors.text}`
+}
+
+function eventTypeCardClasses(type: string) {
+  return EVENT_TYPE_CARD_CLASSES[type] || 'bg-white'
+}
+
+function eventTypeCardHoverClasses(type: string) {
+  return EVENT_TYPE_CARD_HOVER_CLASSES[type] || 'hover:border-blue-300 hover:bg-blue-50'
+}
+
 function formatEventDate(date: string) {
-  return new Date(date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+  return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
 function discussionScore(discussion: Discussion) {
@@ -332,11 +366,11 @@ export function CommunityDesktopTabs({ discussions, categories, events = [], def
             {activeTab === 'events' && (
               <div className="space-y-4">
                 {filteredEvents.map((event) => (
-                  <div key={event.id} className="bg-white rounded-3xl border border-neutral-200 p-5 hover:border-blue-300 hover:bg-blue-50 transition-colors">
+                  <div key={event.id} className={`${eventTypeCardClasses(event.event_type)} ${eventTypeCardHoverClasses(event.event_type)} rounded-3xl border border-neutral-200 p-5 transition-colors`}>
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
+                          <span className={eventTypePillClasses(event.event_type)}>
                             {EVENT_TYPE_ICONS[event.event_type] || <CalendarDays className="h-3.5 w-3.5" />}
                             {eventTypeLabel(event.event_type)}
                           </span>

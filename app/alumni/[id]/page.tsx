@@ -34,7 +34,7 @@ export default async function AlumniProfilePage({ params }: { params: { id: stri
               {alumni.profile?.full_name?.[0] || 'A'}
             </div>
             <div>
-              <h1 className="text-3xl font-black text-neutral-900 tracking-tight uppercase italic">
+              <h1 className="text-3xl font-black text-neutral-900 tracking-tight uppercase">
                 {alumni.profile?.full_name || 'Alumni'}
               </h1>
               <p className="mt-2 text-neutral-500 text-lg">

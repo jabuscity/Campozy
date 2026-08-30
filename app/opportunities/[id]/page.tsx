@@ -22,7 +22,7 @@ export default async function OpportunityPage({ params }: { params: { id: string
           </Link>
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-black text-neutral-900 tracking-tight uppercase italic">
+              <h1 className="text-3xl font-black text-neutral-900 tracking-tight uppercase">
                 {opportunity.title}
               </h1>
               <p className="mt-2 text-neutral-500 text-lg">

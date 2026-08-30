@@ -22,7 +22,7 @@ export default async function PropertyReviewsPage({ params }: { params: { id: st
           <Link href={`/property/${property.id}`} className="inline-flex items-center gap-2 text-neutral-500 hover:text-primary transition-colors mb-4">
             <ArrowLeft className="h-4 w-4" /> Back to property
           </Link>
-          <h1 className="text-3xl font-black text-neutral-900 tracking-tight uppercase italic">
+          <h1 className="text-3xl font-black text-neutral-900 tracking-tight uppercase">
             Reviews
           </h1>
 

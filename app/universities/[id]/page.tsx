@@ -45,7 +45,7 @@ export default async function UniversityPage({ params }: { params: { id: string 
         <div className="mb-10">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
+              <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase">
                 {university.name}
               </h1>
 

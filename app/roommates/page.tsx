@@ -73,7 +73,7 @@ export default function RoommatesPage() {
               <span className="text-xs font-bold uppercase tracking-wider">Roommate Finder</span>
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight mb-3 md:mb-4">
-              Find Your <span className="text-primary italic">Perfect Roommate</span>
+              Find Your <span className="text-primary">Perfect Roommate</span>
             </h1>
             <p className="text-base md:text-lg text-neutral-600 max-w-2xl mx-auto">
               Smart matching based on lifestyle, budget, and academic preferences.

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { cloneElement, type ReactElement } from "react";
 import { ShieldCheck, Globe } from "lucide-react";
 import { FaInstagram, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
+import Image from "next/image";
 
 export function Footer() {
   const pathname = usePathname()
@@ -15,16 +16,14 @@ export function Footer() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
         {showMobileFooter && (
-          <div className="md:hidden flex flex-col items-start justify-between gap-6 pt-[10px] pb-4">
+          <div className="md:hidden flex flex-col items-start justify-between gap-4 pt-0 pb-4">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-white">
-                <span className="text-lg font-bold italic">C</span>
-              </div>
-              <span className="text-xl font-black tracking-tight text-white italic">
-                Campozy
-              </span>
+               <Image src="/logo.png" alt="Campozy" width={4096} height={3264} className="h-11 w-auto" />
+               <span className="text-xl font-black tracking-tight text-white">
+                 Campozy
+               </span>
             </div>
-            <p className="text-xs text-neutral-400 leading-relaxed font-medium text-left">
+            <p className="text-sm text-neutral-400 leading-relaxed font-medium text-left">
               Mapping student trust across Africa. Housing, community, and
               opportunity intelligence for the next generation of leaders.
             </p>
@@ -32,7 +31,7 @@ export function Footer() {
             <div className="bg-white/5 rounded-2xl border border-white/10 p-4 w-full">
               <div className="flex items-center gap-3 mb-3">
                 <ShieldCheck className="h-5 w-5 text-success" />
-                <span className="text-xs font-black uppercase tracking-widest italic">
+                <span className="text-xs font-black uppercase tracking-widest">
                   Trust First
                 </span>
               </div>
@@ -48,7 +47,7 @@ export function Footer() {
               </Link>
             </div>
 
-            <div className="text-[11px] font-medium text-neutral-500 uppercase tracking-widest text-center">
+            <div className="text-[11px] font-medium text-neutral-500 uppercase tracking-widest text-center mb-12">
               © 2026 Campozy Student Trust Network. All Rights Reserved.
             </div>
           </div>
@@ -56,14 +55,12 @@ export function Footer() {
 
         <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 lg:items-start gap-6 mb-6">
           <div className="space-y-4 lg:col-span-1">
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-lg transition-transform group-hover:scale-110">
-                <span className="text-xl font-bold italic">C</span>
-              </div>
-              <span className="text-2xl font-black tracking-tighter italic">
-                Campozy
-              </span>
-            </Link>
+          <Link href="/" className="flex items-center gap-2 group">
+            <Image src="/logo.png" alt="Campozy" width={4096} height={3264} className="h-11 w-auto" />
+            <span className="text-2xl font-black tracking-tighter">
+              Campozy
+            </span>
+          </Link>
             <p className="text-neutral-400 text-sm leading-relaxed max-w-xs font-medium">
               Mapping student trust across Africa. Housing, community, and
               opportunity intelligence for the next generation of leaders.
@@ -138,7 +135,7 @@ export function Footer() {
           <div className="bg-white/5 rounded-2xl border border-white/10 p-4">
             <div className="flex items-center gap-3 mb-3">
               <ShieldCheck className="h-5 w-5 text-success" />
-              <span className="text-xs font-black uppercase tracking-widest italic">
+              <span className="text-xs font-black uppercase tracking-widest">
                 Trust First
               </span>
             </div>

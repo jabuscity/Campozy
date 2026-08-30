@@ -45,9 +45,9 @@ export default function SignupPage() {
               <div className="sticky top-0 bg-white border-b border-neutral-100 p-3 flex items-center justify-between z-10">
                 <Link href="/" className="flex items-center gap-2">
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white">
-                    <span className="text-sm font-bold italic">C</span>
+                    <span className="text-sm font-bold">C</span>
                   </div>
-                  <span className="text-lg font-black tracking-tight text-neutral-900 uppercase italic">Campozy</span>
+                  <span className="text-lg font-black tracking-tight text-neutral-900 uppercase">Campozy</span>
                 </Link>
                 <Link href="/">
                   <Button variant="ghost" size="sm" className="font-bold text-neutral-600 hover:text-neutral-900">
@@ -63,7 +63,7 @@ export default function SignupPage() {
                 </div>
 
                 <div className="flex items-center gap-2 mb-2">
-                  <h1 className="text-xl font-black text-neutral-900 tracking-tight leading-tight">Create Your <span className="text-primary italic">Profile</span></h1>
+                  <h1 className="text-xl font-black text-neutral-900 tracking-tight leading-tight">Create Your <span className="text-primary">Profile</span></h1>
                   <div className="ml-auto flex items-center gap-1.5">
                     <span className={`h-1.5 w-6 rounded-full ${step === 1 ? 'bg-primary' : 'bg-neutral-200'}`} />
                     <span className={`h-1.5 w-6 rounded-full ${step === 2 ? 'bg-primary' : 'bg-neutral-200'}`} />

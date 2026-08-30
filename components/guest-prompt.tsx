@@ -22,9 +22,11 @@ export function GuestPrompt() {
     const increment = () => {
       const next = getCount() + 1
       sessionStorage.setItem(STORAGE_KEY, String(next))
-      if (next >= 5 && !hasShown.current) {
+      if (next >= 10 && !hasShown.current) {
         hasShown.current = true
-        setIsOpen(true)
+        setTimeout(() => {
+          setIsOpen(true)
+        }, 50)
         sessionStorage.removeItem(STORAGE_KEY)
       }
     }

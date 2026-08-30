@@ -24,16 +24,6 @@ import { OnboardingWizard } from '@/components/onboarding-wizard'
 import { GuestPrompt } from '@/components/guest-prompt'
 import { GlobalSearch } from '@/components/search/global-search'
 
-function getCategoryPill(categoryName: string) {
-  const colors: Record<string, string> = {
-    'General': 'bg-neutral-100 text-neutral-700',
-    'Academics': 'bg-blue-100 text-blue-700',
-    'Hostels': 'bg-green-100 text-green-700',
-    'Campus Life': 'bg-purple-100 text-purple-700',
-    'Careers': 'bg-orange-100 text-orange-700',
-  }
-  return colors[categoryName] || 'bg-neutral-100 text-neutral-600'
-}
 
 export default async function HomePage({ searchParams }: { searchParams: Promise<{ start_onboarding?: string }> | { start_onboarding?: string } }) {
   const params = await searchParams
@@ -283,11 +273,6 @@ function LoggedInFeed({ student, topProperties, trendingDiscussions, topOpportun
                     <MessageSquare className="h-5 w-5 text-primary" />
                   </div>
                   <div className="flex-grow min-w-0">
-                    {discussion.category?.name && (
-                      <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-tight mb-1 ${getCategoryPill(discussion.category.name)}`}>
-                        {discussion.category.name}
-                      </span>
-                    )}
                     <h3 className="font-bold text-neutral-900 truncate">{discussion.title}</h3>
                     <p className="text-sm text-neutral-500 line-clamp-2 mt-1">{discussion.content}</p>
                     <div className="flex items-center gap-3 mt-2">
@@ -374,11 +359,6 @@ function LoggedInFeed({ student, topProperties, trendingDiscussions, topOpportun
                   <MessageSquare className="h-5 w-5 text-primary" />
                 </div>
                 <div className="flex-grow min-w-0">
-                  {discussion.category?.name && (
-                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-tight mb-1 ${getCategoryPill(discussion.category.name)}`}>
-                      {discussion.category.name}
-                    </span>
-                  )}
                   <h3 className="font-bold text-neutral-900 truncate">{discussion.title}</h3>
                   <p className="text-sm text-neutral-500 line-clamp-2 mt-1">{discussion.content}</p>
                   <div className="flex items-center gap-3 mt-2">
@@ -477,7 +457,7 @@ function LoggedOutFeed({
           </div>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-neutral-900 tracking-tight leading-[1.1] mb-4">
-            Decide with <span className="text-primary italic">Confidence.</span>
+            Decide with <span className="text-primary">Confidence.</span>
           </h1>
           <p className="text-lg md:text-xl text-neutral-600 leading-relaxed mb-8 max-w-2xl mx-auto">
             Verified student residences. Real utility updates. Zero guesswork.
@@ -558,11 +538,6 @@ function LoggedOutFeed({
                     <MessageSquare className="h-5 w-5 text-primary" />
                   </div>
                   <div className="flex-grow min-w-0">
-                    {discussion.category?.name && (
-                      <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-tight mb-1 ${getCategoryPill(discussion.category.name)}`}>
-                        {discussion.category.name}
-                      </span>
-                    )}
                     <h3 className="font-bold text-neutral-900 truncate">{discussion.title}</h3>
                     <p className="text-sm text-neutral-500 line-clamp-2 mt-1">{discussion.content}</p>
                     <div className="flex items-center gap-3 mt-2">
@@ -649,11 +624,6 @@ function LoggedOutFeed({
                   <MessageSquare className="h-5 w-5 text-primary" />
                 </div>
                 <div className="flex-grow min-w-0">
-                  {discussion.category?.name && (
-                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-tight mb-1 ${getCategoryPill(discussion.category.name)}`}>
-                      {discussion.category.name}
-                    </span>
-                  )}
                   <h3 className="font-bold text-neutral-900 truncate">{discussion.title}</h3>
                   <p className="text-sm text-neutral-500 line-clamp-2 mt-1">{discussion.content}</p>
                   <div className="flex items-center gap-3 mt-2">

@@ -151,7 +151,7 @@ export default function SettingsPage() {
           <Link href="/profile" className="inline-flex items-center gap-2 text-neutral-500 hover:text-neutral-900 transition-colors mb-4">
             <ArrowLeft className="h-4 w-4" /> Back to Profile
           </Link>
-          <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
+          <h1 className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight uppercase">
             Settings
           </h1>
           <p className="text-neutral-600 mt-2">

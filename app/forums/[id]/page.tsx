@@ -13,7 +13,7 @@ export default async function ForumPage({ params }: { params: { id: string } }) 
         <div className="mb-10">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase italic">
+              <h1 className="text-4xl font-black text-neutral-900 tracking-tight uppercase">
                 {forum.name}
               </h1>
 

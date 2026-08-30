@@ -34,7 +34,7 @@ export default async function FounderPage({ params }: { params: { id: string } }
               {membership.profile?.full_name?.[0] || 'F'}
             </div>
             <div>
-              <h1 className="text-3xl font-black text-neutral-900 tracking-tight uppercase italic">
+              <h1 className="text-3xl font-black text-neutral-900 tracking-tight uppercase">
                 {membership.profile?.full_name || 'Founder'}
               </h1>
               <p className="mt-2 text-neutral-500 text-lg">
