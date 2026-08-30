@@ -28,9 +28,9 @@ export async function Navbar() {
   ]
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-blue-200 bg-gradient-to-r from-blue-200 via-blue-300/80 to-blue-200 backdrop-blur-md overflow-hidden">
-      <div className="absolute inset-0 opacity-[0.10] bg-[url('/patterns/beadmosaic.png')] bg-center mix-blend-multiply grayscale bg-[length:550px] lg:bg-[length:350px]" />
-      <div className="absolute inset-0 bg-gradient-to-r from-white/30 via-transparent to-white/30" />
+    <nav className="sticky top-0 z-50 w-full border-b border-neutral-200 bg-gradient-to-r from-neutral-50 via-white to-neutral-50 backdrop-blur-md overflow-hidden">
+      <div className="absolute inset-0 opacity-[0.06] bg-[url('/patterns/beadmosaic.png')] bg-center mix-blend-multiply grayscale bg-[length:550px] lg:bg-[length:350px]" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/5 via-transparent to-black/5" />
       <div className="relative mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-8">
           <Link href={user ? '/feed' : '/'} className="flex items-center gap-2 group">
