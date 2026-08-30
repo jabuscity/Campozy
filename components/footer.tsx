@@ -54,8 +54,9 @@ export function Footer() {
         )}
 
         <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 lg:items-start gap-6 mb-6">
-          <div className="space-y-4 lg:col-span-1">
-          <Link href="/" className="flex items-center gap-2 group">
+          <div className="space-y-4 lg:col-span-1 relative">
+            <div className="absolute -left-4 top-0 bottom-0 w-28 opacity-[0.10] bg-blue-200/20 bg-[url('/patterns/beadmosaic.png')] bg-center mix-blend-screen grayscale bg-[length:180px] lg:bg-[length:220px]" />
+            <Link href="/" className="flex items-center gap-2 group relative">
             <Image src="/logo.png" alt="Campozy" width={4096} height={3264} className="h-11 w-auto" />
             <span className="text-2xl font-black tracking-tighter">
               Campozy
