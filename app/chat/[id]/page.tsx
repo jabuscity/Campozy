@@ -34,13 +34,19 @@ export default function ChatRoomPage({ params }: { params: { id: string } }) {
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const router = useRouter()
 
+  const supabase = React.useMemo(() => createClient(), [])
+
   const loadConversation = useCallback(async () => {
     try {
-      const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
+      let { data: { user } } = await supabase.auth.getUser()
       if (!user) {
-        router.push('/login')
-        return
+        await new Promise(resolve => setTimeout(resolve, 800))
+        const retry = await supabase.auth.getUser()
+        user = retry.data.user
+        if (!user) {
+          router.push('/login')
+          return
+        }
       }
       setUserId(user.id)
 
@@ -57,7 +63,7 @@ export default function ChatRoomPage({ params }: { params: { id: string } }) {
     } finally {
       setLoading(false)
     }
-  }, [params.id, router])
+  }, [params.id, router, supabase])
 
   useEffect(() => {
     loadConversation()

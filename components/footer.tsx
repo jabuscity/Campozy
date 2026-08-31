@@ -13,7 +13,7 @@ export function Footer() {
    return (
      <footer className="bg-neutral-900 text-white pt-12 pb-12 lg:pb-6 overflow-hidden relative">
        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-success" />
-       <div className="hidden xl:block absolute left-0 top-0 bottom-0 w-[calc((100vw-1280px)/2)] opacity-[0.08] bg-blue-200/30 bg-[url('/patterns/beadmosaic.png')] bg-center mix-blend-screen grayscale bg-[length:160px]" />
+       <div className="hidden xl:block absolute left-0 top-0 bottom-0 w-[calc((100vw-1280px)/2)] opacity-[0.12] bg-blue-200/30 bg-[url('/patterns/beadmosaic.png')] bg-center mix-blend-screen grayscale bg-[length:200px]" />
 
        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
         {showMobileFooter && (

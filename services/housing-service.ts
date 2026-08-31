@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/server'
 import type { Property, PropertyRoom, Neighborhood, University, Campus, NeighborhoodCampusDistance } from '@/types'
 
 // ============================================================================

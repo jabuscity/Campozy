@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, Plus, MessageCircle, Users, ArrowLeft, UserPlus, UserCheck, Home, CheckCircle2, UserX, X } from 'lucide-react'
+import { Search, Plus, MessageCircle, Users, UserPlus, UserCheck, Home, CheckCircle2, UserX, X } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -49,6 +49,7 @@ export default function ChatPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [isNewChatOpen, setIsNewChatOpen] = useState(false)
   const [userId, setUserId] = useState<string | null>(null)
+  const [headerHidden, setHeaderHidden] = React.useState(false)
 
   const [users, setUsers] = useState<UserWithCompatibility[]>([])
   const [matchLoading, setMatchLoading] = useState(true)
@@ -65,14 +66,19 @@ export default function ChatPage() {
   const [friends, setFriends] = useState<UserWithCompatibility[]>([])
   const [friendsLoading, setFriendsLoading] = useState(true)
 
-  const supabase = createClient()
+  const supabase = React.useMemo(() => createClient(), [])
 
   const loadConversations = useCallback(async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      let { data: { user } } = await supabase.auth.getUser()
       if (!user) {
-        router.push('/login')
-        return
+        await new Promise(resolve => setTimeout(resolve, 800))
+        const retry = await supabase.auth.getUser()
+        user = retry.data.user
+        if (!user) {
+          router.push('/login')
+          return
+        }
       }
       setUserId(user.id)
       const [convs, unread] = await Promise.all([
@@ -275,6 +281,15 @@ export default function ChatPage() {
     }
   }, [tab, supabase])
 
+  useEffect(() => {
+    function handleScroll() {
+      setHeaderHidden(window.scrollY > 64)
+    }
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   const getCompatibilityScore = (user: UserWithCompatibility): number => {
     return getCompatibilityResult(compatibilityType, myFriendProfile, user.friendProfile || null, myRoommateProfile, user.roommateProfile || null).score
   }
@@ -364,66 +379,62 @@ export default function ChatPage() {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-6">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={() => router.back()}>
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          </div>
-          {tab === 'chats' && (
-            <Button onClick={() => setIsNewChatOpen(true)} size="icon">
-              <Plus className="h-5 w-5" />
-            </Button>
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-6 pb-20 lg:pb-0">
+        <div className="mb-6 md:mb-8">
+          {headerHidden && (
+            <div className="lg:hidden h-14" aria-hidden="true" />
           )}
-        </div>
-
-        <div className="flex bg-blue-100 rounded-3xl p-1 mb-6">
-          <button
-            onClick={() => setTab('chats')}
-            className={cn(
-              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-all',
-              tab === 'chats' ? 'bg-primary text-white shadow-sm hover:bg-primary/90' : 'text-neutral-500 hover:text-neutral-700'
-            )}
-          >
-            <MessageCircle className="h-4 w-4" />
-            Chats
-          </button>
-          <button
-            onClick={() => setTab('friends')}
-            className={cn(
-              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-all',
-              tab === 'friends' ? 'bg-primary text-white shadow-sm hover:bg-primary/90' : 'text-neutral-500 hover:text-neutral-700'
-            )}
-          >
-            <Users className="h-4 w-4" />
-            Friends
-          </button>
-          <button
-            onClick={() => setTab('matches')}
-            className={cn(
-              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-all',
-              tab === 'matches' ? 'bg-primary text-white shadow-sm hover:bg-primary/90' : 'text-neutral-500 hover:text-neutral-700'
-            )}
-          >
-            <UserCheck className="h-4 w-4" />
-            Matches
-          </button>
-          <button
-            onClick={() => setTab('requests')}
-            className={cn(
-              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-all',
-              tab === 'requests' ? 'bg-primary text-white shadow-sm hover:bg-primary/90' : 'text-neutral-500 hover:text-neutral-700'
-            )}
-          >
-            <UserPlus className="h-4 w-4" />
-            Requests
-            {pendingRequests.length > 0 && (
-              <span className="inline-flex items-center justify-center h-4 min-w-4 px-1 rounded-full bg-primary text-white text-[10px] font-bold">
-                {pendingRequests.length}
-              </span>
-            )}
-          </button>
+          <div className={`mobile-opportunity-filters lg:static lg:mx-0 lg:px-0 lg:bg-transparent lg:shadow-none lg:z-auto lg:pt-0 ${headerHidden ? 'fixed top-0 inset-x-0 z-[60] bg-blue-50/90 backdrop-blur-md px-4 pt-3 pb-3 shadow-md' : 'sticky top-16 z-30 bg-neutral-50 mx-4 px-4 pb-3'}`}>
+            <div className="flex w-full">
+              <div className="flex flex-1 items-center justify-between bg-blue-100 rounded-3xl p-1">
+                <button
+                  onClick={() => setTab('chats')}
+                  className={cn(
+                    'flex flex-1 items-center justify-center gap-2 py-2.5 rounded-lg transition-all',
+                    tab === 'chats' ? 'bg-primary text-white shadow-sm hover:bg-primary/90' : 'text-neutral-500 hover:text-neutral-700'
+                  )}
+                >
+                  <MessageCircle className="h-5 w-5" />
+                  <span className="hidden sm:inline">Chats</span>
+                </button>
+                <button
+                  onClick={() => setTab('friends')}
+                  className={cn(
+                    'flex flex-1 items-center justify-center gap-2 py-2.5 rounded-lg transition-all',
+                    tab === 'friends' ? 'bg-primary text-white shadow-sm hover:bg-primary/90' : 'text-neutral-500 hover:text-neutral-700'
+                  )}
+                >
+                  <Users className="h-5 w-5" />
+                  <span className="hidden sm:inline">Friends</span>
+                </button>
+                <button
+                  onClick={() => setTab('matches')}
+                  className={cn(
+                    'flex flex-1 items-center justify-center gap-2 py-2.5 rounded-lg transition-all',
+                    tab === 'matches' ? 'bg-primary text-white shadow-sm hover:bg-primary/90' : 'text-neutral-500 hover:text-neutral-700'
+                  )}
+                >
+                  <UserCheck className="h-5 w-5" />
+                  <span className="hidden sm:inline">Matches</span>
+                </button>
+                <button
+                  onClick={() => setTab('requests')}
+                  className={cn(
+                    'flex flex-1 items-center justify-center gap-2 py-2.5 rounded-lg transition-all',
+                    tab === 'requests' ? 'bg-primary text-white shadow-sm hover:bg-primary/90' : 'text-neutral-500 hover:text-neutral-700'
+                  )}
+                >
+                  <UserPlus className="h-5 w-5" />
+                  <span className="hidden sm:inline">Requests</span>
+                  {pendingRequests.length > 0 && (
+                    <span className="inline-flex items-center justify-center h-4 min-w-4 px-1 rounded-full bg-primary text-white text-[10px] font-bold">
+                      {pendingRequests.length}
+                    </span>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         {tab === 'chats' && (
@@ -759,6 +770,16 @@ export default function ChatPage() {
           </div>
         )}
       </div>
+
+      {conversations.length > 0 && (
+        <button
+          onClick={() => setIsNewChatOpen(true)}
+          className="fixed bottom-20 right-5 h-10 w-10 rounded-full bg-primary text-white shadow-lg flex items-center justify-center hover:bg-primary/90 transition-colors z-40 lg:hidden"
+          aria-label="New chat"
+        >
+          <Plus className="h-5 w-5" />
+        </button>
+      )}
 
       <NewChatModal
         isOpen={isNewChatOpen}

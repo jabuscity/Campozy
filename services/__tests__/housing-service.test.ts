@@ -12,7 +12,7 @@ function createChainableMock(data: any, error: any) {
   return chain
 }
 
-vi.mock('@/lib/supabase/client', () => ({
+vi.mock('@/lib/supabase/server', () => ({
   createClient: vi.fn(),
 }))
 
@@ -23,7 +23,7 @@ describe('housing-service', () => {
 
   describe('getPropertiesByCampus', () => {
     it('returns properties for a campus with default sort by campozy_score', async () => {
-      const { createClient } = await import('@/lib/supabase/client')
+      const { createClient } = await import('@/lib/supabase/server')
       const distanceChain = createChainableMock([{ neighborhood_id: 'n1' }], null)
       const propertyChain = createChainableMock([{
         id: 'p1',
@@ -46,7 +46,7 @@ describe('housing-service', () => {
     })
 
     it('returns empty array when no distances found', async () => {
-      const { createClient } = await import('@/lib/supabase/client')
+      const { createClient } = await import('@/lib/supabase/server')
       const distanceChain = createChainableMock(null, { message: 'Not found' })
       
       ;(createClient as any).mockReturnValue({
@@ -59,7 +59,7 @@ describe('housing-service', () => {
     })
 
     it('sorts by price when sort option is price_asc', async () => {
-      const { createClient } = await import('@/lib/supabase/client')
+      const { createClient } = await import('@/lib/supabase/server')
       const distanceChain = createChainableMock([{ neighborhood_id: 'n1' }], null)
       const propertyChain = createChainableMock([], null)
       
@@ -75,7 +75,7 @@ describe('housing-service', () => {
     })
 
     it('sorts by latest when sort option is latest', async () => {
-      const { createClient } = await import('@/lib/supabase/client')
+      const { createClient } = await import('@/lib/supabase/server')
       const distanceChain = createChainableMock([{ neighborhood_id: 'n1' }], null)
       const propertyChain = createChainableMock([], null)
       
@@ -93,7 +93,7 @@ describe('housing-service', () => {
 
   describe('searchProperties', () => {
     it('searches properties by name, address, and description', async () => {
-      const { createClient } = await import('@/lib/supabase/client')
+      const { createClient } = await import('@/lib/supabase/server')
       const propertyChain = createChainableMock([{
         id: 'p1',
         name: 'Test Property',

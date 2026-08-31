@@ -23,6 +23,7 @@ import {
   ChevronDown,
   ChevronUp,
   MapPin,
+  Users,
 } from 'lucide-react'
 import type { Discussion, DiscussionCategory, CommunityEvent } from '@/types'
 
@@ -367,29 +368,37 @@ export function CommunityDesktopTabs({ discussions, categories, events = [], def
               <div className="space-y-4">
                 {filteredEvents.map((event) => (
                   <div key={event.id} className={`${eventTypeCardClasses(event.event_type)} ${eventTypeCardHoverClasses(event.event_type)} rounded-3xl border border-neutral-200 p-5 transition-colors`}>
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className={eventTypePillClasses(event.event_type)}>
-                            {EVENT_TYPE_ICONS[event.event_type] || <CalendarDays className="h-3.5 w-3.5" />}
-                            {eventTypeLabel(event.event_type)}
-                          </span>
-                          <span className="text-xs font-medium text-neutral-400">{formatEventDate(event.start_time)}</span>
-                        </div>
-                        <h3 className="text-lg font-black text-neutral-900">{event.title}</h3>
-                        <p className="text-sm text-neutral-600 line-clamp-2 mt-1">{event.description}</p>
-                        <div className="mt-3 flex items-center gap-4 text-xs font-medium text-neutral-500">
-                          <span className="inline-flex items-center gap-1">
-                            <MapPin className="h-3.5 w-3.5" />
-                            {event.location || 'Campus'}
-                          </span>
-                          {event.max_attendees && (
-                            <span>{event.max_attendees} spots</span>
-                          )}
-                        </div>
+                  <span className={eventTypePillClasses(event.event_type)}>
+                    {eventTypeLabel(event.event_type)}
+                  </span>
+                  <h3 className="text-lg font-black text-neutral-900 mt-1.5">{event.title}</h3>
+                  <p className="text-sm text-neutral-600 line-clamp-2 mt-1">{event.description}</p>
+                  <div className="space-y-2.5 pt-4 mt-4 border-t border-neutral-100">
+                    <div className="flex items-start gap-3">
+                      <CalendarDays className="h-4 w-4 text-neutral-400 shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <span className="text-xs font-black text-neutral-900 uppercase tracking-wide block">Date</span>
+                        <span className="text-sm text-neutral-700">{formatEventDate(event.start_time)}</span>
                       </div>
                     </div>
+                    <div className="flex items-start gap-3">
+                      <MapPin className="h-4 w-4 text-neutral-400 shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <span className="text-xs font-black text-neutral-900 uppercase tracking-wide block">Location</span>
+                        <span className="text-sm text-neutral-700">{event.location || 'Campus'}</span>
+                      </div>
+                    </div>
+                    {event.max_attendees && (
+                      <div className="flex items-start gap-3">
+                        <Users className="h-4 w-4 text-neutral-400 shrink-0 mt-0.5" />
+                        <div className="flex-1">
+                          <span className="text-xs font-black text-neutral-900 uppercase tracking-wide block">Attendees</span>
+                          <span className="text-sm text-neutral-700">{event.max_attendees} spots</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
+                </div>
                 ))}
                 {filteredEvents.length === 0 && (
                   <div className="text-center py-16 md:py-20 bg-white rounded-3xl border border-neutral-200">

@@ -1,7 +1,7 @@
 import { CommunityDesktopTabs } from '@/components/community/community-desktop-tabs'
 import { CommunityService } from '@/services/community-service'
 import type { DiscussionCategory, CommunityEvent } from '@/types'
-import { CalendarDays, MapPin } from 'lucide-react'
+import { CalendarDays, MapPin, Users } from 'lucide-react'
 import { EventCreateButton } from '@/components/community/event-create-fab'
 
 const EVENT_TYPE_COLORS: Record<string, { bg: string; text: string }> = {
@@ -38,23 +38,25 @@ function eventTypeCardHoverClasses(type: string) {
   return EVENT_TYPE_CARD_HOVER_CLASSES[type] || 'hover:border-blue-300 hover:bg-blue-50'
 }
 
+function formatEventDate(dateString: string) {
+  const date = new Date(dateString)
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}
+
 export default async function EventsPage() {
   const categories = await CommunityService.getCategories().catch(() => [] as DiscussionCategory[])
   const events = await CommunityService.getEvents({ limit: 20 }).catch(() => [] as CommunityEvent[])
 
   return (
     <div className="bg-neutral-50 min-h-screen">
-      <div className="lg:hidden bg-white border-b border-neutral-200 py-6">
-        <div className="px-4 sm:px-6">
-          <h1 className="text-3xl font-black text-neutral-900 tracking-tight uppercase">Events</h1>
-          <p className="text-neutral-600 mt-1 text-sm">
-            Stay tuned for upcoming campus events, workshops, and webinars.
-          </p>
-        </div>
-      </div>
-
       {/* Mobile: event cards */}
-      <div className="lg:hidden px-4 sm:px-6 py-4">
+      <div className="lg:hidden px-4 sm:px-6 py-4 pb-24">
         <div className="space-y-3">
           {events.length === 0 ? (
             <div className="bg-white rounded-2xl border border-neutral-200 p-8 text-center">
@@ -64,23 +66,35 @@ export default async function EventsPage() {
           ) : (
             events.map((event) => (
               <div key={event.id} className={`${eventTypeCardClasses(event.event_type)} ${eventTypeCardHoverClasses(event.event_type)} rounded-2xl border border-neutral-200 p-4 transition-colors`}>
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <span className={eventTypePillClasses(event.event_type)}>
-                      {event.event_type.replace(/[-_]/g, ' ')}
-                    </span>
-                    <h3 className="text-base font-black text-neutral-900 mt-1">{event.title}</h3>
-                    <p className="text-sm text-neutral-500 line-clamp-2 mt-1">{event.description}</p>
-                    <div className="mt-2 flex items-center gap-3 text-xs font-medium text-neutral-500">
-                      <span className="inline-flex items-center gap-1">
-                        <MapPin className="h-3 w-3" />
-                        {event.location || 'Campus'}
-                      </span>
-                      {event.max_attendees && (
-                        <span>{event.max_attendees} spots</span>
-                      )}
+                <span className={eventTypePillClasses(event.event_type)}>
+                  {event.event_type.replace(/[-_]/g, ' ')}
+                </span>
+                <h3 className="text-base font-black text-neutral-900 mt-1">{event.title}</h3>
+                <p className="text-sm text-neutral-500 mt-1">{event.description}</p>
+                <div className="space-y-2 pt-3 mt-3 border-t border-neutral-100">
+                  <div className="flex items-start gap-2.5">
+                    <CalendarDays className="h-3.5 w-3.5 text-neutral-400 shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <span className="text-[11px] font-black text-neutral-900 uppercase tracking-wide block">Date</span>
+                      <span className="text-xs text-neutral-700">{formatEventDate(event.start_time)}</span>
                     </div>
                   </div>
+                  <div className="flex items-start gap-2.5">
+                    <MapPin className="h-3.5 w-3.5 text-neutral-400 shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <span className="text-[11px] font-black text-neutral-900 uppercase tracking-wide block">Location</span>
+                      <span className="text-xs text-neutral-700">{event.location || 'Campus'}</span>
+                    </div>
+                  </div>
+                  {event.max_attendees && (
+                    <div className="flex items-start gap-2.5">
+                      <Users className="h-3.5 w-3.5 text-neutral-400 shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <span className="text-[11px] font-black text-neutral-900 uppercase tracking-wide block">Attendees</span>
+                        <span className="text-xs text-neutral-700">{event.max_attendees} spots</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             ))

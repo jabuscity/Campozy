@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { useState, useEffect } from 'react'
-import { HousingService } from '@/services/housing-service'
+import { getSavedProperties } from '@/app/actions/housing-actions'
 import { BentoGrid } from '@/components/bento-grid'
 import { PropertyCard } from '@/components/property-card'
 import { Heart, Trash2, MapPin } from 'lucide-react'
@@ -43,7 +43,7 @@ export function NeighborhoodsClient({ neighborhoods }: NeighborhoodsClientProps)
   const loadSavedProperties = async () => {
     setSavedLoading(true)
     try {
-      const data = await HousingService.getSavedProperties()
+      const data = await getSavedProperties()
       setSavedProperties((data || []) as SavedPropertyItem[])
     } catch {
       setSavedProperties([])
@@ -66,24 +66,24 @@ export function NeighborhoodsClient({ neighborhoods }: NeighborhoodsClientProps)
           <div className="inline-flex bg-blue-100 rounded-3xl p-1">
             <button
               onClick={() => setActiveTab('neighborhoods')}
-              className={`flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold transition-all ${
+              className={`flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-xs font-bold transition-all ${
                 activeTab === 'neighborhoods'
                   ? 'bg-primary text-white shadow-sm hover:bg-primary/90'
                   : 'text-neutral-500 hover:text-neutral-700'
               }`}
             >
-              <MapPin className="h-4 w-4" />
+              <MapPin className="h-5 w-5" />
               Neighborhoods
             </button>
             <button
               onClick={() => setActiveTab('saved')}
-              className={`flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold transition-all ${
+              className={`flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-xs font-bold transition-all ${
                 activeTab === 'saved'
                   ? 'bg-primary text-white shadow-sm hover:bg-primary/90'
                   : 'text-neutral-500 hover:text-neutral-700'
               }`}
             >
-              <Heart className="h-4 w-4" />
+              <Heart className="h-5 w-5" />
               Saved
             </button>
           </div>
