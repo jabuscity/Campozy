@@ -10,6 +10,8 @@ const PUBLIC_PATHS = [
   '/reset-password',
   '/about',
   '/auth/callback',
+  '/community',
+  '/community/events',
 ]
 
 export async function proxy(request: NextRequest) {

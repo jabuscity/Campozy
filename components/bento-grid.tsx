@@ -48,13 +48,12 @@ export function BentoGrid({ neighborhoods }: { neighborhoods: NeighborhoodWithCo
         const pos = layout[index]
         if (!pos) return null
         const mobileTopSpan = 'col-start-1 col-span-4 row-start-1 row-span-1'
-        const isSquare = index === 1 || index === 2
         return (
           <NeighborhoodCard
             key={neighborhood.id}
             neighborhood={neighborhood}
             propertyCount={propertyCount}
-            span={isTop && distribution === 'mobile' ? mobileTopSpan : `col-start-${pos.colStart} col-span-${pos.colSpan} row-start-${pos.rowStart} row-span-${pos.rowSpan}${isSquare && distribution === 'mobile' ? ' aspect-square' : ''}`}
+            span={isTop && distribution === 'mobile' ? mobileTopSpan : `col-start-${pos.colStart} col-span-${pos.colSpan} row-start-${pos.rowStart} row-span-${pos.rowSpan}`}
             isTop={isTop}
           />
         )

@@ -1,5 +1,5 @@
 import { CommunityDesktopTabs } from '@/components/community/community-desktop-tabs'
-import { CommunityService } from '@/services/community-service'
+import { supabaseAdmin } from '@/lib/supabase/admin'
 import type { DiscussionCategory, CommunityEvent } from '@/types'
 import { CalendarDays, MapPin, Users } from 'lucide-react'
 import { EventCreateButton } from '@/components/community/event-create-fab'
@@ -50,8 +50,20 @@ function formatEventDate(dateString: string) {
 }
 
 export default async function EventsPage() {
-  const categories = await CommunityService.getCategories().catch(() => [] as DiscussionCategory[])
-  const events = await CommunityService.getEvents({ limit: 20 }).catch(() => [] as CommunityEvent[])
+  const { data: categoriesData } = await supabaseAdmin
+    .from('discussion_categories')
+    .select('*')
+    .order('name')
+
+  const categories = (categoriesData || []) as DiscussionCategory[]
+
+  const { data: eventsData } = await supabaseAdmin
+    .from('events')
+    .select('*')
+    .eq('is_public', true)
+    .order('start_time', { ascending: true })
+
+  const events = (eventsData || []) as CommunityEvent[]
 
   return (
     <div className="bg-neutral-50 min-h-screen">

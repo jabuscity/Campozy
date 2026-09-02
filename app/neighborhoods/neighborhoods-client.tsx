@@ -39,6 +39,16 @@ export function NeighborhoodsClient({ neighborhoods }: NeighborhoodsClientProps)
   const [activeTab, setActiveTab] = useState<'neighborhoods' | 'saved'>('neighborhoods')
   const [savedProperties, setSavedProperties] = React.useState<SavedPropertyItem[]>([])
   const [savedLoading, setSavedLoading] = useState(false)
+  const [headerHidden, setHeaderHidden] = React.useState(false)
+
+  React.useEffect(() => {
+    function handleScroll() {
+      setHeaderHidden(window.scrollY > 64)
+    }
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const loadSavedProperties = async () => {
     setSavedLoading(true)
@@ -62,7 +72,37 @@ export function NeighborhoodsClient({ neighborhoods }: NeighborhoodsClientProps)
   return (
     <div>
       <div className="mb-8 md:mb-10">
-        <div className="flex justify-center mb-6">
+        <div className="lg:hidden mb-6">
+          {headerHidden && <div className="h-14" aria-hidden="true" />}
+          <div className={`${headerHidden ? 'fixed top-0 inset-x-0 z-[60] bg-blue-50/90 backdrop-blur-md px-4 pt-3 pb-3 shadow-md' : 'sticky top-16 z-30 bg-neutral-50 mx-4 px-4 pb-3'}`}>
+            <div className="flex w-full justify-center">
+              <div className="inline-flex w-full max-w-xs bg-blue-100 rounded-3xl p-1">
+                <button
+                  onClick={() => setActiveTab('neighborhoods')}
+                  className={`flex flex-1 items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-bold transition-all ${
+                    activeTab === 'neighborhoods'
+                      ? 'bg-primary text-white shadow-sm hover:bg-primary/90'
+                      : 'text-neutral-500 hover:text-neutral-700'
+                  }`}
+                >
+                  <MapPin className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={() => setActiveTab('saved')}
+                  className={`flex flex-1 items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-bold transition-all ${
+                    activeTab === 'saved'
+                      ? 'bg-primary text-white shadow-sm hover:bg-primary/90'
+                      : 'text-neutral-500 hover:text-neutral-700'
+                  }`}
+                >
+                  <Heart className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="hidden lg:flex justify-center mb-6">
           <div className="inline-flex bg-blue-100 rounded-3xl p-1">
             <button
               onClick={() => setActiveTab('neighborhoods')}

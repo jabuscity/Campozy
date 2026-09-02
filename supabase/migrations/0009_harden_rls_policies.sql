@@ -335,7 +335,7 @@ BEGIN
   IF EXISTS (SELECT 1 FROM pg_tables WHERE tablename = 'discussions') THEN
     ALTER TABLE discussions ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "discussions_select" ON discussions;
-CREATE POLICY "discussions_select" ON discussions FOR SELECT TO authenticated USING (user_id = auth.uid());
+CREATE POLICY "discussions_select" ON discussions FOR SELECT TO authenticated USING (true);
 DROP POLICY IF EXISTS "discussions_insert" ON discussions;
 CREATE POLICY "discussions_insert" ON discussions FOR INSERT TO authenticated WITH CHECK (user_id = auth.uid());
 DROP POLICY IF EXISTS "discussions_update" ON discussions;
