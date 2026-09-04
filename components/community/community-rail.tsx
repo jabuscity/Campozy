@@ -9,6 +9,15 @@ import {
   TrendingUp,
   Search,
   X,
+  GraduationCap,
+  Home,
+  Camera,
+  Heart,
+  Star,
+  ShoppingCart,
+  Cpu,
+  Briefcase,
+  Megaphone,
 } from 'lucide-react'
 import type { Discussion, DiscussionCategory, CommunityEvent } from '@/types'
 
@@ -18,6 +27,19 @@ type RailItem = {
   title: string
   subtitle: string
   href?: string
+}
+
+const CATEGORY_ICONS: Record<string, React.ReactNode> = {
+  'General': <MessageSquare className="h-4 w-4" />,
+  'Academics': <GraduationCap className="h-4 w-4" />,
+  'Hostels': <Home className="h-4 w-4" />,
+  'Campus Life': <Camera className="h-4 w-4" />,
+  'Relationships': <Heart className="h-4 w-4" />,
+  'Faith': <Star className="h-4 w-4" />,
+  'Events': <CalendarDays className="h-4 w-4" />,
+  'Marketplace': <ShoppingCart className="h-4 w-4" />,
+  'Technology': <Cpu className="h-4 w-4" />,
+  'Careers': <Briefcase className="h-4 w-4" />,
 }
 
 interface Props {
@@ -101,7 +123,7 @@ export default function CommunityRail({
       </div>
 
       {activeTab === 'discussions' && (
-        <div className="transition-all duration-300 ease-in-out mb-4">
+        <div className={`transition-all duration-300 ease-in-out ${trendingVisibleCount < 0 ? 'mb-0' : 'mb-4'} ${trendingVisibleCount < 0 ? 'max-h-0 opacity-0 overflow-hidden pointer-events-none' : 'max-h-[2000px] opacity-100'}`}>
           <div className={`bg-orange-50 rounded-3xl border-2 border-orange-200 transition-all duration-300 ease-in-out ${trendingVisibleCount === 0 ? 'p-2' : 'p-4'}`}>
             <h3 className={`text-sm font-black text-neutral-900 uppercase tracking-widest flex items-center gap-2 transition-all duration-300 ease-in-out ${trendingVisibleCount === 0 ? 'mb-1 scale-90 origin-top-left' : 'mb-3'}`}>
               <TrendingUp className="h-4 w-4" />
@@ -174,7 +196,7 @@ export default function CommunityRail({
         <div className="transition-all duration-300 ease-in-out mb-4">
           <div className="bg-white rounded-3xl border border-neutral-200 p-4 transition-all duration-300 ease-in-out">
             <h3 className="text-sm font-black text-neutral-900 uppercase tracking-widest mb-3 flex items-center gap-2">
-              <MessageCircle className="h-4 w-4" />
+              <Megaphone className="h-4 w-4" />
               Topics
             </h3>
             <div className="space-y-1">
@@ -189,7 +211,7 @@ export default function CommunityRail({
                       selectedFilter === cat.name ? 'bg-primary/10 text-primary' : 'text-neutral-700 hover:text-primary hover:bg-primary/10'
                     }`}
                   >
-                    <MessageCircle className="h-4 w-4" />
+                    {CATEGORY_ICONS[cat.name] || <MessageCircle className="h-4 w-4" />}
                     {cat.name}
                   </button>
                 ))

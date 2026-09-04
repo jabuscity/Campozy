@@ -35,7 +35,7 @@ export async function Navbar() {
         <div className="flex items-center gap-8">
           <Link href={user ? '/feed' : '/'} className="flex items-center gap-2 group">
             <img src="/logo.svg" alt="Campozy" className="h-10 w-auto object-contain transition-transform group-hover:scale-110 hidden sm:block" width={120} height={40} />
-            <span className="text-2xl font-black tracking-tight text-neutral-900">
+            <span className="text-2xl font-black tracking-tight text-neutral-900 group-hover:text-primary transition-colors">
               Campozy
             </span>
           </Link>

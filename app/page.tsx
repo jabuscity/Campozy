@@ -216,7 +216,7 @@ function LoggedInFeed({ student, topProperties, trendingDiscussions, topOpportun
           <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-6 px-6 md:grid md:grid-cols-3 md:overflow-x-visible md:pb-0 md:mx-0 md:px-0">
             {topProperties.map((property) => (
               <Link key={property.id} href={`/property/${property.id}`} className="snap-start flex-shrink-0 w-[280px] md:w-auto md:flex-shrink group">
-                <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden hover:shadow-lg transition-all">
+                <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden hover:border-blue-400 hover:bg-blue-50 hover:shadow-md hover:shadow-blue-200/60 transition-all duration-300">
                   <div className="h-48 bg-neutral-100 relative">
                     {property.property_media?.[0] ? (
                       <Image
@@ -266,7 +266,7 @@ function LoggedInFeed({ student, topProperties, trendingDiscussions, topOpportun
               <Link
                 key={discussion.id}
                 href={`/community`}
-                className="snap-start flex-shrink-0 w-[280px] bg-white border border-neutral-200 rounded-xl p-4 hover:shadow-md transition-all"
+                className="snap-start flex-shrink-0 w-[280px] bg-white border border-neutral-200 rounded-xl p-4 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md hover:shadow-blue-200/60 transition-all duration-300"
               >
                 <div className="flex items-start gap-3">
                   <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -306,7 +306,7 @@ function LoggedInFeed({ student, topProperties, trendingDiscussions, topOpportun
               <Link
                 key={opportunity.id}
                 href={`/opportunities/${opportunity.id}`}
-                className="snap-start flex-shrink-0 w-[280px] block bg-white border border-neutral-200 rounded-xl p-5 hover:shadow-lg transition-all group"
+                className="snap-start flex-shrink-0 w-[280px] block bg-white border border-neutral-200 rounded-xl p-5 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md hover:shadow-blue-200/60 transition-all duration-300 group"
               >
                 <div className="flex items-center gap-2 mb-3">
                   <Badge variant="secondary" className="text-xs font-bold uppercase">
@@ -352,7 +352,7 @@ function LoggedInFeed({ student, topProperties, trendingDiscussions, topOpportun
             <Link
               key={discussion.id}
               href={`/community`}
-              className="block bg-white border border-neutral-200 rounded-xl p-4 hover:shadow-md transition-all"
+              className="block bg-white border border-neutral-200 rounded-xl p-4 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md hover:shadow-blue-200/60 transition-all duration-300"
             >
               <div className="flex items-start gap-3">
                 <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -393,7 +393,7 @@ function LoggedInFeed({ student, topProperties, trendingDiscussions, topOpportun
             <Link
               key={opportunity.id}
               href={`/opportunities/${opportunity.id}`}
-              className="block bg-white border border-neutral-200 rounded-xl p-5 hover:shadow-lg transition-all group"
+              className="block bg-white border border-neutral-200 rounded-xl p-5 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md hover:shadow-blue-200/60 transition-all duration-300 group"
             >
               <div className="flex items-center gap-2 mb-3">
                 <Badge variant="secondary" className="text-xs font-bold uppercase">
@@ -481,7 +481,7 @@ function LoggedOutFeed({
           <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-6 px-6 md:grid md:grid-cols-3 md:overflow-x-visible md:pb-0 md:mx-0 md:px-0">
             {properties.map((property) => (
               <Link key={property.id} href={`/property/${property.id}`} className="snap-start flex-shrink-0 w-[280px] md:w-auto md:flex-shrink group">
-                <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden hover:shadow-lg transition-all">
+                <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden hover:border-blue-400 hover:bg-blue-50 hover:shadow-md hover:shadow-blue-200/60 transition-all duration-300">
                   <div className="h-48 bg-neutral-100 relative">
                     {property.property_media?.[0] ? (
                       <Image
@@ -531,7 +531,7 @@ function LoggedOutFeed({
               <Link
                 key={discussion.id}
                 href={`/community`}
-                className="snap-start flex-shrink-0 w-[280px] bg-white border border-neutral-200 rounded-xl p-4 hover:shadow-md transition-all"
+                className="snap-start flex-shrink-0 w-[280px] bg-white border border-neutral-200 rounded-xl p-4 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md hover:shadow-blue-200/60 transition-all duration-300"
               >
                 <div className="flex items-start gap-3">
                   <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -571,7 +571,7 @@ function LoggedOutFeed({
               <Link
                 key={opportunity.id}
                 href={`/opportunities/${opportunity.id}`}
-                className="snap-start flex-shrink-0 w-[280px] block bg-white border border-neutral-200 rounded-xl p-5 hover:shadow-lg transition-all group"
+                className="snap-start flex-shrink-0 w-[280px] block bg-white border border-neutral-200 rounded-xl p-5 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md hover:shadow-blue-200/60 transition-all duration-300 group"
               >
                 <div className="flex items-center gap-2 mb-3">
                   <Badge variant="secondary" className="text-xs font-bold uppercase">
@@ -617,7 +617,7 @@ function LoggedOutFeed({
             <Link
               key={discussion.id}
               href={`/community`}
-              className="block bg-white border border-neutral-200 rounded-xl p-4 hover:shadow-md transition-all"
+              className="block bg-white border border-neutral-200 rounded-xl p-4 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md hover:shadow-blue-200/60 transition-all duration-300"
             >
               <div className="flex items-start gap-3">
                 <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -658,7 +658,7 @@ function LoggedOutFeed({
             <Link
               key={opportunity.id}
               href={`/opportunities/${opportunity.id}`}
-              className="block bg-white border border-neutral-200 rounded-xl p-5 hover:shadow-lg transition-all group"
+              className="block bg-white border border-neutral-200 rounded-xl p-5 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md hover:shadow-blue-200/60 transition-all duration-300 group"
             >
               <div className="flex items-center gap-2 mb-3">
                 <Badge variant="secondary" className="text-xs font-bold uppercase">
