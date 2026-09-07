@@ -45,7 +45,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         </Link>
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" className="text-neutral-500"><Share2 className="h-5 w-5" /></Button>
-          <PropertySaveButton propertyId={property.id} userId={currentUser?.id} initialIsSaved={currentUser ? await HousingService.isPropertySaved(property.id) : false} />
+          <PropertySaveButton propertyId={property.id} userId={currentUser?.id} initialIsSaved={currentUser ? await HousingService.isPropertySaved(currentUser.id, property.id) : false} />
         </div>
       </div>
 
@@ -148,7 +148,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
                      <Button size="lg" className="w-full text-xl font-bold h-16 shadow-lg shadow-primary/40" asChild>
                         <Link href={`/report?propertyId=${property.id}`}>Report Utility Issue</Link>
                      </Button>
-                     <PropertySaveButton propertyId={property.id} userId={currentUser?.id} initialIsSaved={currentUser ? await HousingService.isPropertySaved(property.id) : false} />
+          <PropertySaveButton propertyId={property.id} userId={currentUser?.id} initialIsSaved={currentUser ? await HousingService.isPropertySaved(currentUser.id, property.id) : false} />
                   </div>
               </div>
 

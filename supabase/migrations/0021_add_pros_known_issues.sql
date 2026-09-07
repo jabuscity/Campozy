@@ -1,0 +1,3 @@
+ALTER TABLE properties
+  ADD COLUMN IF NOT EXISTS pros TEXT,
+  ADD COLUMN IF NOT EXISTS known_issues TEXT;

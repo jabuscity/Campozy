@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { DiscussionCard } from '@/components/ui/discussion-card'
 import { MessageCircle, Plus } from 'lucide-react'
 import { CommunityCreateModal } from '@/components/community/community-create-modal'
-import type { Discussion } from '@/types'
+import type { Discussion, DiscussionReply } from '@/types'
 import { CommunityService } from '@/services/community-service'
 
 interface CommunityMobileTabsProps {
@@ -23,6 +23,7 @@ export function CommunityMobileTabs({ discussions, userId }: CommunityMobileTabs
   const [sendingReplies, setSendingReplies] = React.useState<Record<string, boolean>>({})
   const [replyPosted, setReplyPosted] = React.useState<Record<string, boolean>>({})
   const [replyErrors, setReplyErrors] = React.useState<Record<string, string | null>>({})
+  const [repliesByDiscussion, setRepliesByDiscussion] = React.useState<Record<string, DiscussionReply[]>>({})
 
   React.useEffect(() => {
     setDiscussionsState(discussions || [])
@@ -34,8 +35,18 @@ export function CommunityMobileTabs({ discussions, userId }: CommunityMobileTabs
     setExpandedId(prev => prev === id ? null : id)
     if (expandedId === id) {
       setReplyingId(null)
+      return
     }
-  }, [expandedId])
+    if (!repliesByDiscussion[id]) {
+      CommunityService.getReplies(id)
+        .then((data) => {
+          setRepliesByDiscussion(prev => ({ ...prev, [id]: (data || []) as DiscussionReply[] }))
+        })
+        .catch(() => {
+          setRepliesByDiscussion(prev => ({ ...prev, [id]: [] }))
+        })
+    }
+  }, [expandedId, repliesByDiscussion])
 
   const handleVote = React.useCallback(async (id: string, voteType: 1 | -1) => {
     if (!userId) return
@@ -90,6 +101,21 @@ export function CommunityMobileTabs({ discussions, userId }: CommunityMobileTabs
     setReplyPosted(prev => ({ ...prev, [id]: false }))
   }, [])
 
+  const handleReplyToReply = React.useCallback(async (replyId: string, content: string) => {
+    if (!userId || !expandedId) return
+    const newReply = await CommunityService.addReply(expandedId, content, userId, replyId)
+    setDiscussionsState(prev =>
+      prev.map(d => d.id === expandedId ? { ...d, reply_count: (d.reply_count || 0) + 1 } : d)
+    )
+    if (newReply) {
+      const replyWithAuthor = { ...(newReply as DiscussionReply), author: undefined } as DiscussionReply
+      setRepliesByDiscussion(prev => ({
+        ...prev,
+        [expandedId]: [...(prev[expandedId] || []), replyWithAuthor],
+      }))
+    }
+  }, [userId, expandedId])
+
   const handleSubmitReply = React.useCallback(async (id: string) => {
     const text = replyTexts[id]?.trim()
     if (!text || !userId) return
@@ -98,11 +124,18 @@ export function CommunityMobileTabs({ discussions, userId }: CommunityMobileTabs
     setReplyErrors(prev => ({ ...prev, [id]: null }))
 
     try {
-      await CommunityService.addReply(id, text, userId)
+      const newReply = await CommunityService.addReply(id, text, userId)
       setReplyPosted(prev => ({ ...prev, [id]: true }))
       setDiscussionsState(prev =>
         prev.map(d => d.id === id ? { ...d, reply_count: (d.reply_count || 0) + 1 } : d)
       )
+      if (newReply) {
+        const replyWithAuthor = { ...(newReply as DiscussionReply), author: undefined } as DiscussionReply
+        setRepliesByDiscussion(prev => ({
+          ...prev,
+          [id]: [...(prev[id] || []), replyWithAuthor],
+        }))
+      }
       setTimeout(() => {
         setReplyTexts(prev => ({ ...prev, [id]: '' }))
         setReplyingId(null)
@@ -143,6 +176,7 @@ export function CommunityMobileTabs({ discussions, userId }: CommunityMobileTabs
                   userVote={discussion.user_vote}
                   commentCount={discussion.reply_count || 0}
                   categoryName={discussion.category?.name}
+                  replies={repliesByDiscussion[discussion.id]}
                   isExpanded={expandedId === discussion.id}
                   onMobileClick={handleMobileClick}
                   onVote={handleVote}
@@ -155,6 +189,7 @@ export function CommunityMobileTabs({ discussions, userId }: CommunityMobileTabs
                   sendingReply={sendingReplies[discussion.id] || false}
                   replyPosted={replyPosted[discussion.id] || false}
                   replyError={replyErrors[discussion.id] || null}
+                  onReplyToReply={handleReplyToReply}
                 />
               ))}
             </div>

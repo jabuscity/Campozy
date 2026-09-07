@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Bell, CheckCheck } from 'lucide-react'
 import { getNotifications, markNotificationAsRead, markAllNotificationsAsRead } from '@/services/notification-service'
-import { IdentityService } from '@/services/identity-service'
+import { createClient } from '@/lib/supabase/client'
 import type { Notification } from '@/types'
 
 export default function NotificationsPage() {
@@ -15,14 +15,15 @@ export default function NotificationsPage() {
 
   useEffect(() => {
     async function loadNotifications() {
-      const currentUser = await IdentityService.getCurrentUser()
-      if (!currentUser) {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
         setLoading(false)
         return
       }
 
-      setUserId(currentUser.id)
-      const data = await getNotifications(currentUser.id)
+      setUserId(user.id)
+      const data = await getNotifications(user.id)
       setNotifications(data)
       setLoading(false)
     }

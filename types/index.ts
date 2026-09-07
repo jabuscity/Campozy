@@ -325,6 +325,8 @@ export interface Property {
   floors: number | null;
   year_built: number | null;
   monthly_price: number | null;
+  pros: string | null;
+  known_issues: string | null;
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -332,6 +334,7 @@ export interface Property {
   neighborhood?: Neighborhood;
   neighborhoods?: Neighborhood;
   property_type?: PropertyType;
+  profiles?: Pick<Profile, 'id' | 'username' | 'full_name' | 'phone_number' | 'is_verified'>;
   rooms?: PropertyRoom[];
   property_media?: PropertyMedia[];
   media?: PropertyMedia[];
@@ -368,7 +371,7 @@ export interface PropertyMedia {
 
 export interface PropertyAmenity {
   property_id: string;
-  amenity_type_id: string;
+  amenity_id: string;
   notes: string | null;
   // Relations
   amenity_type?: AmenityType;
@@ -392,7 +395,7 @@ export interface PropertyClaim {
 export interface PropertyUtility {
   id: string;
   property_id: string;
-  utility_type_id: string;
+  utility_id: string;
   reliability_score: number;
   report_count: number;
   last_reported_at: string | null;

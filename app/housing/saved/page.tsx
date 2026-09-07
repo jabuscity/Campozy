@@ -19,7 +19,7 @@ export default async function SavedPropertiesPage() {
   let savedProperties: SavedPropertyItem[] = []
 
   if (currentUser) {
-    savedProperties = (await HousingService.getSavedProperties()) as unknown as SavedPropertyItem[]
+    savedProperties = (await HousingService.getSavedProperties(currentUser.id)) as unknown as SavedPropertyItem[]
   }
 
   return (

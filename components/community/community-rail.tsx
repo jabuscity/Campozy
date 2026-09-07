@@ -123,7 +123,7 @@ export default function CommunityRail({
       </div>
 
       {activeTab === 'discussions' && (
-        <div className={`transition-all duration-300 ease-in-out ${trendingVisibleCount < 0 ? 'mb-0' : 'mb-4'} ${trendingVisibleCount < 0 ? 'max-h-0 opacity-0 overflow-hidden pointer-events-none' : 'max-h-[2000px] opacity-100'}`}>
+        <div className={`transition-all duration-300 ease-in-out ${trendingVisibleCount < 0 || selectedFilter ? 'mb-0' : 'mb-4'} ${trendingVisibleCount < 0 || selectedFilter ? 'max-h-0 opacity-0 overflow-hidden pointer-events-none' : 'max-h-[2000px] opacity-100'}`}>
           <div className={`bg-orange-50 rounded-3xl border-2 border-orange-200 transition-all duration-300 ease-in-out ${trendingVisibleCount === 0 ? 'p-2' : 'p-4'}`}>
             <h3 className={`text-sm font-black text-neutral-900 uppercase tracking-widest flex items-center gap-2 transition-all duration-300 ease-in-out ${trendingVisibleCount === 0 ? 'mb-1 scale-90 origin-top-left' : 'mb-3'}`}>
               <TrendingUp className="h-4 w-4" />

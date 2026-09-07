@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { supabaseAdmin } from '@/lib/supabase/admin'
 import type { Property, PropertyRoom, Neighborhood, University, Campus, NeighborhoodCampusDistance } from '@/types'
 
 // ============================================================================
@@ -17,10 +17,9 @@ export const HousingService = {
     verifiedOnly?: boolean;
     limit?: number;
     offset?: number;
-    sort?: 'highest_score' | 'price_asc' | 'latest';
+    sort?: 'highest_score' | 'price_asc' | 'price_desc' | 'latest';
   }) {
-    const supabase = await createClient()
-
+    const supabase = supabaseAdmin
     const { data: distances, error: distError } = await supabase
       .from('neighborhood_campus_distances')
       .select('neighborhood_id')
@@ -44,6 +43,8 @@ export const HousingService = {
 
     if (options?.sort === 'price_asc') {
       dbQuery = dbQuery.order('monthly_price', { ascending: true })
+    } else if (options?.sort === 'price_desc') {
+      dbQuery = dbQuery.order('monthly_price', { ascending: false })
     } else if (options?.sort === 'latest') {
       dbQuery = dbQuery.order('created_at', { ascending: false })
     } else {
@@ -66,10 +67,9 @@ export const HousingService = {
     verifiedOnly?: boolean;
     limit?: number;
     offset?: number;
-    sort?: 'highest_score' | 'price_asc' | 'latest';
+    sort?: 'highest_score' | 'price_asc' | 'price_desc' | 'latest';
   }) {
-    const supabase = await createClient()
-
+    const supabase = supabaseAdmin
     let dbQuery = supabase
       .from('properties')
       .select(`
@@ -83,6 +83,8 @@ export const HousingService = {
 
     if (options?.sort === 'price_asc') {
       dbQuery = dbQuery.order('monthly_price', { ascending: true })
+    } else if (options?.sort === 'price_desc') {
+      dbQuery = dbQuery.order('monthly_price', { ascending: false })
     } else if (options?.sort === 'latest') {
       dbQuery = dbQuery.order('created_at', { ascending: false })
     } else {
@@ -100,7 +102,7 @@ export const HousingService = {
 
 
   async getUniversityById(universityId: string) {
-    const supabase = await createClient()
+    const supabase = supabaseAdmin
     const { data, error } = await supabase
       .from('universities')
       .select('*, campuses(*), country:countries(name, iso_code)')
@@ -112,7 +114,7 @@ export const HousingService = {
   },
 
   async getCampuses(universityId?: string) {
-    const supabase = await createClient()
+    const supabase = supabaseAdmin
     let query = supabase
       .from('campuses')
       .select('*, universities(id, name, short_name)')
@@ -126,7 +128,7 @@ export const HousingService = {
   },
 
   async getUniversities() {
-    const supabase = await createClient()
+    const supabase = supabaseAdmin
     const query = supabase
       .from('universities')
       .select('*, country:countries(name)')
@@ -138,7 +140,7 @@ export const HousingService = {
   },
 
   async getNeighborhoods() {
-    const supabase = await createClient()
+    const supabase = supabaseAdmin
     const { data, error } = await supabase
       .from('neighborhoods')
       .select('*, cities(name, country:countries(name))')
@@ -151,7 +153,7 @@ export const HousingService = {
   // ── Neighborhoods ────────────────────────────────────────────────────────
 
   async getNeighborhoodsByCampus(campusId: string) {
-    const supabase = await createClient()
+    const supabase = supabaseAdmin
     const { data, error } = await supabase
       .from('neighborhood_campus_distances')
       .select(`
@@ -171,15 +173,28 @@ export const HousingService = {
   },
 
   async getNeighborhoodById(neighborhoodId: string) {
-    const supabase = await createClient()
+    const supabase = supabaseAdmin
     const { data, error } = await supabase
       .from('neighborhoods')
       .select('*, cities(name, country:countries(name)), neighborhood_campus_distances(*, campuses(name, universities(name)))')
       .eq('id', neighborhoodId)
       .single()
 
-    if (error) throw new Error(`Neighborhood not found: ${error.message}`)
+    if (error) {
+      if (error.code === 'PGRST116') throw new Error(`Neighborhood not found: ${neighborhoodId}`)
+      throw new Error(`Failed to load neighborhood: ${error.message}`)
+    }
     return data as Neighborhood
+  },
+
+  async getUtilityTypes() {
+    const supabase = supabaseAdmin
+    const { data, error } = await supabase
+      .from('utilities')
+      .select('id, name')
+
+    if (error) return []
+    return (data || []) as Array<{ id: string; name: string }>
   },
 
   // ── Properties ───────────────────────────────────────────────────────────
@@ -188,9 +203,9 @@ export const HousingService = {
     minPrice?: number;
     maxPrice?: number;
     minScore?: number;
-    sort?: 'highest_score' | 'price_asc' | 'latest';
+    sort?: 'highest_score' | 'price_asc' | 'price_desc' | 'latest';
   }) {
-    const supabase = await createClient()
+    const supabase = supabaseAdmin
     let dbQuery = supabase
       .from('properties')
       .select(`
@@ -198,7 +213,9 @@ export const HousingService = {
         property_types(name),
         rooms:property_rooms(id, room_type, quantity),
         property_media(id, url, media_type, is_primary),
-        neighborhoods(id, name)
+        neighborhoods(id, name),
+        utilities:property_utilities(*),
+        amenities:property_amenities(*)
       `)
       .eq('neighborhood_id', neighborhoodId)
       .eq('is_active', true)
@@ -209,6 +226,8 @@ export const HousingService = {
 
     if (options?.sort === 'price_asc') {
       dbQuery = dbQuery.order('monthly_price', { ascending: true })
+    } else if (options?.sort === 'price_desc') {
+      dbQuery = dbQuery.order('monthly_price', { ascending: false })
     } else if (options?.sort === 'latest') {
       dbQuery = dbQuery.order('created_at', { ascending: false })
     } else {
@@ -236,7 +255,7 @@ export const HousingService = {
   },
 
   async getPropertyById(propertyId: string) {
-    const supabase = await createClient()
+    const supabase = supabaseAdmin
     const { data, error } = await supabase
       .from('properties')
       .select(`
@@ -244,14 +263,12 @@ export const HousingService = {
         property_types(name),
         property_rooms(*),
         property_media(*),
-        property_amenities(*, amenity_types(name, icon)),
-        property_utilities(*, utility_types(name)),
         neighborhoods(
           *,
           cities(name, countries(name)),
           neighborhood_campus_distances(*, campuses(name, universities(name)))
         ),
-        profiles!properties_owner_id_fkey(id, username, full_name, avatar_url, is_verified)
+        profiles!properties_owner_id_fkey(id, username, full_name, avatar_url, is_verified, phone_number)
       `)
       .eq('id', propertyId)
       .single()
@@ -273,7 +290,7 @@ export const HousingService = {
     floors?: number;
     year_built?: number;
   }) {
-    const supabase = await createClient()
+    const supabase = supabaseAdmin
     const { data, error } = await supabase
       .from('properties')
       .insert(propertyData)
@@ -282,7 +299,6 @@ export const HousingService = {
 
     if (error) throw new Error(`Failed to create property: ${error.message}`)
 
-    // Log event
     await supabase.from('events').insert({
       actor_id: propertyData.owner_id,
       event_type: 'property_created',
@@ -294,12 +310,12 @@ export const HousingService = {
   },
 
   async updateProperty(propertyId: string, ownerId: string, updates: Partial<Property>) {
-    const supabase = await createClient()
+    const supabase = supabaseAdmin
     const { data, error } = await supabase
       .from('properties')
       .update(updates)
       .eq('id', propertyId)
-      .eq('owner_id', ownerId) // Enforce ownership
+      .eq('owner_id', ownerId)
       .select()
       .single()
 
@@ -310,7 +326,7 @@ export const HousingService = {
   // ── Rooms ────────────────────────────────────────────────────────────────
 
   async addRoom(room: Omit<PropertyRoom, 'id' | 'created_at' | 'updated_at'>) {
-    const supabase = await createClient()
+    const supabase = supabaseAdmin
     const { data, error } = await supabase
       .from('property_rooms')
       .insert(room)
@@ -322,7 +338,7 @@ export const HousingService = {
   },
 
   async updateRoom(roomId: string, updates: Partial<PropertyRoom>) {
-    const supabase = await createClient()
+    const supabase = supabaseAdmin
     const { data, error } = await supabase
       .from('property_rooms')
       .update(updates)
@@ -336,16 +352,8 @@ export const HousingService = {
 
   // ── Saved Properties ─────────────────────────────────────────────────────
 
-  async _requireUserId(): Promise<string> {
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
-    return user.id
-  },
-
-  async saveProperty(propertyId: string, notes?: string) {
-    const userId = await this._requireUserId()
-    const supabase = await createClient()
+  async saveProperty(userId: string, propertyId: string, notes?: string) {
+    const supabase = supabaseAdmin
     const { error } = await supabase
       .from('saved_properties')
       .upsert({ user_id: userId, property_id: propertyId, notes })
@@ -360,9 +368,8 @@ export const HousingService = {
     })
   },
 
-  async unsaveProperty(propertyId: string) {
-    const userId = await this._requireUserId()
-    const supabase = await createClient()
+  async unsaveProperty(userId: string, propertyId: string) {
+    const supabase = supabaseAdmin
     await supabase
       .from('saved_properties')
       .delete()
@@ -370,9 +377,8 @@ export const HousingService = {
       .eq('property_id', propertyId)
   },
 
-  async getSavedProperties() {
-    const userId = await this._requireUserId()
-    const supabase = await createClient()
+  async getSavedProperties(userId: string) {
+    const supabase = supabaseAdmin
     const { data, error } = await supabase
       .from('saved_properties')
       .select(`
@@ -394,9 +400,8 @@ export const HousingService = {
     return data
   },
 
-  async isPropertySaved(propertyId: string): Promise<boolean> {
-    const userId = await this._requireUserId()
-    const supabase = await createClient()
+  async isPropertySaved(userId: string, propertyId: string): Promise<boolean> {
+    const supabase = supabaseAdmin
     const { data } = await supabase
       .from('saved_properties')
       .select('user_id')
@@ -408,7 +413,7 @@ export const HousingService = {
   },
 
   async getSavedPropertiesForStudent(studentId: string) {
-    const supabase = await createClient()
+    const supabase = supabaseAdmin
     const { data, error } = await supabase
       .from('saved_properties')
       .select(`
@@ -429,18 +434,18 @@ export const HousingService = {
     return data
   },
 
-  async togglePropertySave(propertyId: string, isCurrentlySaved: boolean) {
+  async togglePropertySave(userId: string, propertyId: string, isCurrentlySaved: boolean) {
     if (isCurrentlySaved) {
-      await this.unsaveProperty(propertyId)
+      await this.unsaveProperty(userId, propertyId)
     } else {
-      await this.saveProperty(propertyId)
+      await this.saveProperty(userId, propertyId)
     }
   },
 
   // ── Search ───────────────────────────────────────────────────────────────
 
   async searchProperties(query: string, options?: { campusId?: string; limit?: number }) {
-    const supabase = await createClient()
+    const supabase = supabaseAdmin
 
     const escaped = query.replace(/[%_]/g, '\\$&')
     const dbQuery = supabase

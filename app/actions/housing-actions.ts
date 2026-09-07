@@ -9,14 +9,16 @@ export async function searchProperties(campusId: string, options?: { limit?: num
 }
 
 export async function togglePropertySave(propertyId: string, isCurrentlySaved: boolean) {
-  await HousingService.togglePropertySave(propertyId, isCurrentlySaved)
+  const currentUser = await IdentityService.getCurrentUser()
+  if (!currentUser) return
+  await HousingService.togglePropertySave(currentUser.id, propertyId, isCurrentlySaved)
   revalidatePath(`/property/${propertyId}`)
 }
 
 export async function getSavedProperties() {
   const currentUser = await IdentityService.getCurrentUser()
   if (!currentUser) return []
-  return await HousingService.getSavedProperties()
+  return await HousingService.getSavedProperties(currentUser.id)
 }
 
 export async function removeSavedPropertyAction(formData: FormData) {
@@ -24,7 +26,7 @@ export async function removeSavedPropertyAction(formData: FormData) {
   const currentUser = await IdentityService.getCurrentUser()
   
   if (currentUser) {
-    await HousingService.togglePropertySave(propertyId, true)
+    await HousingService.togglePropertySave(currentUser.id, propertyId, true)
     revalidatePath('/housing/saved')
   }
 }

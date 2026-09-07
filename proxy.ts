@@ -12,6 +12,7 @@ const PUBLIC_PATHS = [
   '/auth/callback',
   '/community',
   '/community/events',
+  '/neighborhoods',
 ]
 
 export async function proxy(request: NextRequest) {

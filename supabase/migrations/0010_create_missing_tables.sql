@@ -146,6 +146,16 @@ CREATE TABLE IF NOT EXISTS employers (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'employers' AND column_name = 'owner_id'
+  ) THEN
+    ALTER TABLE employers ADD COLUMN owner_id UUID NOT NULL DEFAULT gen_random_uuid();
+  END IF;
+END $$;
+
 CREATE INDEX IF NOT EXISTS idx_employers_owner ON employers(owner_id);
 
 -- Opportunities

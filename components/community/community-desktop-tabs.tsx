@@ -43,6 +43,7 @@ interface CommunityDesktopTabsProps {
   defaultTab?: CommunityTab
   showEventsTab?: boolean
   showDiscussionsTab?: boolean
+  userId?: string | null
 }
 
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
@@ -118,7 +119,7 @@ function discussionScore(discussion: Discussion) {
   return (discussion.view_count || 0) + (discussion.reply_count || 0) * 6
 }
 
-export function CommunityDesktopTabs({ discussions, categories, events = [], defaultTab = 'discussions', showEventsTab = true, showDiscussionsTab = true }: CommunityDesktopTabsProps) {
+export function CommunityDesktopTabs({ discussions, categories, events = [], defaultTab = 'discussions', showEventsTab = true, showDiscussionsTab = true, userId }: CommunityDesktopTabsProps) {
   const [activeTab, setActiveTab] = React.useState<CommunityTab>(defaultTab)
   const [selectedFilter, setSelectedFilter] = React.useState<string | null>(null)
   const [searchQuery, setSearchQuery] = React.useState('')
@@ -127,6 +128,7 @@ export function CommunityDesktopTabs({ discussions, categories, events = [], def
   const [showScrollButton, setShowScrollButton] = React.useState(false)
   const [isAtBottom, setIsAtBottom] = React.useState(false)
   const [trendingVisibleCount, setTrendingVisibleCount] = React.useState(5)
+  const trendingLockedRef = React.useRef(false)
   const mainContentRef = React.useRef<HTMLDivElement | null>(null)
   const asideRef = React.useRef<HTMLDivElement | null>(null)
   const [asideNaturalTop, setAsideNaturalTop] = React.useState<number | null>(null)
@@ -158,7 +160,13 @@ export function CommunityDesktopTabs({ discussions, categories, events = [], def
     setSearchResults([])
     setShowSearchDropdown(false)
     setTrendingVisibleCount(5)
+    trendingLockedRef.current = false
   }
+
+  React.useEffect(() => {
+    setTrendingVisibleCount(5)
+    trendingLockedRef.current = false
+  }, [selectedFilter])
 
   React.useEffect(() => {
     if (!asideRef.current) return
@@ -210,20 +218,14 @@ export function CommunityDesktopTabs({ discussions, categories, events = [], def
       for (const stage of stages) {
         if (collapseScroll >= stage.threshold) count = stage.count
       }
-      setTrendingVisibleCount(prev => (prev === count ? prev : count))
-
-      if (asideRef.current) {
-        const asideRect = asideRef.current.getBoundingClientRect()
-        if (asideRect.top > 90) {
-          const measuredNaturalTop = asideRect.top + lastY
-          setAsideNaturalTop(prev => {
-            if (prev === null || Math.abs(prev - measuredNaturalTop) > 10) {
-              return measuredNaturalTop
-            }
-            return prev
-          })
-        }
+      if (collapseScroll < 480 && trendingLockedRef.current) {
+        trendingLockedRef.current = false
       }
+      if (trendingLockedRef.current && count > -1) {
+        count = -1
+      }
+      if (count === -1) trendingLockedRef.current = true
+      setTrendingVisibleCount(prev => (prev === count ? prev : count))
 
       const nearBottom = window.innerHeight + lastY >= document.documentElement.scrollHeight - 100
       const showButton = document.documentElement.scrollHeight > window.innerHeight + 100
@@ -361,7 +363,7 @@ export function CommunityDesktopTabs({ discussions, categories, events = [], def
           
           <main ref={mainContentRef} className="flex-1 min-w-0">
             {activeTab === 'discussions' && (
-              <DiscussionList discussions={filteredDiscussions} ctaPath="/community/ask" />
+              <DiscussionList discussions={filteredDiscussions} ctaPath="/community/ask" userId={userId} />
             )}
 
             {activeTab === 'events' && (
